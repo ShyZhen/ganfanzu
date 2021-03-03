@@ -1,0 +1,12 @@
+const env = {
+    // 是否开启debug
+    debug: true,
+    // 多麦
+    duomai : {
+        'host': 'https://open.duomai.com/apis',
+        'appkey': '',
+        'appSecret': ''
+    }
+}
+
+export default env
