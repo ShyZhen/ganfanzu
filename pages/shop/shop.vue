@@ -63,12 +63,34 @@ export default {
         {
           name: '京东商城好货优选',
           icon: '/static/coupon/jd.png',
-          bannerPic: '/static/shop/jd.jpg',
-          url: 'https://u.jd.com/iukFbv5',
+          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
+          url: 'https://u.jd.com/ieepxPu',
           tabId: 1,
           minapp: {
             appid: 'wx91d27dbf599dff74',
-            path: 'pages/union/proxy/proxy?spreadUrl=https://u.jd.com/iukFbv5'
+            path: 'pages/union/proxy/proxy?spreadUrl='+encodeURIComponent('https://u.jd.com/ieepxPu')
+          }
+        },
+        {
+          name: '京东商城好货优选2',
+          icon: '/static/coupon/jd.png',
+          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/141285/14/5884/46459/5f3e4447Ee1ad3a01/2c2bb44d1e2d8cf1.jpg',
+          url: 'https://u.jd.com/irePGfa',
+          tabId: 1,
+          minapp: {
+            appid: 'wx91d27dbf599dff74',
+            path: 'pages/union/proxy/proxy?spreadUrl=https%3A%2F%2Funion-click.jd.com%2Fjdc%3Fe%3D16282%26p%3DAyIGZRprFQMTBlUeUhQKFwNQKx9KWkxYZUIeUENQDEsFAE1dRFABREROVw1VC0dFTUdGW0pCHklfHEUPX1cVAxMGVR5SFAoXA1AMGxl2a3cwbCh2QmRuJUsvZnFSfyx%252FMmx2egEhRAJmdXFgF2wydWJldBMPWGJha1IsbD9%252BQnEFJX84TEtVcB14K25hZUYhciN8dktOCWMrfklGTiFBPmBmdWMMZAxiXUBnLGgOUHR7YzxgOwEAZxNXbmtycmZkAXhBRmIQdTRnAmBDVl4qbVlTDh43Uh5cEwsbAlErWxIBGwRlGVMRARMPUxhrFQMiUTsbWhQDEwZUG1kSMhM3VRxbEAQVAVQfXBAAETdVE1wl1oesjZDMR0NQ3uW%252Bjb%252BsIjdlGGsVBREOVitrFQEiBGVFNRRRElcGTA5AbEhaEEsHFkQWaVUbXBcCGgJSHGsXAxMFVw%253D%253D&EA_PTAG=17078.27.503'
+          }
+        },
+        {
+          name: '京东商城好货优选3',
+          icon: '/static/coupon/jd.png',
+          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
+          url: 'https://u.jd.com/ieepxPu',
+          tabId: 1,
+          minapp: {
+            appid: 'wx91d27dbf599dff74',
+            path: 'pages/union/proxy/proxy?spreadUrl=https%3A%2F%2Funion-click.jd.com%2Fjdc%3Fe%3D16282%26p%3DAyIGZRhfEQcaBFQYXBcyEgZUGF8UBREOUBNeFgciQwpDBUoyS0IQWhkeHAxcDUQNQlZNGA5OREdcThkNXg9JHUtCCUZVV1hWC1UaWhYGEwBWEl4dBxECQltXYXtiYiJCKFF1EH8GbyhcQmYFNUM%252FdmpUcSdBPncDekE2UCt8ZUhzHG8pFGVwTjFbOHdYQWVUbx1hYHlwIXhbQnV7YwViOEBFZgU9Qz9PclRkN3w4QQFueSVEI0V2WwcReyltUmUGNRw4F2J1ZAxsB2NgZXchQihWdntjNnsobkJmfi18IHZ5UXBXez5iWxJDIm8vAQBnN1FAKG9JTFcvfkVzWxtAK1ldblsWQRMXVyUFFwBTElIQBiIHUhhSFjIQD1EYXhcDETdVGmtUbBIGURJbEQQbN1QrWxICFwFSHVISAhADVitbHQUi08Cwg56VQEYXwuuw1LipZStrFjISAFYSWCUyEgRlGGtLbBNUVUtSFwoTaQ9GHkYAQU8cdVsVBRACUh1SFzIQBlQZWQ%253D%253D&EA_PTAG=17078.27.503'
           }
         },
       ]
