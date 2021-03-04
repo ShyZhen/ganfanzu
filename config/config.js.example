@@ -7,6 +7,8 @@ const env = {
         'appkey': '',
         'appSecret': ''
     }
+    ganFanApi : 'https://xxx',
+
 }
 
 export default env

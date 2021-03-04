@@ -14,85 +14,73 @@
 
     <!--  内容  -->
     <view class="coupon" ref="coupon">
-      <view class="item" v-for="(v, i) in couponList" @click="toCoupon(i)" :key="i">
+      <view class="item" v-for="(v, i) in couponList" @click="toCoupon(v)" :key="i">
         <view class="top">
           <view class="left">
             <view class="content">
-              <image :src="v.icon" class="icon" mode="widthFix" lazy-load @load="onoff='1'" />
-              <view class="name">{{ v.name }}</view>
+              <view class="name">{{ v.title }}</view>
+              <view>{{ v.seller_name }}</view>
+              <view>{{ v.item_price }}</view>
+              <view>{{ v.item_final_price }}</view>
             </view>
           </view>
         </view>
-        <view class="bottom"><image :src="v.bannerPic" class="banner-image" mode="widthFix" lazy-load @load="onoff='1'" /></view>
+        <view class="bottom"><image :src="v.picture" class="banner-image" mode="widthFix" lazy-load @load="onoff='1'" /></view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-import { getShareObj } from "@/common/share.js";
+import { getShareObj } from "@/common/share.js"
+import { getProductList, getDetailLink, getCustomProduct } from "@/apis/ganfan.js"
 
 export default {
   data() {
     return {
       current: 0,
       tabs: [
+        // {
+        //   text: '全部',
+        //   tabId: 0,
+        // },
         {
-          text: '全部',
-          tabId: 0,
-        },
-        {
-          text: '京东',
+          text: '下饭必备',
           tabId: 1,
         },
         {
-          text: '拼多多',
+          text: '京东',
           tabId: 2,
         },
         {
-          text: '天猫',
+          text: '拼多多',
           tabId: 3,
-        },
-        {
-          text: '苏宁',
-          tabId: 4,
         },
       ],
       couponList: [],
       coupons: [
-        {
-          name: '京东商城好货优选',
-          icon: '/static/coupon/jd.png',
-          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
-          url: 'https://u.jd.com/ieepxPu',
-          tabId: 1,
-          minapp: {
-            appid: 'wx91d27dbf599dff74',
-            path: 'pages/union/proxy/proxy?spreadUrl='+encodeURIComponent('https://u.jd.com/ieepxPu')
-          }
-        },
-        {
-          name: '京东商城好货优选2',
-          icon: '/static/coupon/jd.png',
-          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/141285/14/5884/46459/5f3e4447Ee1ad3a01/2c2bb44d1e2d8cf1.jpg',
-          url: 'https://u.jd.com/irePGfa',
-          tabId: 1,
-          minapp: {
-            appid: 'wx91d27dbf599dff74',
-            path: 'pages/union/proxy/proxy?spreadUrl=https%3A%2F%2Funion-click.jd.com%2Fjdc%3Fe%3D16282%26p%3DAyIGZRprFQMTBlUeUhQKFwNQKx9KWkxYZUIeUENQDEsFAE1dRFABREROVw1VC0dFTUdGW0pCHklfHEUPX1cVAxMGVR5SFAoXA1AMGxl2a3cwbCh2QmRuJUsvZnFSfyx%252FMmx2egEhRAJmdXFgF2wydWJldBMPWGJha1IsbD9%252BQnEFJX84TEtVcB14K25hZUYhciN8dktOCWMrfklGTiFBPmBmdWMMZAxiXUBnLGgOUHR7YzxgOwEAZxNXbmtycmZkAXhBRmIQdTRnAmBDVl4qbVlTDh43Uh5cEwsbAlErWxIBGwRlGVMRARMPUxhrFQMiUTsbWhQDEwZUG1kSMhM3VRxbEAQVAVQfXBAAETdVE1wl1oesjZDMR0NQ3uW%252Bjb%252BsIjdlGGsVBREOVitrFQEiBGVFNRRRElcGTA5AbEhaEEsHFkQWaVUbXBcCGgJSHGsXAxMFVw%253D%253D&EA_PTAG=17078.27.503'
-          }
-        },
-        {
-          name: '京东商城好货优选3',
-          icon: '/static/coupon/jd.png',
-          bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
-          url: 'https://u.jd.com/ieepxPu',
-          tabId: 1,
-          minapp: {
-            appid: 'wx91d27dbf599dff74',
-            path: 'pages/union/proxy/proxy?spreadUrl=https%3A%2F%2Funion-click.jd.com%2Fjdc%3Fe%3D16282%26p%3DAyIGZRhfEQcaBFQYXBcyEgZUGF8UBREOUBNeFgciQwpDBUoyS0IQWhkeHAxcDUQNQlZNGA5OREdcThkNXg9JHUtCCUZVV1hWC1UaWhYGEwBWEl4dBxECQltXYXtiYiJCKFF1EH8GbyhcQmYFNUM%252FdmpUcSdBPncDekE2UCt8ZUhzHG8pFGVwTjFbOHdYQWVUbx1hYHlwIXhbQnV7YwViOEBFZgU9Qz9PclRkN3w4QQFueSVEI0V2WwcReyltUmUGNRw4F2J1ZAxsB2NgZXchQihWdntjNnsobkJmfi18IHZ5UXBXez5iWxJDIm8vAQBnN1FAKG9JTFcvfkVzWxtAK1ldblsWQRMXVyUFFwBTElIQBiIHUhhSFjIQD1EYXhcDETdVGmtUbBIGURJbEQQbN1QrWxICFwFSHVISAhADVitbHQUi08Cwg56VQEYXwuuw1LipZStrFjISAFYSWCUyEgRlGGtLbBNUVUtSFwoTaQ9GHkYAQU8cdVsVBRACUh1SFzIQBlQZWQ%253D%253D&EA_PTAG=17078.27.503'
-          }
-        },
+        // {
+        //   name: '卫龙魔芋爽',
+        //   icon: '/static/coupon/jd.png',
+        //   bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
+        //   url: 'https://u.jd.com/iVho5ul',
+        //   tabId: 1,
+        //   minapp: {
+        //     appid: 'wx91d27dbf599dff74',
+        //     path: 'pages/union/proxy/proxy?spreadUrl='+encodeURIComponent('https://u.jd.com/iVho5ul')
+        //   }
+        // },
+        // {
+        //   name: '京东商城好货优选3',
+        //   icon: '/static/coupon/jd.png',
+        //   bannerPic: 'https://img14.360buyimg.com/pop/jfs/t1/134472/33/18204/249614/5fc858a0E0d0693fd/a94107adafc766ab.jpg',
+        //   url: 'https://u.jd.com/ieepxPu',
+        //   tabId: 1,
+        //   minapp: {
+        //     appid: 'wx91d27dbf599dff74',
+        //     path: 'pages/union/proxy/proxy?spreadUrl=https%3A%2F%2Funion-click.jd.com%2Fjdc%3Fe%3D16282%26p%3DAyIGZRhfEQcaBFQYXBcyEgZUGF8UBREOUBNeFgciQwpDBUoyS0IQWhkeHAxcDUQNQlZNGA5OREdcThkNXg9JHUtCCUZVV1hWC1UaWhYGEwBWEl4dBxECQltXYXtiYiJCKFF1EH8GbyhcQmYFNUM%252FdmpUcSdBPncDekE2UCt8ZUhzHG8pFGVwTjFbOHdYQWVUbx1hYHlwIXhbQnV7YwViOEBFZgU9Qz9PclRkN3w4QQFueSVEI0V2WwcReyltUmUGNRw4F2J1ZAxsB2NgZXchQihWdntjNnsobkJmfi18IHZ5UXBXez5iWxJDIm8vAQBnN1FAKG9JTFcvfkVzWxtAK1ldblsWQRMXVyUFFwBTElIQBiIHUhhSFjIQD1EYXhcDETdVGmtUbBIGURJbEQQbN1QrWxICFwFSHVISAhADVitbHQUi08Cwg56VQEYXwuuw1LipZStrFjISAFYSWCUyEgRlGGtLbBNUVUtSFwoTaQ9GHkYAQU8cdVsVBRACUh1SFzIQBlQZWQ%253D%253D&EA_PTAG=17078.27.503'
+        //   }
+        // },
       ]
     };
   },
@@ -115,47 +103,47 @@ export default {
   },
   methods: {
     changeTab(index) {
-      console.log('当前选中的项：' + index);
       this.couponList = []
-      uni.showLoading({
-        title: '获取优惠中'
-      });
-      if(index == 0){
-        this.couponList = this.coupons
-      }else{
-        for(let i in this.coupons){
-          if(this.coupons[i].tabId == this.tabs[index].tabId){
-            this.couponList.push(this.coupons[i])
-          }
-        }
+      this.$loading('拼命拉取中...')
+
+      switch (index) {
+        case 0:
+          getCustomProduct().then(res => {
+            this.couponList = (this.handleData(res.data, true))
+            this.$loading(false)
+          })
+          break
+        case 1:
+          getProductList({'platform': 'jd'}).then(res => {
+            this.couponList = (this.handleData(res.data))
+            this.$loading(false)
+          })
+          break
+        case 2:
+          getProductList({'platform': 'pdd'}).then(res => {
+            this.couponList = (this.handleData(res.data))
+            this.$loading(false)
+          })
+          break
       }
+
       //#ifdef H5
       this.$nextTick(() => {
         this.$refs.coupon.scrollTop= 0;
       })
       //#endif
-      setTimeout(() => {
-        uni.hideLoading()
-      }, 500)
     },
-    toCoupon(i){
-      console.log(this.couponList[i])
-      //h5
-      //#ifdef H5
-      window.location.href = this.couponList[i].url
-      //#endif
-      //微信小程序
-      //#ifdef MP-WEIXIN
-      if(this.couponList[i].minapp){
-        wx.navigateToMiniProgram({
-          appId: this.couponList[i].minapp.appid,
-          path: this.couponList[i].minapp.path,
-          success(res) {
-            // 打开成功
-          }
+    toCoupon(item){
+      if (item.custom === 1) {
+        this.goMPwexin(item)
+        this.$loading(false)
+      } else {
+        this.$loading('拼命加载中...')
+        getDetailLink({'item_url':item.item_url}).then(res => {
+          this.goMPwexin(res.data)
+          this.$loading(false)
         })
       }
-      //#endif
     },
     xiaoMai() {
       let messages = [{
@@ -174,6 +162,57 @@ export default {
 
       let message = messages[Math.floor(Math.random()*messages.length)]['toast'];
       this.$toast(message)
+    },
+    // 处理数据格式，区分自定义以及接口api返回
+    handleData(data, isCustom = false) {
+      let formatData = []
+      if (isCustom) {
+        data.forEach(item => {
+          let obj = {}
+          obj.custom = 1
+          obj.title = item.product_title
+          obj.picture = item.product_main_picture
+          obj.seller_name = item.seller_name
+          obj.item_url = item.item_url
+          obj.item_price = item.product_original_price               // 原价
+          obj.item_final_price = item.product_coupon_after_price     // 卷后价格
+
+          // 以下为自定义产品直接带有的信息，非自定义的需要去调用getLink接口拿
+          obj.short_url = item.short_url
+          obj.wx_appid = item.wx_appid
+          obj.wx_path = item.wx_path
+
+          formatData.push(obj)
+        })
+      } else {
+        data.forEach(item => {
+          let obj = {}
+          obj.custom = 0
+          obj.title = item.item_title
+          obj.picture = item.item_picture
+          obj.seller_name = item.seller_name
+          obj.item_url = item.item_url
+          obj.item_price = item.item_price               // 原价
+          obj.item_final_price = item.item_final_price   // 卷后价格
+
+          formatData.push(obj)
+        })
+      }
+      return formatData
+    },
+    goMPwexin(item) {
+      //#ifdef H5
+      window.location.href = item.short_url
+      //#endif
+      //微信小程序
+      //#ifdef MP-WEIXIN
+      wx.navigateToMiniProgram({
+        appId: item.wx_appid,
+        path: item.wx_path,
+        success(res) {
+        }
+      })
+      //#endif
     }
   },
 
