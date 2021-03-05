@@ -1,11 +1,11 @@
 <template>
-  <view class="container">
+  <view class="container" :style="{opacity:pageOpacity}">
 
     <!--  header  -->
     <view class="header-container">
       <view class="header">
         <view class="logo-img">
-          <image src="/static/logo.jpg" mode="widthFix" lazy-load @load="onoff='1'" :style="{opacity:logoOpacity}"/>
+          <image src="/static/logo.jpg" mode="widthFix" lazy-load @load="onoff='1'" />
         </view>
       </view>
       <view class="title">
@@ -34,11 +34,11 @@ import { getShareObj } from "@/common/share.js";
 export default {
   data() {
     return {
-      logoOpacity: 0
+      pageOpacity: 0
     };
   },
   onReady(e) {
-    this.logoOpacity = 1
+    this.pageOpacity = 1
   },
   onShareAppMessage(res) {
     return getShareObj()
@@ -51,6 +51,7 @@ page {
   background-color: #fff;
 }
 .container {
+  transition: all 0.5s linear;
   padding: 0 32rpx;
   font-size: 14px;
   line-height: 24px;
@@ -65,7 +66,6 @@ page {
           width: 68px;
           height: 68px;
           border-radius: 50%;
-          transition: all 0.5s linear;
         }
       }
     }

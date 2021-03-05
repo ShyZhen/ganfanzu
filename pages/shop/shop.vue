@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="container" :style="{opacity:pageOpacity}">
     <!--  header  -->
     <view class="header-container">
       <view class="header">
@@ -38,6 +38,7 @@ import { getProductList, getDetailLink, getCustomProduct } from "@/apis/ganfan.j
 export default {
   data() {
     return {
+      pageOpacity: 0,
       current: 0,
       tabs: [
         // {
@@ -74,6 +75,9 @@ export default {
       }
     }
     this.changeTab(this.current)
+  },
+  onReady(e) {
+    this.pageOpacity = 1
   },
   onShareAppMessage(res) {
     return getShareObj()
@@ -231,6 +235,7 @@ page {
 }
 
 .container {
+  transition: all 0.5s linear;
   font-size: 14px;
   line-height: 24px;
   position: relative;

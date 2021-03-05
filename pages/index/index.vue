@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="container" :style="{opacity:pageOpacity}">
     <!--  关注  -->
     <!-- #ifdef MP-WEIXIN -->
     <aTip isCustom="true" bgColor="#31313194" borderR="5"></aTip>
@@ -50,7 +50,8 @@ import { getShareObj } from "@/common/share.js";
 export default {
 	data() {
 		return {
-			current: 0,
+      pageOpacity: 0,
+      current: 0,
 			couponList: [],
 			coupons: [
 				{
@@ -84,6 +85,9 @@ export default {
 	onLoad(e) {
 		this.changeTab()
 	},
+  onReady(e) {
+    this.pageOpacity = 1
+  },
 	onShareAppMessage(res) {
     return getShareObj()
 	},
@@ -164,7 +168,8 @@ page {
 }
 
 .container {
-	font-size: 14px;
+  transition: all 0.5s linear;
+  font-size: 14px;
 	line-height: 24px;
 	position: relative;
 	.tab {
