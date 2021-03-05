@@ -19,11 +19,11 @@
           <view class="image-view">
             <image v-if="renderImage" class="uni-product-image" :src="v.picture"></image>
           </view>
+          <view class="uni-product-tip">{{v.seller_name}}</view>
           <view class="uni-product-title">{{v.title}}</view>
           <view class="uni-product-price">
             <text class="uni-product-price-favour">￥{{v.item_price}}</text>
             <text class="uni-product-price-original">￥{{v.item_final_price}}</text>
-            <text class="uni-product-tip">{{v.seller_name}}</text>
           </view>
         </view>
       </view>
@@ -289,13 +289,13 @@ page {
       text-overflow: ellipsis;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      font-size: .14rem;
+      font-size: 12px;
       word-break: break-all;
     }
 
     .uni-product-price {
       margin-top: 10rpx;
-      font-size: 28rpx;
+      font-size: 13px;
       line-height: 1.5;
       position: relative;
     }
@@ -311,12 +311,15 @@ page {
     }
 
     .uni-product-tip {
-      position: absolute;
-      right: 10rpx;
+      max-width: max-content;
+      width: 300rpx;
       background-color: #ff3333;
       color: #ffffff;
       padding: 0 10rpx;
       border-radius: 5rpx;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 }
