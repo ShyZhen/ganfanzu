@@ -16,10 +16,10 @@
  3. 后端接口api全部在`apis/ganfan.js`中，可以依照自己的实际情况修改
 
  ### 线上微信小程序地址
- [小程序码](/tmp/mp-weixin.jpg)
- [首页](/tmp/index.jpg)
- [推荐页](/tmp/shop.jpg)
- [关于页](/tmp/about.jpg)
+ ![img](/tmp/mp-weixin.jpg)
+ ![首页](/tmp/index.jpg)
+ ![推荐页](/tmp/shop.jpg)
+ ![关于页](/tmp/about.jpg)
  
  ### Future
  - 推荐列表导航下拉固定状态栏，添加状态栏高度获取等逻辑
