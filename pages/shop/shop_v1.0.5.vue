@@ -14,22 +14,38 @@
 
     <!--  内容  -->
     <view class="coupon" ref="coupon">
-      <view class="uni-product-list">
-        <view class="uni-product" v-for="(v, i) in couponList" @click="toCoupon(v)" :key="i">
-          <view class="image-view">
-            <image v-if="renderImage" class="uni-product-image" :src="v.picture"></image>
+
+      <view class="item" v-for="(v, i) in couponList" @click="toCoupon(v)" :key="i">
+        <view class="detail">
+          <view class="left">
+            <image :src="v.picture" class="lazy-image" mode="widthFix" lazy-load @load="onoff='1'" />
           </view>
-          <view class="uni-product-title">{{v.title}}</view>
-          <view class="uni-product-price">
-            <text class="uni-product-price-favour">￥{{v.item_price}}</text>
-            <text class="uni-product-price-original">￥{{v.item_final_price}}</text>
-            <text class="uni-product-tip">{{v.seller_name}}</text>
+          <view class="right">
+            <view>
+              <view class="detail-title">
+                <view class="detail-title-content">
+                  {{ v.title }}
+                </view>
+              </view>
+            </view>
+            <view>
+              <view class="right-seller">
+                <view class="right-seller-title">
+                  {{ v.seller_name }}
+                </view>
+              </view>
+              <view class="price">
+                <view class="price-after">
+                  羊{{ v.item_final_price }}
+                </view>
+                <view class="price-origin">
+                  羊{{ v.item_price }}
+                </view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
-
-
-
     </view>
   </view>
 </template>
@@ -62,8 +78,7 @@ export default {
         },
       ],
       couponList: [],
-      coupons: [],
-      renderImage: true
+      coupons: []
     };
   },
   onLoad(e) {
@@ -250,74 +265,121 @@ page {
     z-index: 9999;
   }
 
-  // 商品列表
   .coupon {
-    view {
-      font-size: 26rpx;
-    }
+    margin: .08rem 0;
+    line-height: normal;
+    .item {
+      background:#fff;
+      padding-top:.06rem;
+      padding-bottom:0;
+      .detail {
+        .left {
+          image {
+          }
+          .lazy-image {
+          }
+        }
+        .left:after {
+        };
 
-    .uni-product-list {
-      display: flex;
-      width: 100%;
-      flex-wrap: wrap;
-      flex-direction: row;
-    }
+        .right {
+          .detail-title {
+            .detail-title-content {
+            }
+          }
+          .right-seller {
+            .right-seller-title {
+            }
+          }
+          .price {
+            .price-after {
 
-    .uni-product {
-      padding: 20rpx;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .image-view {
-      height: 330rpx;
-      width: 330rpx;
-      margin: 12rpx 0;
-    }
-
-    .uni-product-image {
-      height: 330rpx;
-      width: 330rpx;
-    }
-
-    .uni-product-title {
-      width: 300rpx;
-      word-break: break-all;
-      display: -webkit-box;
-      overflow: hidden;
-      line-height: 1.5;
-      text-overflow: ellipsis;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      font-size: .14rem;
-      word-break: break-all;
-    }
-
-    .uni-product-price {
-      margin-top: 10rpx;
-      font-size: 28rpx;
-      line-height: 1.5;
-      position: relative;
-    }
-
-    .uni-product-price-original {
-      color: #e80080;
-    }
-
-    .uni-product-price-favour {
-      color: #888888;
-      text-decoration: line-through;
-      margin-left: 10rpx;
-    }
-
-    .uni-product-tip {
-      position: absolute;
-      right: 10rpx;
-      background-color: #ff3333;
-      color: #ffffff;
-      padding: 0 10rpx;
-      border-radius: 5rpx;
+            }
+            .price-origin {
+             
+            }
+          }
+        }
+      }
     }
   }
+
+  /*
+  .coupon {
+    // padding-top: 200rpx;
+    .item {
+      background-color: #ffffff;
+      margin: 30rpx;
+      border-radius: 10rpx;
+      padding: 0 30rpx 30rpx 30rpx;
+      //.top {
+      //  height: 116rpx;
+      //  display: flex;
+      //  align-items: center;
+      //  justify-content: space-between;
+      //  .left {
+      //    height: 116rpx;
+      //    width: 400rpx;
+      //    display: flex;
+      //    align-items: center;
+      //    justify-content: space-between;
+      //    .content {
+      //      width: 100%;
+      //    }
+      //    .icon {
+      //      display: inline-block;
+      //      vertical-align: bottom;
+      //      width: 44rpx;
+      //      height: auto;
+      //    }
+      //    .name {
+      //      text-align: left;
+      //      display: inline-block;
+      //      vertical-align: bottom;
+      //      font-size: 34rpx;
+      //      color: #000;
+      //      line-height: 50rpx;
+      //      font-weight: bold;
+      //      margin-left: 15rpx;
+      //    }
+      //    .text {
+      //      width: 150rpx;
+      //      height: 38rpx;
+      //      line-height: 38rpx;
+      //      text-align: center;
+      //      font-size: 24rpx;
+      //      color: #61300e;
+      //      background: linear-gradient(90deg, #f9db8d, #f8d98a);
+      //      border-radius: 6rpx;
+      //    }
+      //  }
+      //
+      //  .right {
+      //    width: 170rpx;
+      //    height: 60rpx;
+      //    border-radius: 30rpx;
+      //    background: linear-gradient(90deg, #4c4c4c, #988787);
+      //    color: #e6d874;
+      //    font-size: 28rpx;
+      //    line-height: 60rpx;
+      //    text-align: center;
+      //  }
+      //}
+
+      //.bottom {
+      //  height: auto;
+      //  width: 100%;
+      //  image {
+      //    display: block;
+      //    width: 100%;
+      //    height: auto;
+      //  }
+      //}
+      .banner-image {
+        border-radius: 8rpx;
+      }
+    }
+  }
+   */
 }
 </style>
