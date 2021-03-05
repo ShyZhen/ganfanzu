@@ -18,9 +18,9 @@
  ### 线上微信小程序地址
  ![img](/tmp/mp-weixin.jpg)
  ### 示例图
- <img src="/tmp/index.jpg" width="50%">
- <img src="/tmp/shop.jpg" width="50%">
- <img src="/tmp/about.jpg" width="50%">
+ <img src="/tmp/index.jpg" width="30%">
+ <img src="/tmp/shop.jpg" width="30%">
+ <img src="/tmp/about.jpg" width="30%">
  
  ### Future
  - 推荐列表导航下拉固定状态栏，添加状态栏高度获取等逻辑
