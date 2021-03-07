@@ -57,7 +57,7 @@ export default {
 				{
 					name: '饿了么每日红包',
 					icon: '/static/coupon/ele.png',
-					bannerPic: '/static/coupon/elm.jpg',
+					bannerPic: '/static/coupon/elmZX.jpg',
 					url: 'https://s.click.ele.me/quDa1ru',
 					type: 1,
 					minapp: {
@@ -65,6 +65,28 @@ export default {
 						path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
 					}
 				},
+				{
+					name: '饿了么吃货联盟红包',
+					icon: '/static/coupon/ele.png',
+					bannerPic: '/static/coupon/elmCH.jpg',
+					url: 'https://s.click.ele.me/quDa1ru',
+					type: 1,
+					minapp: {
+						appid: 'wxece3a9a4c82f58c9',
+						path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
+					}
+				},
+                {
+                    name: '饿了么果蔬商超红包',
+                    icon: '/static/coupon/ele.png',
+                    bannerPic: '/static/coupon/elmCS.jpg',
+                    url: 'https://s.click.ele.me/quDa1ru',
+                    type: 1,
+                    minapp: {
+                        appid: 'wxece3a9a4c82f58c9',
+                        path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
+                    }
+                },
 				{
 					name: '美团外卖每日红包',
 					icon: '/static/coupon/meituan.png',

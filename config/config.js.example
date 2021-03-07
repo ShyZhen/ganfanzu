@@ -6,7 +6,7 @@ const env = {
         'host': 'https://open.duomai.com/apis',
         'appkey': '',
         'appSecret': ''
-    }
+    },
     ganFanApi : 'https://xxx',
 
 }
