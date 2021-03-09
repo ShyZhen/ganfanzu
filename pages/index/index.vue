@@ -61,9 +61,9 @@ export default {
       couponList: [],
       coupons: [
         {
-          name: '饿了么每日红包',
+          name: '饿了么每日专享红包',
           icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmZX.jpg',
+          bannerPic: '/static/coupon/elmZX.png',
           url: 'https://s.click.ele.me/quDa1ru',
           type: 1,
           minapp: {
@@ -74,7 +74,7 @@ export default {
         {
           name: '饿了么吃货联盟红包',
           icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmCH.jpg',
+          bannerPic: '/static/coupon/elmCHLM.png',
           url: 'https://s.click.ele.me/GyR1jqu',
           type: 1,
           minapp: {
@@ -85,7 +85,7 @@ export default {
         {
           name: '饿了么果蔬商超红包',
           icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmCS.jpg',
+          bannerPic: '/static/coupon/elmCS2.png',
           url: 'https://s.click.ele.me/wUZhiqu',
           type: 1,
           minapp: {
@@ -96,7 +96,7 @@ export default {
         {
           name: '美团外卖每日红包',
           icon: couponsConfig.mtIcon,
-          bannerPic: '/static/coupon/meituan.jpg',
+          bannerPic: '/static/coupon/mtHB.png',
           url:'https://c.mktdatatech.com/track.php?site_id=448253&aid=4882&euid=&t=http%3A%2F%2Ffxno-act.meituan.com&dm_fid=16052',
           type: 1,
           minapp: {
