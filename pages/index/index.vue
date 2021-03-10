@@ -239,7 +239,7 @@ page {
             vertical-align: bottom;
             font-size: 34rpx;
             color: #000;
-            line-height: 23px;
+            line-height: 22px;
             font-weight: bold;
             margin-left: 15rpx;
           }
@@ -256,14 +256,15 @@ page {
         }
 
         .right {
-          width: 170rpx;
-          height: 46rpx;
+          width: 150rpx;
+          height: 22px;
           border-radius: 30rpx;
-          background: linear-gradient(90deg, #4c4c4c, #988787);
-          color: #e6d874;
+          background: linear-gradient(135deg, #f6704f, #f14116);
+          color: #fdfdfd;
           font-size: 24rpx;
-          line-height: 44rpx;
+          line-height: 22px;
           text-align: center;
+          margin-top: 3px;
         }
       }
 
