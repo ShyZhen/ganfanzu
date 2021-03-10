@@ -2,7 +2,7 @@
   <view class="container" :style="{opacity:pageOpacity}">
     <!--  关注  -->
     <!-- #ifdef MP-WEIXIN -->
-    <aTip isCustom="true" bgColor="#31313194" borderR="5"></aTip>
+    <aTip ref="tipnotice" isCustom="true" bgColor="#31313194" borderR="5"></aTip>
     <!-- #endif -->
 
     <!--  header  -->
@@ -155,7 +155,11 @@ export default {
       //#endif
     },
     followNotice() {
-      this.changeTab()
+      if (uni.getStorageSync("ganfanzu_collect_key_2021")) {
+        this.changeTab()
+      } else {
+        this.$refs.tipnotice.init()
+      }
     }
   }
 };

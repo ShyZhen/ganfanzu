@@ -85,7 +85,7 @@ export default {
     /* 延时出现 */
     delay: {
       type: Number,
-      default: 1000,
+      default: 0,
     },
     /* 关闭btn黑白两色 或者自行添加 */
     closeColor: {
@@ -140,7 +140,8 @@ export default {
     },
   },
   onReady() {
-    this.init();
+    // 不再自动展示
+    // this.init();
   },
 };
 </script>
