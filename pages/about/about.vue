@@ -10,7 +10,7 @@
       </view>
       <view class="title">
         <p>干饭组</p>
-        <p>Version1.0.2</p>
+        <p>Version1.0.3</p>
       </view>
     </view>
 
