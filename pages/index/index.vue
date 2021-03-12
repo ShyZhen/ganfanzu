@@ -2,7 +2,7 @@
   <view class="container" :style="{opacity:pageOpacity}">
     <!--  关注  -->
     <!-- #ifdef MP-WEIXIN -->
-    <aTip ref="tipnotice" isCustom="true" bgColor="#31313194" borderR="5"></aTip>
+    <aTip ref="tipNotice" isCustom="true" bgColor="#31313194" borderR="5"></aTip>
     <!-- #endif -->
 
     <!--  header  -->
@@ -165,7 +165,7 @@ export default {
       if (uni.getStorageSync(this.noticeKey)) {
         this.changeTab()
       } else {
-        this.$refs.tipnotice.init()
+        this.$refs.tipNotice.init()
       }
     }
   }
