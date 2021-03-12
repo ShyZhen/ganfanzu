@@ -6,27 +6,34 @@
             position: fixed;
             z-index: 1;
             bottom: 40px;
-            right: 20rpx;">
+            right: 30rpx;">
           <image @click="location" src="../../static/icon/my-location.png" style="width: 25px;height: 25px;opacity: 0.7" />
         </view>
       </view>
-      <map
-          id="map"
-          ref="map"
-          :style="'width: ' + width + '; height: ' + height + ';'"
-          :subkey="subkey"
-          :longitude="map.longitude"
-          :latitude="map.latitude"
-          :scale="map.scale"
-          :markers="markers"
-          :include-points="markers"
-          :polyline="polyline"
-          @markertap="handle"
-          @callouttap="handle"
-          @regionchange="regionChange"
-          show-location="true"
-          enable-indoorMap="true">
-      </map>
+      <view class="map" :style="{opacity:mapOpacity}">
+        <map
+            id="map"
+            ref="map"
+            :style="'width: ' + width + '; height: ' + height + ';'"
+            :subkey="subkey"
+            :longitude="map.longitude"
+            :latitude="map.latitude"
+            :scale="map.scale"
+            :markers="markers"
+            :include-points="markers"
+            :polyline="polyline"
+            @markertap="handle"
+            @callouttap="handle"
+            @regionchange="regionChange"
+            @updated="finish"
+            show-location="true"
+            enable-indoorMap="true">
+        </map>
+      </view>
+      <view class="hello" :style="{opacity:helloOpacity}">
+        <p>今天不吃外卖</p>
+        <p>我们改善生活</p>
+      </view>
     </view>
   </view>
 </template>
@@ -41,6 +48,8 @@ export default {
   data() {
     return {
       pageOpacity: 0,
+      mapOpacity: 0,
+      helloOpacity: 0,
       subkey: Config.subkey,
       height: '500px',
       width: '500px',
@@ -71,11 +80,20 @@ export default {
   },
   onReady(e) {
     this.pageOpacity = 1
+    this.helloOpacity = 1
   },
   onShareAppMessage(res) {
     return getShareObj()
   },
   methods: {
+    finish() {
+      setTimeout(() => {
+        this.helloOpacity = 0
+        setTimeout(() => {
+          this.mapOpacity = 1
+        }, 2000);
+      }, 1000);
+    },
     /**
      * 当前定位，获取周边关键字
      * @param e
@@ -230,5 +248,21 @@ page {
   font-size: 14px;
   line-height: 24px;
   position: relative;
+}
+.map {
+  transition: all 0.5s linear;
+}
+.hello {
+  position: absolute;
+  color: #F46845;
+  font-size: 20px;
+  transition: all 1s linear;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>

@@ -10,7 +10,7 @@
 		"path": "pages/find/find",
 		"style" : {
 			"navigationStyle": "custom",
-			"navigationBarTitleText": "地图找店"
+			"navigationBarTitleText": "改善生活"
 		}
 	},{
 		"path": "pages/shop/shop",
