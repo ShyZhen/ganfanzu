@@ -256,7 +256,7 @@ page {
   position: absolute;
   color: #F46845;
   font-size: 20px;
-  transition: all 1s linear;
+  transition: all 1.5s linear;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
