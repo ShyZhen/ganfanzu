@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import Config from "../../config/config.js"
+
 export default {
   data() {
     return {
@@ -48,6 +50,7 @@ export default {
       arrowMargin: 0,
       cotainerMargin: 0,
       screenWidth: 0,
+      noticeKey: Config.noticeKey + Config.version
     };
   },
   props: {
@@ -109,7 +112,7 @@ export default {
         confirmText: '本次',
         success: function (res) {
           if (res.cancel) {
-            uni.setStorageSync("ganfanzu_collect_key_2021", "true");
+            uni.setStorageSync(that.noticeKey, "true");
           }
         },
         complete: function(res) {
@@ -129,7 +132,7 @@ export default {
       }, this.delay);
     },
     init() {
-      if (uni.getStorageSync("ganfanzu_collect_key_2021")) return;
+      if (uni.getStorageSync(this.noticeKey)) return;
 
       let rect = uni.getMenuButtonBoundingClientRect();
       let screenWidth = uni.getSystemInfoSync().screenWidth;

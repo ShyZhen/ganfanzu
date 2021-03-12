@@ -1,13 +1,28 @@
 import request from './base/request';
 
 /**
- * 产品列表
- * @param data {platform,query,page}
+ * 默认固定产品列表
+ * @param data {platform,page}
  * @returns {Promise<unknown>}
  */
 function getProductList(data) {
     return new Promise((resolve, reject) => {
         request.request('POST', '?module=api&controller=Index&action=getList', data).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
+/**
+ * 搜索产品列表
+ * @param data {platform,page,query}
+ * @returns {Promise<unknown>}
+ */
+function getQueryList(data) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', '?module=api&controller=Index&action=getQueryList', data).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -42,5 +57,5 @@ function getCustomProduct() {
 
 
 export {
-    getProductList, getDetailLink, getCustomProduct
+    getProductList, getDetailLink, getCustomProduct, getQueryList
 }

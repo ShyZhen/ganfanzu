@@ -46,6 +46,7 @@
 <script>
 import aTip from "@/components/a_tip/aTip";
 import { getShareObj } from "@/common/share.js";
+import Config from "../../config/config";
 
 export default {
   data() {
@@ -56,6 +57,7 @@ export default {
       mtMpAppId: 'wxde8ac0a21135c07d',
     }
     return {
+      noticeKey: Config.noticeKey + Config.version,
       pageOpacity: 0,
       current: 0,
       couponList: [],
@@ -136,7 +138,9 @@ export default {
       }, 500)
     },
     toCoupon(i) {
-      console.log(this.couponList[i])
+      let that = this
+      this.$loading('拼命拉取中...')
+
       //h5
       //#ifdef H5
       window.location.href = this.couponList[i].url
@@ -149,13 +153,16 @@ export default {
           path: this.couponList[i].minapp.path,
           success(res) {
             // 打开成功
+          },
+          complete() {
+            that.$loading(false)
           }
         })
       }
       //#endif
     },
     followNotice() {
-      if (uni.getStorageSync("ganfanzu_collect_key_2021")) {
+      if (uni.getStorageSync(this.noticeKey)) {
         this.changeTab()
       } else {
         this.$refs.tipnotice.init()

@@ -1,14 +1,12 @@
 const env = {
     // 是否开启debug
     debug: true,
-    // 多麦
-    duomai : {
-        'host': 'https://open.duomai.com/apis',
-        'appkey': '',
-        'appSecret': ''
-    },
-    ganFanApi : 'https://xxx',
 
+    noticeKey: 'ganfanzu_collect_key_2021',
+
+    version: 'Version 1.0.0',
+
+    ganFanApi : 'https://xxx',
 }
 
 export default env

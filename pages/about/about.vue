@@ -10,7 +10,7 @@
       </view>
       <view class="title">
         <p>干饭组</p>
-        <p>Version1.0.3</p>
+        <p>{{ version }}</p>
       </view>
     </view>
 
@@ -30,11 +30,13 @@
 
 <script>
 import { getShareObj } from "@/common/share.js";
+import Config from "../../config/config";
 
 export default {
   data() {
     return {
-      pageOpacity: 0
+      pageOpacity: 0,
+      version: Config.version
     };
   },
   onReady(e) {

@@ -45,6 +45,11 @@
         "appid" : "wxf6d3a6785014c8ad",
         "setting" : {
             "urlCheck" : true
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "您的位置信息将用于小程序位置接口的展示"
+            }
         }
     },
     "h5" : {
