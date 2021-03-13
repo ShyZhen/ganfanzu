@@ -2,33 +2,63 @@
   <view class="container" :style="{opacity:pageOpacity}">
     <view>
       <view>
-        <view style="
-            position: fixed;
-            z-index: 1;
-            bottom: 40px;
-            right: 30rpx;">
-          <image @click="location" src="../../static/icon/my-location.png" style="width: 25px;height: 25px;opacity: 0.7" />
+        <view class="location-icon">
+          <image @click="location()" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
         <map
-            id="map"
-            ref="map"
-            :style="'width: ' + width + '; height: ' + height + ';'"
-            :subkey="subkey"
-            :longitude="map.longitude"
-            :latitude="map.latitude"
-            :scale="map.scale"
-            :markers="markers"
-            :include-points="markers"
-            :polyline="polyline"
-            @markertap="handle"
-            @callouttap="handle"
-            @regionchange="regionChange"
-            @updated="finish"
-            show-location="true"
-            enable-indoorMap="true">
+                id="map"
+                ref="map"
+                :style="'width: ' + width + '; height: ' + height + ';'"
+                :subkey="subkey"
+                :longitude="map.longitude"
+                :latitude="map.latitude"
+                :scale="map.scale"
+                :markers="markers"
+                :include-points="markers"
+                :polyline="polyline"
+                @markertap="handle"
+                @callouttap="handle"
+                @regionchange="regionChange"
+                @updated="finish"
+                show-location="true"
+                enable-indoorMap="true">
         </map>
+        <view class="search" :style="{top:searchInput.top,height:searchInput.height}">
+          <view class="search-input" :style="{width:searchInput.width}">
+            <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+            <input type="text" placeholder="请输入搜索关键字.." maxlength="32" confirm-type="search"
+                   v-model="searchInput.inputVal" @input="getsuggest" @confirm="location(searchInput.inputVal)">
+          </view>
+
+
+
+
+
+
+
+          <!--关键词输入提示列表渲染-->
+          <view>
+            <view v-for="(item, index) in suggestion" :key="index">
+              <!--绑定回填事件-->
+              <view>
+                <!--根据需求渲染相应数据-->
+                <!--渲染地址title-->
+                <view style="text-align:center;" @tap="backFill" :id=index>{{item.title}}</view>
+                <!--渲染详细地址-->
+                <!--<view style="font-size:12px;color:#666;text-align:center;">{{item.addr}}</view>-->
+              </view>
+            </view>
+          </view>
+
+
+
+
+
+
+
+        </view>
       </view>
       <view class="hello" :style="{opacity:helloOpacity}">
         <p>今天不吃外卖</p>
@@ -47,6 +77,12 @@ let map
 export default {
   data() {
     return {
+      searchInput: {
+        width: 0,
+        height: 0,
+        top: 0,
+        inputVal: ''
+      },
       pageOpacity: 0,
       mapOpacity: 0,
       helloOpacity: 0,
@@ -60,7 +96,8 @@ export default {
         latitude: 39.909,
         longitude: 116.39742,
       },
-      qqMapSdk: null
+      qqMapSdk: null,
+      suggestion: [],
     };
   },
   onLoad(e) {
@@ -71,6 +108,11 @@ export default {
       success: res => {
         this.height = res.windowHeight + 'px'
         this.width = res.windowWidth + 'px'
+
+        let rect = this.$menuButtonRect
+        this.searchInput.width = (res.windowWidth - rect.width) - 10  + 'px'
+        this.searchInput.height = rect.height + 'px'
+        this.searchInput.top = rect.top + 'px'
       }
     });
 
@@ -96,10 +138,9 @@ export default {
     },
     /**
      * 当前定位，获取周边关键字
-     * @param e
+     * @param query
      */
-    location() {
-      let query = '美食'
+    location(query = '美食') {
       let that = this
       uni.getLocation({
         type: 'gcj02',
@@ -120,6 +161,10 @@ export default {
         }
       });
     },
+    /**
+     * push master节点
+     * @param data
+     */
     pushMaster(data) {
       this.markers = [];
       for (let i = 0; i < data.data.length; i++) {
@@ -234,6 +279,60 @@ export default {
           },
         });
       })
+    },
+    /**
+     * 数据回填方法
+     * @param e
+     */
+    backFill(e) {
+      console.log('tap', e)
+      let id = e.currentTarget.id;
+      for (let i = 0; i < this.suggestion.length;i++) {
+        if (i == id) {
+          this.searchInput.inputVal = this.suggestion[i].title
+          this.location(this.searchInput.inputVal)
+        }
+      }
+    },
+    /**
+     * 触发关键词输入提示事件
+     * @param e
+     */
+    getsuggest(e) {
+      console.log(e)
+
+      if (!e.detail.value.trim()) {
+        return true
+      }
+      let that = this;
+      //调用关键词提示接口
+      this.qqmapsdk.getSuggestion({
+        //获取输入框值并设置keyword参数
+        keyword: e.detail.value.trim(),
+        location: that.map.latitude+','+that.map.longitude,
+        policy: 1,
+        success: function(res) {
+          let sug = [];
+          for (let i = 0; i < res.data.length; i++) {
+            sug.push({
+              title: res.data[i].title,
+              id: res.data[i].id,
+              addr: res.data[i].address,
+              city: res.data[i].city,
+              district: res.data[i].district,
+              latitude: res.data[i].location.lat,
+              longitude: res.data[i].location.lng
+            });
+          }
+          that.suggestion = sug
+        },
+        fail: function(error) {
+          console.error(error)
+        },
+        complete: function(res) {
+          console.log(res)
+        }
+      });
     }
   }
 };
@@ -248,6 +347,17 @@ page {
   font-size: 14px;
   line-height: 24px;
   position: relative;
+}
+.location-icon {
+  position: fixed;
+  z-index: 1;
+  bottom: 40px;
+  right: 30rpx;
+  image {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+  }
 }
 .map {
   transition: all 0.5s linear;
@@ -265,4 +375,26 @@ page {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+  .search {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    .search-input {
+      height: 100%;
+      border-radius: 20px;
+      background: #ffffffd6;
+      color: rgba(68, 66, 66, 0.63);
+      display: flex;
+      /* justify-content: center; */
+      align-items: center;
+      input {
+        padding-left: 30rpx;
+      }
+      image {
+        padding-left: 20rpx;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
 </style>
