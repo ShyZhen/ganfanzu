@@ -9,25 +9,33 @@
 				</view>
 			</view>
 		</view>
-
-		<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab"></v-tabs>
+		<view class="tabs">
+			<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab"></v-tabs>
+		</view>
 
 		<!--  内容  -->
 		<view class="coupon" ref="coupon">
-			<view class="uni-product-list" v-for="(tab, i) in tabs" v-show="tab.type === tabType">
-				<view class="uni-product" v-for="(v, i) in couponListInfo[tab.type].list" @click="toCoupon(v)" :key="i">
-					<view class="image-view">
-						<image v-if="renderImage" class="uni-product-image" :src="v.picture"></image>
-					</view>
-					<view class="uni-product-tip">{{v.seller_name}}</view>
-					<view class="uni-product-title">{{v.title}}</view>
-					<view class="uni-product-price">
-						<text v-if="v.item_price !==v.item_final_price" class="uni-product-price-favour">￥{{v.item_price}}</text>
-						<text class="uni-product-price-original">￥{{v.item_final_price}}</text>
+			<view v-for="(tab, i) in tabs" v-show="tab.type === tabType">
+				<view class="uni-product-list">
+					<view v-for="(v, k) in couponListInfo[tab.type].list" @click="toCoupon(v)" :key="k">
+						<view class="uni-product">
+							<view class="image-view">
+								<image v-if="renderImage" class="uni-product-image" :src="v.picture"></image>
+							</view>
+							<view class="uni-product-tip">{{v.seller_name}}</view>
+							<view class="uni-product-title">{{v.title}}</view>
+							<view class="uni-product-price">
+								<text v-if="v.item_price !==v.item_final_price" class="uni-product-price-favour">￥{{v.item_price}}</text>
+								<text class="uni-product-price-original">￥{{v.item_final_price}}</text>
+							</view>
+						</view>
 					</view>
 				</view>
+				<v-loading v-show="!couponListInfo[tab.type].canLoadMore" :type="1" ></v-loading>
 			</view>
 		</view>
+		
+		<v-loading v-show="isLoading"></v-loading>
 	</view>
 </template>
 
@@ -49,6 +57,7 @@
 	export default {
 		data() {
 			return {
+				isLoading: false,
 				pageOpacity: 0,
 				current: 0,
 				tabType: '',
@@ -67,11 +76,11 @@
 			//#ifdef H5
 			type = this.$route.query.type || DEFAULR_CHECKED_TYPE
 			//#endif
-			//#ifdef MP-WEIXIN
-			{
+			// //#ifdef MP-WEIXIN
+			({
 				type = DEFAULR_CHECKED_TYPE
-			} = e;
-			//#endif
+			} = e);
+			// //#endif
 
 			this.initTabs();
 			this.initCouponListInfo(this.tabs);
@@ -128,7 +137,7 @@
 					this.$set(this.couponListInfo, tab.type, {
 						list: [],
 						// 是否可以加载更多
-						canLoadMore: true,
+						canLoadMore: false,
 						// 加载第几页
 						page: 1,
 						// 页面容量
@@ -142,7 +151,7 @@
 			 **/
 			setChoosedTab(type) {
 				this.tabType = type;
-console.log(111111111111)
+
 				// 更新tabs组件的显示索引
 				this.tabs.forEach((tab, index) => {
 					if (tab.type === type) {
@@ -150,20 +159,18 @@ console.log(111111111111)
 					}
 				})
 			},
-			
-			getCustomProduct(page = 1) {
-				
-			},
 			/**
 			 * @description	获取产品列表
 			 * @param {String} platform 获取的平台
 			 * @param {Number} page 获取页数
 			 **/
 			getProductList(platform, page = 1) {
+				this.isLoading = true;
 				getProductList({
 					platform,
 					page
 				}).then(res => {
+					this.isLoading = false;
 					if (res.code !== ERR_OK) {
 						this.$toast(res.msg || '您的网络状态不太好哦~')
 						return
@@ -182,6 +189,7 @@ console.log(111111111111)
 						: couponListInfo.list.concat(handleList)
 					this.$loading(false)
 				}).catch(err => {
+					this.isLoading = false;s
 					this.$toast('您的网络状态不太好哦~')
 				})
 			},
@@ -202,16 +210,18 @@ console.log(111111111111)
 				switch (type) {
 					// 默认下饭必备
 					case DEFAULR_CHECKED_TYPE:
+						this.isLoading = true;
 						getCustomProduct().then(res => {
+							this.isLoading = false;
 							if (res.code !== ERR_OK) {
 								this.$toast(res.msg || '您的网络状态不太好哦~')
 								return
 							}
 							this.setChoosedTab(type);
 							this.couponListInfo[DEFAULR_CHECKED_TYPE].list = this.handleData(res.data, true)
-							console.log(`this.couponListInfo[type]--------->`, this.couponListInfo.custom.list)
 							this.$loading(false)
 						}).catch(err => {
+							this.isLoading = false;
 							this.$toast('您的网络状态不太好哦~')
 						})
 						break;
@@ -316,7 +326,14 @@ console.log(111111111111)
 	page {
 		background-color: #f8f8f8;
 	}
-
+	.tabs{
+		position: sticky;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 99;
+		background-color: #fff;
+	}
 	.header-container {
 		background: #fff;
 
