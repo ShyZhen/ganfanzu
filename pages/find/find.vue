@@ -8,22 +8,22 @@
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
         <map
-            id="map"
-            ref="map"
-            :style="'width: ' + width + '; height: ' + height + ';'"
-            :subkey="subkey"
-            :longitude="map.longitude"
-            :latitude="map.latitude"
-            :scale="map.scale"
-            :markers="markers"
-            :include-points="markers"
-            :polyline="polyline"
-            @markertap="handle"
-            @callouttap="handle"
-            @regionchange="regionChange"
-            @updated="finish"
-            show-location="true"
-            enable-indoorMap="true">
+                id="map"
+                ref="map"
+                :style="'width: ' + width + '; height: ' + height + ';'"
+                :subkey="subkey"
+                :longitude="map.longitude"
+                :latitude="map.latitude"
+                :scale="map.scale"
+                :markers="markers"
+                :include-points="markers"
+                :polyline="polyline"
+                @markertap="handle"
+                @callouttap="handle"
+                @regionchange="regionChange"
+                @updated="finish"
+                show-location="true"
+                enable-indoorMap="true">
         </map>
         <view class="search" :style="{top:searchInput.top,height:searchInput.height}">
           <view class="search-input" :style="{width:searchInput.width}">
@@ -108,7 +108,8 @@ export default {
       success: res => {
         this.height = res.windowHeight + 'px'
         this.width = res.windowWidth + 'px'
-        let rect = uni.getMenuButtonBoundingClientRect()
+
+        let rect = this.$menuButtonRect
         this.searchInput.width = (res.windowWidth - rect.width) - 10  + 'px'
         this.searchInput.height = rect.height + 'px'
         this.searchInput.top = rect.top + 'px'
