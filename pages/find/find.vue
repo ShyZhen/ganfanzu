@@ -3,7 +3,7 @@
     <view>
       <view>
         <view class="location-icon">
-          <image @click="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
+          <image @click="location()" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -29,8 +29,35 @@
           <view class="search-input" :style="{width:searchInput.width}">
             <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
             <input type="text" placeholder="请输入搜索关键字.." maxlength="32" confirm-type="search"
-                   v-model="searchInput.inputVal" @confirm="location(searchInput.inputVal)">
+                   v-model="searchInput.inputVal" @input="getsuggest" @confirm="location(searchInput.inputVal)">
           </view>
+
+
+
+
+
+
+
+          <!--关键词输入提示列表渲染-->
+          <view>
+            <view v-for="(item, index) in suggestion" :key="index">
+              <!--绑定回填事件-->
+              <view>
+                <!--根据需求渲染相应数据-->
+                <!--渲染地址title-->
+                <view style="text-align:center;" @tap="backFill" :id=index>{{item.title}}</view>
+                <!--渲染详细地址-->
+                <!--<view style="font-size:12px;color:#666;text-align:center;">{{item.addr}}</view>-->
+              </view>
+            </view>
+          </view>
+
+
+
+
+
+
+
         </view>
       </view>
       <view class="hello" :style="{opacity:helloOpacity}">
@@ -69,7 +96,8 @@ export default {
         latitude: 39.909,
         longitude: 116.39742,
       },
-      qqMapSdk: null
+      qqMapSdk: null,
+      suggestion: [],
     };
   },
   onLoad(e) {
@@ -132,6 +160,10 @@ export default {
         }
       });
     },
+    /**
+     * push master节点
+     * @param data
+     */
     pushMaster(data) {
       this.markers = [];
       for (let i = 0; i < data.data.length; i++) {
@@ -246,6 +278,60 @@ export default {
           },
         });
       })
+    },
+    /**
+     * 数据回填方法
+     * @param e
+     */
+    backFill(e) {
+      console.log('tap', e)
+      let id = e.currentTarget.id;
+      for (let i = 0; i < this.suggestion.length;i++) {
+        if (i == id) {
+          this.searchInput.inputVal = this.suggestion[i].title
+          this.location(this.searchInput.inputVal)
+        }
+      }
+    },
+    /**
+     * 触发关键词输入提示事件
+     * @param e
+     */
+    getsuggest(e) {
+      console.log(e)
+
+      if (!e.detail.value.trim()) {
+        return true
+      }
+      let that = this;
+      //调用关键词提示接口
+      this.qqmapsdk.getSuggestion({
+        //获取输入框值并设置keyword参数
+        keyword: e.detail.value.trim(),
+        location: that.map.latitude+','+that.map.longitude,
+        policy: 1,
+        success: function(res) {
+          let sug = [];
+          for (let i = 0; i < res.data.length; i++) {
+            sug.push({
+              title: res.data[i].title,
+              id: res.data[i].id,
+              addr: res.data[i].address,
+              city: res.data[i].city,
+              district: res.data[i].district,
+              latitude: res.data[i].location.lat,
+              longitude: res.data[i].location.lng
+            });
+          }
+          that.suggestion = sug
+        },
+        fail: function(error) {
+          console.error(error)
+        },
+        complete: function(res) {
+          console.log(res)
+        }
+      });
     }
   }
 };
