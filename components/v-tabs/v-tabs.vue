@@ -24,7 +24,7 @@
             color: current == i ? activeColor : color,
             fontSize: current == i ? fontSize : fontSize
           }"
-            @click="change(i)"
+            @click="change(v)"
         >
           <image :src="v.icon" mode=""></image>
           <view>{{ v.text }}</view>
@@ -199,6 +199,7 @@ export default {
       })
     },
     current(newVal) {
+	  if(isNaN(Number(newVal))) return; 
       this.$emit('input', newVal)
     },
     tabs(newVal) {
