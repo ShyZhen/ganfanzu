@@ -2,12 +2,8 @@
   <view class="container" :style="{opacity:pageOpacity}">
     <view>
       <view>
-        <view style="
-            position: fixed;
-            z-index: 1;
-            bottom: 40px;
-            right: 30rpx;">
-          <image @click="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" style="width: 25px;height: 25px;opacity: 0.8;border-radius: 6px;" />
+        <view class="location-icon">
+          <image @click="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -29,11 +25,13 @@
             show-location="true"
             enable-indoorMap="true">
         </map>
-        <cover-view class="search" :style="{top:searchInput.top,height:searchInput.height}">
-          <cover-view class="search-input" :style="{width:searchInput.width}">
-            请输入搜索关键字
-          </cover-view>
-        </cover-view>
+        <view class="search" :style="{top:searchInput.top,height:searchInput.height}">
+          <view class="search-input" :style="{width:searchInput.width}">
+            <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+            <input type="text" placeholder="请输入搜索关键字.." maxlength="32" confirm-type="search"
+                   v-model="searchInput.inputVal" @confirm="location(searchInput.inputVal)">
+          </view>
+        </view>
       </view>
       <view class="hello" :style="{opacity:helloOpacity}">
         <p>今天不吃外卖</p>
@@ -56,6 +54,7 @@ export default {
         width: 0,
         height: 0,
         top: 0,
+        inputVal: ''
       },
       pageOpacity: 0,
       mapOpacity: 0,
@@ -262,6 +261,17 @@ page {
   line-height: 24px;
   position: relative;
 }
+.location-icon {
+  position: fixed;
+  z-index: 1;
+  bottom: 40px;
+  right: 30rpx;
+  image {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+  }
+}
 .map {
   transition: all 0.5s linear;
 }
@@ -287,6 +297,17 @@ page {
       border-radius: 20px;
       background: #ffffffd6;
       color: rgba(68, 66, 66, 0.63);
+      display: flex;
+      /* justify-content: center; */
+      align-items: center;
+      input {
+        padding-left: 30rpx;
+      }
+      image {
+        padding-left: 20rpx;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 </style>
