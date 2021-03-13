@@ -7,7 +7,7 @@
             z-index: 1;
             bottom: 40px;
             right: 30rpx;">
-          <image @click="location" src="../../static/icon/my-location.png" style="width: 25px;height: 25px;opacity: 0.7" />
+          <image @click="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" style="width: 25px;height: 25px;opacity: 0.8;border-radius: 6px;" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -29,6 +29,11 @@
             show-location="true"
             enable-indoorMap="true">
         </map>
+        <cover-view class="search" :style="{top:searchInput.top,height:searchInput.height}">
+          <cover-view class="search-input" :style="{width:searchInput.width}">
+            请输入搜索关键字
+          </cover-view>
+        </cover-view>
       </view>
       <view class="hello" :style="{opacity:helloOpacity}">
         <p>今天不吃外卖</p>
@@ -47,6 +52,11 @@ let map
 export default {
   data() {
     return {
+      searchInput: {
+        width: 0,
+        height: 0,
+        top: 0,
+      },
       pageOpacity: 0,
       mapOpacity: 0,
       helloOpacity: 0,
@@ -71,6 +81,10 @@ export default {
       success: res => {
         this.height = res.windowHeight + 'px'
         this.width = res.windowWidth + 'px'
+        let rect = uni.getMenuButtonBoundingClientRect()
+        this.searchInput.width = (res.windowWidth - rect.width) - 10  + 'px'
+        this.searchInput.height = rect.height + 'px'
+        this.searchInput.top = rect.top + 'px'
       }
     });
 
@@ -96,10 +110,9 @@ export default {
     },
     /**
      * 当前定位，获取周边关键字
-     * @param e
+     * @param query
      */
-    location() {
-      let query = '美食'
+    location(query = '美食') {
       let that = this
       uni.getLocation({
         type: 'gcj02',
@@ -265,4 +278,15 @@ page {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+  .search {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    .search-input {
+      height: 100%;
+      border-radius: 20px;
+      background: #ffffffd6;
+      color: rgba(68, 66, 66, 0.63);
+    }
+  }
 </style>
