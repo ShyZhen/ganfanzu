@@ -10,7 +10,7 @@
         <map
                 id="map"
                 ref="map"
-                :style="'width: ' + width + '; height: ' + height + ';'"
+                :style="'width: ' + width + 'px; height: ' + height + 'px;'"
                 :subkey="subkey"
                 :longitude="map.longitude"
                 :latitude="map.latitude"
@@ -25,16 +25,12 @@
                 show-location="true"
                 enable-indoorMap="true">
         </map>
-        <view class="search" :style="{top:searchInput.top,height:searchInput.height}">
-          <view class="search-input" :style="{width:searchInput.width}">
+        <view class="search" :style="{top:searchInput.top+'px',height:searchInput.height+'px'}">
+          <view class="search-input" :style="{width:searchInput.width+'px'}">
             <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-            <input type="text" placeholder="请输入搜索关键字.." maxlength="32" confirm-type="search"
+            <input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search"
                    v-model="searchInput.inputVal" @input="getsuggest" @confirm="location(searchInput.inputVal)">
           </view>
-
-
-
-
 
 
 
@@ -51,7 +47,6 @@
               </view>
             </view>
           </view>
-
 
 
 
@@ -104,17 +99,14 @@ export default {
     // 创建地图上下文
     map = uni.createMapContext('map', this);
 
-    uni.getSystemInfo({
-      success: res => {
-        this.height = res.windowHeight + 'px'
-        this.width = res.windowWidth + 'px'
+    // 系统屏幕宽高
+    this.height = this.$systemInfoSync.windowHeight
+    this.width = this.$systemInfoSync.windowWidth
 
-        let rect = this.$menuButtonRect
-        this.searchInput.width = (res.windowWidth - rect.width) - 10  + 'px'
-        this.searchInput.height = rect.height + 'px'
-        this.searchInput.top = rect.top + 'px'
-      }
-    });
+    // 胶囊宽高坐标
+    this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 10
+    this.searchInput.height = this.$menuButtonRect.height
+    this.searchInput.top = this.$menuButtonRect.top
 
     this.location()
 
@@ -305,12 +297,11 @@ export default {
         return true
       }
       let that = this;
-      //调用关键词提示接口
       this.qqmapsdk.getSuggestion({
-        //获取输入框值并设置keyword参数
         keyword: e.detail.value.trim(),
         location: that.map.latitude+','+that.map.longitude,
         policy: 1,
+        filter: encodeURI("category=美食,购物,娱乐休闲,酒店宾馆"),
         success: function(res) {
           let sug = [];
           for (let i = 0; i < res.data.length; i++) {
@@ -389,6 +380,7 @@ page {
       align-items: center;
       input {
         padding-left: 30rpx;
+        width: 75%;
       }
       image {
         padding-left: 20rpx;

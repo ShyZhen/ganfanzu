@@ -57,7 +57,6 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8",
-		"titleView": false,
 		"h5": {
 			"titleNView": false
 		}
