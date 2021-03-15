@@ -47,14 +47,14 @@ export default {
   },
   methods: {
     // 订阅提醒消息
-    // subscribe() {
-    //   uni.requestSubscribeMessage({
-    //     tmplIds: [Config.subscribe],
-    //     success (res) {
-    //       console.log(res)
-    //     }
-    //   })
-    // }
+    subscribe() {
+      // uni.requestSubscribeMessage({
+      //   tmplIds: [Config.subscribe],
+      //   success (res) {
+      //     console.log(res)
+      //   }
+      // })
+    }
   }
 };
 </script>
