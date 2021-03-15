@@ -3,7 +3,7 @@
     <view>
       <view>
         <view class="location-icon">
-          <image @click="location(searchInput.inputVal)" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
+          <image @tap="location(searchInput.inputVal)" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -260,8 +260,7 @@ export default {
           from: from,
           to: to,
           success: function (res) {
-            let ret = res;
-            let coors = ret.result.routes[0].polyline, pl = [];
+            let coors = res.result.routes[0].polyline, pl = [];
             let kr = 1000000;
             for (var i = 2; i < coors.length; i++) {
               coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
