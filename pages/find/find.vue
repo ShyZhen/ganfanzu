@@ -3,7 +3,7 @@
     <view>
       <view>
         <view class="location-icon">
-          <image @click="location()" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
+          <image @click="location(searchInput.inputVal)" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -104,7 +104,7 @@ export default {
     this.width = this.$systemInfoSync.windowWidth
 
     // 胶囊宽高坐标
-    this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 10
+    this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 30
     this.searchInput.height = this.$menuButtonRect.height
     this.searchInput.top = this.$menuButtonRect.top
 
@@ -132,7 +132,8 @@ export default {
      * 当前定位，获取周边关键字
      * @param query
      */
-    location(query = '美食') {
+    location(query) {
+      query = query ? query : '美食'
       let that = this
       uni.getLocation({
         type: 'gcj02',
@@ -277,7 +278,6 @@ export default {
      * @param e
      */
     backFill(e) {
-      console.log('tap', e)
       let id = e.currentTarget.id;
       for (let i = 0; i < this.suggestion.length;i++) {
         if (i == id) {
@@ -291,8 +291,6 @@ export default {
      * @param e
      */
     getsuggest(e) {
-      console.log(e)
-
       if (!e.detail.value.trim()) {
         return true
       }
@@ -321,7 +319,6 @@ export default {
           console.error(error)
         },
         complete: function(res) {
-          console.log(res)
         }
       });
     }
@@ -378,6 +375,7 @@ page {
       display: flex;
       /* justify-content: center; */
       align-items: center;
+      margin-left: 10px;
       input {
         padding-left: 30rpx;
         width: 75%;
