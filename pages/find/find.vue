@@ -93,6 +93,7 @@ export default {
       },
       qqMapSdk: null,
       suggestion: [],
+      oldTo: null,
     };
   },
   onLoad(e) {
@@ -200,7 +201,6 @@ export default {
           }
         }
       }
-
       this.direction(from, to)
     },
     /**
@@ -240,6 +240,18 @@ export default {
      * @param to
      */
     direction(from, to) {
+
+      // 防止重复点击调用
+      if (!this.oldTo) {
+        this.oldTo = to
+      } else {
+        if (this.oldTo.latitude === to.latitude && this.oldTo.longitude === to.longitude) {
+          return false
+        } else {
+          this.oldTo = to
+        }
+      }
+
       return new Promise((resolve, reject) => {
         let that = this;
         //调用距离计算接口
