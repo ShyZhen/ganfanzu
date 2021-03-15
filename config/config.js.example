@@ -9,6 +9,9 @@ const env = {
     ganFanApi : 'https://www.litblc.com',
 
     subkey: '',
+
+    // 优惠券领取通知 1891
+    subscribe: '',
 }
 
 export default env
