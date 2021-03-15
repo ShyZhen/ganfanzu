@@ -8,28 +8,28 @@
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
         <map
-                id="map"
-                ref="map"
-                :style="'width: ' + width + 'px; height: ' + height + 'px;'"
-                :subkey="subkey"
-                :longitude="map.longitude"
-                :latitude="map.latitude"
-                :scale="map.scale"
-                :markers="markers"
-                :include-points="markers"
-                :polyline="polyline"
-                @markertap="handle"
-                @callouttap="handle"
-                @regionchange="regionChange"
-                @updated="finish"
-                show-location="true"
-                enable-indoorMap="true">
+            id="map"
+            ref="map"
+            :style="'width: ' + width + 'px; height: ' + height + 'px;'"
+            :subkey="subkey"
+            :longitude="map.longitude"
+            :latitude="map.latitude"
+            :scale="map.scale"
+            :markers="markers"
+            :include-points="markers"
+            :polyline="polyline"
+            @markertap="handle"
+            @callouttap="handle"
+            @regionchange="regionChange"
+            @updated="finish"
+            show-location="true"
+            enable-indoorMap="true">
         </map>
         <view class="search" :style="{top:searchInput.top+'px',height:searchInput.height+'px'}">
           <view class="search-input" :style="{width:searchInput.width+'px'}">
             <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
             <input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search"
-                   v-model="searchInput.inputVal" @input="getsuggest" @confirm="location(searchInput.inputVal)">
+                   v-model="searchInput.inputVal" @input="getSuggest" @confirm="location(searchInput.inputVal)">
           </view>
 
 
@@ -290,7 +290,7 @@ export default {
      * 触发关键词输入提示事件
      * @param e
      */
-    getsuggest(e) {
+    getSuggest(e) {
       if (!e.detail.value.trim()) {
         return true
       }
@@ -363,28 +363,28 @@ page {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-  .search {
+.search {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  .search-input {
+    height: 100%;
+    border-radius: 20px;
+    background: #ffffffd6;
+    color: rgba(68, 66, 66, 0.63);
     display: flex;
-    position: fixed;
-    width: 100%;
-    .search-input {
-      height: 100%;
-      border-radius: 20px;
-      background: #ffffffd6;
-      color: rgba(68, 66, 66, 0.63);
-      display: flex;
-      /* justify-content: center; */
-      align-items: center;
-      margin-left: 10px;
-      input {
-        padding-left: 30rpx;
-        width: 75%;
-      }
-      image {
-        padding-left: 20rpx;
-        width: 20px;
-        height: 20px;
-      }
+    /* justify-content: center; */
+    align-items: center;
+    margin-left: 10px;
+    input {
+      padding-left: 30rpx;
+      width: 75%;
+    }
+    image {
+      padding-left: 20rpx;
+      width: 20px;
+      height: 20px;
     }
   }
+}
 </style>
