@@ -380,8 +380,8 @@ page {
   bottom: 40px;
   left: 30rpx;
   image {
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
     border-radius: 25px;
   }
 }
