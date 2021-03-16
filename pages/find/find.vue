@@ -3,7 +3,7 @@
     <view>
       <view>
         <view class="location-icon">
-          <image @tap="location(searchInput.inputVal)" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
+          <image @tap="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
@@ -29,7 +29,7 @@
           <view class="search-input" :style="{width:searchInput.width+'px'}">
             <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
             <input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search"
-                   v-model="searchInput.inputVal" @input="getSuggest" @confirm="location(searchInput.inputVal)">
+                   v-model="searchInput.inputVal" @input="getSuggest" @confirm="location">
           </view>
 
 
@@ -133,8 +133,9 @@ export default {
      * 当前定位，获取周边关键字
      * @param query
      */
-    location(query) {
-      query = query ? query : '美食'
+    location() {
+      let query = this.searchInput.inputVal ? this.searchInput.inputVal : '美食'
+
       let that = this
       uni.getLocation({
         type: 'gcj02',
