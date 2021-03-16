@@ -196,12 +196,14 @@ export default {
       for (let i = 0; i < this.markers.length; i++) {
         if (e.detail.markerId === this.markers[i].id) {
           to = {
+            title: this.markers[i].title,
             latitude: this.markers[i].latitude,
             longitude: this.markers[i].longitude,
           }
         }
       }
-      this.direction(from, to)
+      // this.direction(from, to)
+      this.directionPlugin(to)
     },
     /**
      * 改变视角触发
@@ -285,6 +287,31 @@ export default {
       })
     },
     /**
+     * 线路规划(插件方式)
+     * @param to
+     */
+    directionPlugin(to) {
+      let that = this
+      this.$loading('线路规划中...')
+      let plugin = requirePlugin('routePlan');
+      let key = this.subkey;
+      let referer = Config.appName;
+      let endPoint = JSON.stringify({
+        'name': to.title,
+        'latitude': to.latitude,
+        'longitude': to.longitude
+      });
+      uni.navigateTo({
+        url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&themeColor=#F46845',
+        // 目前仅app支持动画效果
+        animationType: 'fade-in',
+        animationDuration: 500,
+        complete: function() {
+          that.$loading(false)
+        }
+      });
+    },
+    /**
      * 数据回填方法
      * @param e
      */
@@ -351,11 +378,11 @@ page {
   position: fixed;
   z-index: 1;
   bottom: 40px;
-  right: 30rpx;
+  left: 30rpx;
   image {
-    width: 25px;
-    height: 25px;
-    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
   }
 }
 .map {

@@ -1,4 +1,6 @@
 const env = {
+    appName: '干饭组',
+
     // 是否开启debug
     debug: true,
 
