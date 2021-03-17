@@ -23,7 +23,11 @@
             @regionchange="regionChange"
             @updated="finish"
             show-location="true"
-            enable-indoorMap="true">
+            enable-indoorMap="true"
+            enable-poi="true"
+            enable-building="true"
+            enable-3D="true"
+        >
         </map>
         <view class="search" :style="{top:searchInput.top+'px',height:searchInput.height+'px'}">
           <view class="search-input" :style="{width:searchInput.width+'px'}">
