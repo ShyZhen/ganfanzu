@@ -17,7 +17,7 @@
 		"style" : {
 			"navigationStyle": "custom",
 			"navigationBarTitleText": "干饭推荐",
-			"onReachBottonDistance": 50
+			"onReachBottomDistance": 50
 		}
 	},{
 		"path": "pages/about/about",
