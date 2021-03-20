@@ -45,9 +45,6 @@ export default {
   onShareAppMessage(res) {
     return getShareObj()
   },
-  onShareTimeline(res) {
-    return getShareObj()
-  },
   methods: {
     // 订阅提醒消息
     subscribe() {
