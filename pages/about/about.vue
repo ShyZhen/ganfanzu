@@ -5,7 +5,7 @@
     <view class="header-container">
       <view class="header">
         <view class="logo-img">
-          <image src="/static/logo.jpg" mode="widthFix" lazy-load @load="onoff='1'" />
+          <image src="/static/logo.jpg" mode="widthFix" lazy-load @load="onoff='1'" @tap="subscribe" />
         </view>
       </view>
       <view class="title">
@@ -45,6 +45,17 @@ export default {
   onShareAppMessage(res) {
     return getShareObj()
   },
+  methods: {
+    // 订阅提醒消息
+    subscribe() {
+      // uni.requestSubscribeMessage({
+      //   tmplIds: [Config.subscribe],
+      //   success (res) {
+      //     console.log(res)
+      //   }
+      // })
+    }
+  }
 };
 </script>
 

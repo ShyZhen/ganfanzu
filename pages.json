@@ -17,7 +17,7 @@
 		"style" : {
 			"navigationStyle": "custom",
 			"navigationBarTitleText": "干饭推荐",
-			"onReachBottonDistance": 50
+			"onReachBottomDistance": 50
 		}
 	},{
 		"path": "pages/about/about",
@@ -57,7 +57,6 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8",
-		"titleView": false,
 		"h5": {
 			"titleNView": false
 		}

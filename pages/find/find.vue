@@ -3,38 +3,38 @@
     <view>
       <view>
         <view class="location-icon">
-          <image @click="location()" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
+          <image @tap="location" src="../../static/icon/my-location.jpg" :style="{opacity:mapOpacity}" />
         </view>
       </view>
       <view class="map" :style="{opacity:mapOpacity}">
         <map
-                id="map"
-                ref="map"
-                :style="'width: ' + width + '; height: ' + height + ';'"
-                :subkey="subkey"
-                :longitude="map.longitude"
-                :latitude="map.latitude"
-                :scale="map.scale"
-                :markers="markers"
-                :include-points="markers"
-                :polyline="polyline"
-                @markertap="handle"
-                @callouttap="handle"
-                @regionchange="regionChange"
-                @updated="finish"
-                show-location="true"
-                enable-indoorMap="true">
+            id="map"
+            ref="map"
+            :style="'width: ' + width + 'px; height: ' + height + 'px;'"
+            :subkey="subkey"
+            :longitude="map.longitude"
+            :latitude="map.latitude"
+            :scale="map.scale"
+            :markers="markers"
+            :include-points="markers"
+            :polyline="polyline"
+            @markertap="handle"
+            @callouttap="handle"
+            @regionchange="regionChange"
+            @updated="finish"
+            show-location="true"
+            enable-indoorMap="true"
+            enable-poi="true"
+            enable-building="true"
+            enable-3D="true"
+        >
         </map>
-        <view class="search" :style="{top:searchInput.top,height:searchInput.height}">
-          <view class="search-input" :style="{width:searchInput.width}">
+        <view class="search" :style="{top:searchInput.top+'px',height:searchInput.height+'px'}">
+          <view class="search-input" :style="{width:searchInput.width+'px'}">
             <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-            <input type="text" placeholder="请输入搜索关键字.." maxlength="32" confirm-type="search"
-                   v-model="searchInput.inputVal" @input="getsuggest" @confirm="location(searchInput.inputVal)">
+            <input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search"
+                   v-model="searchInput.inputVal" @input="getSuggest" @confirm="location">
           </view>
-
-
-
-
 
 
 
@@ -51,7 +51,6 @@
               </view>
             </view>
           </view>
-
 
 
 
@@ -98,23 +97,21 @@ export default {
       },
       qqMapSdk: null,
       suggestion: [],
+      oldTo: null,
     };
   },
   onLoad(e) {
     // 创建地图上下文
     map = uni.createMapContext('map', this);
 
-    uni.getSystemInfo({
-      success: res => {
-        this.height = res.windowHeight + 'px'
-        this.width = res.windowWidth + 'px'
+    // 系统屏幕宽高
+    this.height = this.$systemInfoSync.windowHeight
+    this.width = this.$systemInfoSync.windowWidth
 
-        let rect = this.$menuButtonRect
-        this.searchInput.width = (res.windowWidth - rect.width) - 10  + 'px'
-        this.searchInput.height = rect.height + 'px'
-        this.searchInput.top = rect.top + 'px'
-      }
-    });
+    // 胶囊宽高坐标
+    this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 30
+    this.searchInput.height = this.$menuButtonRect.height
+    this.searchInput.top = this.$menuButtonRect.top
 
     this.location()
 
@@ -140,7 +137,9 @@ export default {
      * 当前定位，获取周边关键字
      * @param query
      */
-    location(query = '美食') {
+    location() {
+      let query = this.searchInput.inputVal ? this.searchInput.inputVal : '美食'
+
       let that = this
       uni.getLocation({
         type: 'gcj02',
@@ -202,13 +201,14 @@ export default {
       for (let i = 0; i < this.markers.length; i++) {
         if (e.detail.markerId === this.markers[i].id) {
           to = {
+            title: this.markers[i].title,
             latitude: this.markers[i].latitude,
             longitude: this.markers[i].longitude,
           }
         }
       }
-
-      this.direction(from, to)
+      // this.direction(from, to)
+      this.directionPlugin(to)
     },
     /**
      * 改变视角触发
@@ -247,6 +247,18 @@ export default {
      * @param to
      */
     direction(from, to) {
+
+      // 防止重复点击调用
+      if (!this.oldTo) {
+        this.oldTo = to
+      } else {
+        if (this.oldTo.latitude === to.latitude && this.oldTo.longitude === to.longitude) {
+          return false
+        } else {
+          this.oldTo = to
+        }
+      }
+
       return new Promise((resolve, reject) => {
         let that = this;
         //调用距离计算接口
@@ -255,8 +267,7 @@ export default {
           from: from,
           to: to,
           success: function (res) {
-            let ret = res;
-            let coors = ret.result.routes[0].polyline, pl = [];
+            let coors = res.result.routes[0].polyline, pl = [];
             let kr = 1000000;
             for (var i = 2; i < coors.length; i++) {
               coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
@@ -281,11 +292,35 @@ export default {
       })
     },
     /**
+     * 线路规划(插件方式)
+     * @param to
+     */
+    directionPlugin(to) {
+      let that = this
+      this.$loading('线路规划中...')
+      let plugin = requirePlugin('routePlan');
+      let key = this.subkey;
+      let referer = Config.appName;
+      let endPoint = JSON.stringify({
+        'name': to.title,
+        'latitude': to.latitude,
+        'longitude': to.longitude
+      });
+      uni.navigateTo({
+        url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&themeColor=#F46845',
+        // 目前仅app支持动画效果
+        animationType: 'fade-in',
+        animationDuration: 500,
+        complete: function() {
+          that.$loading(false)
+        }
+      });
+    },
+    /**
      * 数据回填方法
      * @param e
      */
     backFill(e) {
-      console.log('tap', e)
       let id = e.currentTarget.id;
       for (let i = 0; i < this.suggestion.length;i++) {
         if (i == id) {
@@ -298,19 +333,16 @@ export default {
      * 触发关键词输入提示事件
      * @param e
      */
-    getsuggest(e) {
-      console.log(e)
-
+    getSuggest(e) {
       if (!e.detail.value.trim()) {
         return true
       }
       let that = this;
-      //调用关键词提示接口
       this.qqmapsdk.getSuggestion({
-        //获取输入框值并设置keyword参数
         keyword: e.detail.value.trim(),
         location: that.map.latitude+','+that.map.longitude,
         policy: 1,
+        filter: encodeURI("category=美食,购物,娱乐休闲,酒店宾馆"),
         success: function(res) {
           let sug = [];
           for (let i = 0; i < res.data.length; i++) {
@@ -330,7 +362,6 @@ export default {
           console.error(error)
         },
         complete: function(res) {
-          console.log(res)
         }
       });
     }
@@ -352,11 +383,11 @@ page {
   position: fixed;
   z-index: 1;
   bottom: 40px;
-  right: 30rpx;
+  left: 30rpx;
   image {
-    width: 25px;
-    height: 25px;
-    border-radius: 6px;
+    width: 38px;
+    height: 38px;
+    border-radius: 25px;
   }
 }
 .map {
@@ -375,26 +406,28 @@ page {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-  .search {
+.search {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  .search-input {
+    height: 100%;
+    border-radius: 20px;
+    background: #ffffffd6;
+    color: rgba(68, 66, 66, 0.63);
     display: flex;
-    position: fixed;
-    width: 100%;
-    .search-input {
-      height: 100%;
-      border-radius: 20px;
-      background: #ffffffd6;
-      color: rgba(68, 66, 66, 0.63);
-      display: flex;
-      /* justify-content: center; */
-      align-items: center;
-      input {
-        padding-left: 30rpx;
-      }
-      image {
-        padding-left: 20rpx;
-        width: 20px;
-        height: 20px;
-      }
+    /* justify-content: center; */
+    align-items: center;
+    margin-left: 10px;
+    input {
+      padding-left: 30rpx;
+      width: 75%;
+    }
+    image {
+      padding-left: 20rpx;
+      width: 20px;
+      height: 20px;
     }
   }
+}
 </style>

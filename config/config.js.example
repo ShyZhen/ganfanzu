@@ -1,4 +1,6 @@
 const env = {
+    appName: '干饭组',
+
     // 是否开启debug
     debug: true,
 
@@ -9,6 +11,9 @@ const env = {
     ganFanApi : 'https://www.litblc.com',
 
     subkey: '',
+
+    // 优惠券领取通知 1891
+    subscribe: '',
 }
 
 export default env

@@ -9,13 +9,31 @@
 				</view>
 			</view>
 		</view>
+
+
+
+
+
+		<view :style="{height:statusBarHeight + searchInput.height + 6 + 'px'}" style="background: linear-gradient(#F46845, #fa856b);">
+			<view class="search" :style="{top:searchInput.top + 'px',height:searchInput.height + 'px'}">
+				<view class="search-input" :style="{width:searchInput.width + 'px'}">
+					<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+					<input type="text" placeholder="搜索关键字..." maxlength="32" confirm-type="search"
+						   v-model="searchInput.inputVal" @confirm="search(searchInput.inputVal)">
+				</view>
+			</view>
+		</view>
+
+
+
+
 		<view class="tabs">
 			<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab"></v-tabs>
 		</view>
 
 		<!--  内容  -->
 		<view class="coupon" ref="coupon">
-			<view v-for="(tab, i) in tabs" v-show="tab.type === tabType">
+			<view v-for="(tab, i) in tabs" v-show="tab.type === tabType" :key="i">
 				<view class="uni-product-list">
 					<view v-for="(v, k) in couponListInfo[tab.type].list" @click="toCoupon(v)" :key="k">
 						<view class="uni-product">
@@ -49,7 +67,8 @@
 	import {
 		getProductList,
 		getDetailLink,
-		getCustomProduct
+		getCustomProduct,
+		getQueryList
 	} from "@/apis/ganfan.js"
 
 	// 默认选中tab 下饭必备
@@ -68,7 +87,17 @@
 				 **/
 				couponListInfo: {},
 				coupons: [],
-				renderImage: true
+				renderImage: true,
+				/**
+				 * 状态栏高度、搜索框位置（胶囊对其）
+				 **/
+				statusBarHeight: 0,
+				searchInput: {
+					width: 0,
+					height: 0,
+					top: 0,
+					inputVal: ''
+				},
 			};
 		},
 		onLoad(e) {
@@ -77,9 +106,7 @@
 			type = this.$route.query.type || DEFAULR_CHECKED_TYPE
 			//#endif
 			// //#ifdef MP-WEIXIN
-			({
-				type = DEFAULR_CHECKED_TYPE
-			} = e);
+			type = DEFAULR_CHECKED_TYPE
 			// //#endif
 
 			this.initTabs();
@@ -87,6 +114,17 @@
 			this.changeTab({
 				type
 			})
+
+			// 系统屏幕宽高、状态栏高度
+			//this.height = this.$systemInfoSync.windowHeight
+			//this.width = this.$systemInfoSync.windowWidth
+			this.statusBarHeight = this.$systemInfoSync.statusBarHeight
+
+			// 胶囊宽高坐标
+			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 10
+			this.searchInput.height = this.$menuButtonRect.height
+			this.searchInput.top = this.$menuButtonRect.top
+
 		},
 		onReady(e) {
 			this.pageOpacity = 1
@@ -316,6 +354,20 @@
 					success(res) {}
 				})
 				//#endif
+			},
+			/**
+			 * 搜索当前平台
+			 * @param query
+			 */
+			search(query) {
+				let data = {
+					platform: 'jd',
+					page: 1,
+					query: query,
+				}
+				getQueryList(data).then(res => {
+					console.log(res)
+				})
 			}
 		},
 
@@ -450,6 +502,36 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				overflow: hidden;
+			}
+		}
+	}
+
+
+
+
+
+
+	/*搜索框*/
+	.search {
+		display: flex;
+		position: fixed;
+		width: 100%;
+		.search-input {
+			height: 100%;
+			border-radius: 20px;
+			background: #ffffffd6;
+			color: rgba(68, 66, 66, 0.63);
+			display: flex;
+			/* justify-content: center; */
+			align-items: center;
+			input {
+				padding-left: 30rpx;
+				width: 75%;
+			}
+			image {
+				padding-left: 20rpx;
+				width: 20px;
+				height: 20px;
 			}
 		}
 	}
