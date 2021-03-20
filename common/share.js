@@ -38,6 +38,8 @@ function getShareMessage() {
         title: '不为感情流泪，只为干饭夜不能寐',
     },{
         title: '没有难吃的食堂，只有干饭人的坚强',
+    },{
+        title: '你一碗，我一碗，啥时干饭都不晚',
     }];
 
     return messages[Math.floor(Math.random()*messages.length)]['title'];

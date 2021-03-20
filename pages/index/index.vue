@@ -121,6 +121,9 @@ export default {
   onShareAppMessage(res) {
     return getShareObj()
   },
+  onShareTimeline(res) {
+    return getShareObj()
+  },
   methods: {
     changeTab() {
       uni.showLoading({

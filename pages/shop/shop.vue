@@ -147,6 +147,9 @@
 		onShareAppMessage(res) {
 			return getShareObj()
 		},
+		onShareTimeline(res) {
+			return getShareObj()
+		},
 		methods: {
 			/**
 			 * @description	初始化推荐导航列表
