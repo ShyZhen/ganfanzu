@@ -18,14 +18,14 @@
 						<input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search" v-model="searchInput.inputVal"
 						 @input="getSuggest" @focus="getSuggest" @confirm="location">
 						 
-						<view v-show="showSearchList" ref="searchInp" class="close" style="width: 30px;height: 30px;background-color: red;" @click="clearSearchInfo"></view>
+						<view v-show="showSearchList" ref="searchInp" class="iconfont iconioscloseempty" style="font-size: 20px;width: 30px;" @click="clearSearchInfo"></view>
 					</view>
 
 					<!--关键词输入提示列表渲染-->
 					<view class="search-list" v-show="showSearchList">
 						<view class="search-list--item" v-for="(item, index) in suggestion" :key="index">
 							<view style="text-align:center;" @tap="backFill" :id="index">{{item.title}}</view>
-							<!--<view style="font-size:12px;color:#666;text-align:center;">{{item.addr}}</view>-->
+							<view style="font-size:12px;color:#666;text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.addr}}</view>
 						</view>
 					</view>
 				</view>
@@ -379,7 +379,6 @@
 </script>
 
 <style lang="scss">
-	// @import '../../common/css/iconfont.css';
 	page {
 		background-color: #fff;
 	}
@@ -438,7 +437,7 @@
 			align-items: center;
 			
 			input {
-				padding-left: 30rpx;
+				padding-left: 18rpx;
 				width: 75%;
 			}
 
@@ -459,8 +458,8 @@
 				// width: 100%;
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid rgba(34, 34, 34, .05);
-				height: 80rpx;
-				line-height: 80rpx;
+				height: 86rpx;
+				/*line-height: 80rpx;*/
 				font-size: 32rpx;
 				color: #222;
 			}

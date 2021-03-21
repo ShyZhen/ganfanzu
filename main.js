@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import { toast, loading, toLogin, toBack, toHome } from './common/global.js'
 
+// 字体图标库
+import './static/iconfont/iconfont.css'
+
 Vue.config.productionTip = false
 
 Vue.prototype.$loading = loading

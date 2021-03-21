@@ -2,7 +2,7 @@
 	<view>
 		<view class="search" @click="toSearchPage" :style="{width: width + 'px', height: height + 'px', lineHeight: height + 'px'}">
 			<image class="search-icon" src="../../static/icon/search.png" lazy-load></image>
-			<text>{{searchText}}</text>
+			<view class="search-input">{{searchText}}</view>
 		</view>
 	</view>
 </template>
@@ -21,7 +21,7 @@
 		},
 		data() {
 			return {
-				searchText: '搜索附近吃喝玩乐'
+				searchText: '搜索商品关键字...'
 			};
 		},
 		methods:{
@@ -45,12 +45,13 @@
 		background: #ffffff;
 		color: rgba(68, 66, 66, 0.63);;
 		&-icon{
-			width: 64rpx;
-			height: 64rpx;
+			width: 20px;
+			height: 20px;
 			flex-shrink: 0;
 		}
-		&-text{
+		.search-input {
 			flex-shrink: 1;
+			padding-left: 18rpx;
 		}
 	}
 </style>
