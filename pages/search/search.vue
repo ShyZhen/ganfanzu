@@ -3,21 +3,45 @@
 		<view class="search">
 			<view class="search-input">
 				<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-				<input type="text" placeholder="搜索关键字..." maxlength="32" confirm-type="search">
+				<input type="text" placeholder="搜索商品关键字..." maxlength="32" confirm-type="search" v-model="query" @confirm="searchList">
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { getQueryList } from "@/apis/ganfan.js"
 	export default {
 		data() {
 			return {
-				
+				query: '',
+				platform: 'jd',
 			}
 		},
 		methods: {
-			
+			/**
+			 * 搜索当前平台
+			 * @param query
+			 */
+			searchList() {
+				let query = this.query.trim()
+				if (!query) {
+					return false
+				}
+
+				this.$loading('拼命拉取中...')
+				let data = {
+					platform: this.platform,
+					page: 1,
+					query: query,
+				}
+				getQueryList(data).then(res => {
+					console.log(res)
+					this.$loading(false)
+				}).catch(err => {
+					this.$toast('您的网络状态不太好哦~')
+				})
+			}
 		}
 	}
 </script>

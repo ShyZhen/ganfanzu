@@ -65,7 +65,6 @@
 		getProductList,
 		getDetailLink,
 		getCustomProduct,
-		getQueryList
 	} from "@/apis/ganfan.js"
 
 	// 默认选中tab 下饭必备
@@ -201,12 +200,12 @@
 			 * @param {Number} page 获取页数
 			 **/
 			getProductList(platform, page = 1) {
-				this.isLoading = true;
+				this.isLoading = true
 				getProductList({
 					platform,
 					page
 				}).then(res => {
-					this.isLoading = false;
+					this.isLoading = false
 					if (res.code !== ERR_OK) {
 						this.$toast(res.msg || '您的网络状态不太好哦~')
 						return
@@ -225,7 +224,7 @@
 						: couponListInfo.list.concat(handleList)
 					this.$loading(false)
 				}).catch(err => {
-					this.isLoading = false;s
+					this.isLoading = false
 					this.$toast('您的网络状态不太好哦~')
 				})
 			},
@@ -353,20 +352,6 @@
 				})
 				//#endif
 			},
-			/**
-			 * 搜索当前平台
-			 * @param query
-			 */
-			search(query) {
-				let data = {
-					platform: 'jd',
-					page: 1,
-					query: query,
-				}
-				getQueryList(data).then(res => {
-					console.log(res)
-				})
-			}
 		},
 
 	};

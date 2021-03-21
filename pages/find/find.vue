@@ -83,7 +83,7 @@
 			this.width = this.$systemInfoSync.windowWidth
 
 			// 胶囊宽高坐标
-			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 30
+			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height
 			this.searchInput.top = this.$menuButtonRect.top
 
@@ -430,7 +430,7 @@
 		.search-input {
 			height: 100%;
 			border-radius: 20px;
-			background: #ffffffd6;
+			background: rgba(255, 255, 255, 0.9);
 			color: rgba(68, 66, 66, 0.63);
 			display: flex;
 			/* justify-content: center; */
