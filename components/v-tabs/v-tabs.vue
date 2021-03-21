@@ -299,7 +299,7 @@ export default {
   //height: 200rpx;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background: transparent;
   scroll-view{
     width: 750rpx;
   }
@@ -323,7 +323,7 @@ export default {
       white-space: nowrap;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 0 35rpx;
+      padding: 0 24rpx;
       padding-bottom: 10rpx;
       image{
         width: 80rpx;

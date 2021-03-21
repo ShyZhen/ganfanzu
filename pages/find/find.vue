@@ -379,6 +379,7 @@
 </script>
 
 <style lang="scss">
+	// @import '../../common/css/iconfont.css';
 	page {
 		background-color: #fff;
 	}
