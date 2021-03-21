@@ -24,6 +24,24 @@
 			 * @param query
 			 */
 			searchList() {
+
+				uni.showModal({
+					title: '通知',
+					content: '本功能暂时受限,小埋正在紧急处理',
+					showCancel: false,
+					confirmText: '确定',
+					success: function (res) {
+						uni.navigateBack({
+							delta: 1
+						});
+					},
+				})
+				return false
+
+
+
+
+
 				let query = this.query.trim()
 				if (!query) {
 					return false

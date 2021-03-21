@@ -31,6 +31,6 @@
 	height: 80rpx;
 	line-height: 80rpx;
 	text-align: center;
-	color: #222;
+	color: rgba(68, 66, 66, 0.63);
 }
 </style>
