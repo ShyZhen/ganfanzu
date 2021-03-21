@@ -1,38 +1,35 @@
 <template>
 	<view class="container" :style="{opacity:pageOpacity}">
 		<!--  header  -->
-		<view class="header-container">
+		<!-- <view class="header-container">
 			<view class="header">
 				<view class="title">干饭推荐</view>
 				<view class="header-button">
 					<image src="/static/xiaomai_min.png" mode="widthFix" lazy-load @load="onoff='1'" @click="xiaoMai" />
 				</view>
 			</view>
-		</view>
-
-
-
-
-
-		<view :style="{height:statusBarHeight + searchInput.height + 6 + 'px'}" style="background: linear-gradient(#F46845, #fa856b);">
-			<view class="search" :style="{top:searchInput.top + 'px',height:searchInput.height + 'px'}">
-				<view class="search-input" :style="{width:searchInput.width + 'px'}">
-					<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-					<input type="text" placeholder="搜索关键字..." maxlength="32" confirm-type="search"
-						   v-model="searchInput.inputVal" @confirm="search(searchInput.inputVal)">
-				</view>
+		</view> -->
+		<view class="header" :style="{paddingTop: searchInput.top + 'px'}">
+			<!-- search component -->
+			<view class="search">
+				<v-fake-search :height="searchInput.height" :width="searchInput.width"></v-fake-search>
+			</view>
+			<view class="tabs">
+				<v-tabs 
+					v-model="current" 
+					:tabs="tabs" 
+					@change="changeTab" 
+					class="tab" 
+					bgColor="#F46845"
+					color="rgba(255,255, 255, .65)"
+					activeColor="#fff"
+					lineColor="#fff"
+				></v-tabs>
 			</view>
 		</view>
-
-
-
-
-		<view class="tabs">
-			<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab"></v-tabs>
-		</view>
-
+		
 		<!--  内容  -->
-		<view class="coupon" ref="coupon">
+		<view class="coupon" ref="coupon" :style="{marginTop: headerHeight + 'px'}">
 			<view v-for="(tab, i) in tabs" v-show="tab.type === tabType" :key="i">
 				<view class="uni-product-list">
 					<view v-for="(v, k) in couponListInfo[tab.type].list" @click="toCoupon(v)" :key="k">
@@ -91,6 +88,7 @@
 				/**
 				 * 状态栏高度、搜索框位置（胶囊对其）
 				 **/
+				headerHeight: 0,
 				statusBarHeight: 0,
 				searchInput: {
 					width: 0,
@@ -114,17 +112,17 @@
 			this.changeTab({
 				type
 			})
-
 			// 系统屏幕宽高、状态栏高度
 			//this.height = this.$systemInfoSync.windowHeight
 			//this.width = this.$systemInfoSync.windowWidth
-			this.statusBarHeight = this.$systemInfoSync.statusBarHeight
-
+			this.statusBarHeight = this.$systemInfoSync.statusBarHeightx
+			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect.width)
 			// 胶囊宽高坐标
-			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 10
-			this.searchInput.height = this.$menuButtonRect.height
-			this.searchInput.top = this.$menuButtonRect.top
-
+			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
+			this.searchInput.height = this.$menuButtonRect.height || 32
+			this.searchInput.top = this.$menuButtonRect.top || 12
+			console.log(this.searchInput.top, this.searchInput.height)
+			this.headerHeight = this.searchInput.top + this.searchInput.height + 36 + 12;
 		},
 		onReady(e) {
 			this.pageOpacity = 1
@@ -375,16 +373,27 @@
 </script>
 
 <style lang="scss">
-	page {
-		background-color: #f8f8f8;
-	}
-	.tabs{
-		position: sticky;
+	.header{
+		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
 		z-index: 99;
-		background-color: #fff;
+		// height: 156rpx;
+		padding-top: 24rpx;
+		background-color: #F46845;
+		box-sizing: border-box;
+		/*搜索框*/
+		.search {
+			box-sizing: border-box;
+			padding: 0 24rpx;
+		}
+		.tabs{
+			background-color: #F46845;
+		}
+	}
+	page {
+		background-color: #f8f8f8;
 	}
 	.header-container {
 		background: #fff;
@@ -424,16 +433,17 @@
 		font-size: 14px;
 		line-height: 24px;
 		position: relative;
-
+		
 		.tab {
-			//position: fixed;
-			top: var(--window-top);
-			left: 0;
-			z-index: 9999;
+			// //position: fixed;
+			// top: var(--window-top);
+			// left: 0;
+			// z-index: 9999;
 		}
 
 		// 商品列表
 		.coupon {
+			margin-top: 180rpx;
 			view {
 				font-size: 26rpx;
 			}
@@ -454,7 +464,7 @@
 			.image-view {
 				height: 330rpx;
 				width: 330rpx;
-				margin: 12rpx 0;
+				margin-bottom: 12rpx;
 			}
 
 			.uni-product-image {
@@ -502,36 +512,6 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				overflow: hidden;
-			}
-		}
-	}
-
-
-
-
-
-
-	/*搜索框*/
-	.search {
-		display: flex;
-		position: fixed;
-		width: 100%;
-		.search-input {
-			height: 100%;
-			border-radius: 20px;
-			background: #ffffffd6;
-			color: rgba(68, 66, 66, 0.63);
-			display: flex;
-			/* justify-content: center; */
-			align-items: center;
-			input {
-				padding-left: 30rpx;
-				width: 75%;
-			}
-			image {
-				padding-left: 20rpx;
-				width: 20px;
-				height: 20px;
 			}
 		}
 	}
