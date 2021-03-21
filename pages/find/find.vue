@@ -25,7 +25,7 @@
 					<view class="search-list" v-show="showSearchList">
 						<view class="search-list--item" v-for="(item, index) in suggestion" :key="index">
 							<view style="text-align:center;" @tap="backFill" :id="index">{{item.title}}</view>
-							<view style="font-size:12px;color:#666;text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.addr}}</view>
+							<view style="font-size:12px;color:#666;text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" @tap="backFill">{{item.addr}}</view>
 						</view>
 					</view>
 				</view>
