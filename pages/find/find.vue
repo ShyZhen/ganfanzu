@@ -458,7 +458,7 @@
 				// width: 100%;
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid rgba(34, 34, 34, .05);
-				height: 86rpx;
+				height: 100rpx;
 				/*line-height: 80rpx;*/
 				font-size: 32rpx;
 				color: #222;
