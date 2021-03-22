@@ -15,11 +15,11 @@
 				<v-fake-search :height="searchInput.height" :width="searchInput.width"></v-fake-search>
 			</view>
 			<view class="tabs">
-				<v-tabs 
-					v-model="current" 
-					:tabs="tabs" 
-					@change="changeTab" 
-					class="tab" 
+				<v-tabs
+					v-model="current"
+					:tabs="tabs"
+					@change="changeTab"
+					class="tab"
 					bgColor="#F46845"
 					color="rgba(255,255, 255, .65)"
 					activeColor="#fff"
@@ -27,7 +27,7 @@
 				></v-tabs>
 			</view>
 		</view>
-		
+
 		<!--  内容  -->
 		<view class="coupon" ref="coupon" :style="{marginTop: headerHeight + 'px'}">
 			<view v-for="(tab, i) in tabs" v-show="tab.type === tabType" :key="i">
@@ -49,7 +49,7 @@
 				<v-loading v-show="!couponListInfo[tab.type].canLoadMore" :type="1" ></v-loading>
 			</view>
 		</view>
-		
+
 		<v-loading v-show="isLoading"></v-loading>
 	</view>
 </template>
@@ -66,10 +66,12 @@
 		getDetailLink,
 		getCustomProduct,
 	} from "@/apis/ganfan.js"
+	import VFakeSearch from "../../components/v-fake-search/v-fake-search";
 
 	// 默认选中tab 下饭必备
 	const DEFAULR_CHECKED_TYPE = 'custom'
 	export default {
+		components: {VFakeSearch},
 		data() {
 			return {
 				isLoading: false,
@@ -88,7 +90,6 @@
 				 * 状态栏高度、搜索框位置（胶囊对其）
 				 **/
 				headerHeight: 0,
-				statusBarHeight: 0,
 				searchInput: {
 					width: 0,
 					height: 0,
@@ -114,7 +115,6 @@
 			// 系统屏幕宽高、状态栏高度
 			//this.height = this.$systemInfoSync.windowHeight
 			//this.width = this.$systemInfoSync.windowWidth
-			this.statusBarHeight = this.$systemInfoSync.statusBarHeightx
 			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect.width)
 			// 胶囊宽高坐标
 			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
@@ -133,7 +133,7 @@
 			let {canLoadMore, page} = couponListInfo;
 			// 没有更多加载
 			if(!canLoadMore) return;
-			
+
 			switch(type) {
 				case DEFAULR_CHECKED_TYPE:
 					break;
@@ -210,10 +210,10 @@
 						this.$toast(res.msg || '您的网络状态不太好哦~')
 						return
 					}
-					const 
+					const
 						couponListInfo = this.couponListInfo[platform],
 						handleList = this.handleData(res.data);
-						
+
 					this.setChoosedTab(platform);
 					Object.assign(couponListInfo, {
 						page,
@@ -418,7 +418,7 @@
 		font-size: 14px;
 		line-height: 24px;
 		position: relative;
-		
+
 		.tab {
 			// //position: fixed;
 			// top: var(--window-top);

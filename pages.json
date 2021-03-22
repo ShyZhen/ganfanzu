@@ -26,14 +26,13 @@
 			"navigationBarTitleText": "关于我们"
 		}
 	},{
-            "path" : "pages/search/search",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+		"path" : "pages/search/search",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "搜索",
+			"enablePullDownRefresh": false
+		}
+	}
     ],
 	"tabBar": {
 		"color": "#333333",
