@@ -10,6 +10,7 @@
 		</view>
 
 		<view class="coupon" :style="{marginTop: headerHeight + 'px'}">
+      <data-list class="data-list" ref="list" @load="handleLoad" @refresh="handleRefresh" @scroll="handleScroll"></data-list>
 		</view>
 	</view>
 </template>
@@ -44,6 +45,15 @@
 			this.pageOpacity = 1
 		},
 		methods: {
+      handleLoad() {
+
+      },
+      handleRefresh() {
+
+      },
+      handleScroll() {
+
+      },
 			/**
 			 * 搜索当前平台
 			 * @param query
