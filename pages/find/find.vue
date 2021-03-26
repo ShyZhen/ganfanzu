@@ -23,6 +23,13 @@
 
 					<!--关键词输入提示列表渲染-->
 					<view class="search-list" v-show="showSearchList">
+
+            <view class="search-list--item-position">
+              <view class="item-position" @tap="backFillPosition">
+                搜索附件 “{{searchInput.inputVal}}”
+              </view>
+            </view>
+
 						<view class="search-list--item" v-for="(item, index) in suggestion" :key="index">
 							<view style="text-align:center;" @tap="backFill" :id="index">{{item.title}}</view>
 							<view style="font-size:12px;color:#666;text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" @tap="backFill">{{item.addr}}</view>
@@ -306,13 +313,20 @@
 				for (let i = 0; i < this.suggestion.length; i++) {
 					if (i == id) {
 						this.searchInput.inputVal = this.suggestion[i].title
-						this.location(this.searchInput.inputVal)
+						this.location()
 						
 						this.toggleSearchList(false)
 						// this.clearSearchList();
 					}
 				}
 			},
+      /**
+       * 表头 数据回填方法
+       */
+      backFillPosition() {
+        this.location()
+        this.toggleSearchList(false)
+      },
 			
 			/**
 			 * 切换搜索列表显示状态
@@ -459,10 +473,24 @@
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid rgba(34, 34, 34, .05);
 				height: 100rpx;
-				/*line-height: 80rpx;*/
+				//line-height: 80rpx;
 				font-size: 32rpx;
 				color: #222;
 			}
+
+      &--item-position {
+        padding: 0 24rpx;
+        border-bottom: 1rpx solid rgba(34, 34, 34, .05);
+        line-height: 100rpx;
+        .item-position {
+          font-size:15px;
+          color:#666;
+          text-align:center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
 		}
 	}
 </style>
