@@ -13,15 +13,8 @@ Vue.prototype.$toLogin = toLogin
 Vue.prototype.$toBack = toBack
 Vue.prototype.$toHome = toHome
 // 兼容H5
-Vue.prototype.$systemInfoSync = uni.getSystemInfoSync() || {
-	windowHeight: window.innerHeight,
-	windowWidth: window.innerWidth
-}
-Vue.prototype.$menuButtonRect = uni.getMenuButtonBoundingClientRect() || {
-	width: 0,
-	height: 0,
-	top: 0
-}
+Vue.prototype.$systemInfoSync = uni.getSystemInfoSync()
+Vue.prototype.$menuButtonRect = uni.getMenuButtonBoundingClientRect()
 
 App.mpType = 'app'
 

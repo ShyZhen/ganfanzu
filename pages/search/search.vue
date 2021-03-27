@@ -1,27 +1,43 @@
 <template>
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="header" :style="{paddingTop: searchInput.top + 'px'}">
-			<view class="search">
-				<view class="search-input" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-					<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-					<input type="text" placeholder="搜索商品关键字..." maxlength="32" confirm-type="search" v-model="query" @confirm="searchList">
-				</view>
+			<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+				<v-search @confrim="confrimSearch"></v-search>
 			</view>
 		</view>
-
 		<view class="coupon" :style="{marginTop: headerHeight + 'px'}">
-      <data-list class="data-list" ref="list" @load="handleLoad" @refresh="handleRefresh" @scroll="handleScroll"></data-list>
+			<view class="uni-product-list">
+				<view v-for="(v, k) in productList" @click="toCoupon(v)" :key="k">
+					<view class="uni-product">
+						<view class="image-view">
+							<image class="uni-product-image" :src="v.picture"></image>
+						</view>
+						<view class="uni-product-tip">{{v.seller_name}}</view>
+						<view class="uni-product-title">{{v.title}}</view>
+						<view class="uni-product-price">
+							<text v-if="v.item_price !==v.item_final_price" class="uni-product-price-favour">￥{{v.item_price}}</text>
+							<text class="uni-product-price-original">￥{{v.item_final_price}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { ERR_OK } from '@/common/config.js'
 	import { getQueryList } from "@/apis/ganfan.js"
 	export default {
 		data() {
 			return {
 				query: '',
 				platform: 'jd',
+				// 搜索关键字列表
+				searchKeyWordsList: [],
+				// 搜索商品
+				productList: [],
+				page: 1,
 				/**
 				 * 状态栏高度、搜索框位置（胶囊对其）
 				 **/
@@ -36,60 +52,64 @@
 		},
 		onLoad() {
 			// 胶囊宽高坐标
-			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
-			this.searchInput.height = this.$menuButtonRect.height || 32
-			this.searchInput.top = this.$menuButtonRect.top || 12
-			this.headerHeight = this.searchInput.top + this.searchInput.height + 36 + 12;
+			this.searchInput.width = this.$menuButtonRect.right - this.$menuButtonRect.width;
+			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect)
+			this.searchInput.height = this.$menuButtonRect.height
+			this.searchInput.top = this.$menuButtonRect.top
+			this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
 		},
 		onReady() {
 			this.pageOpacity = 1
 		},
+		onReachBottom() {
+			this.getProductList(++this.page)
+		},
 		methods: {
-      handleLoad() {
+			handleLoad() {
 
-      },
-      handleRefresh() {
+			},
+			handleRefresh() {
 
-      },
-      handleScroll() {
+			},
+			handleScroll() {
 
-      },
+			},
+			// 关键词联想
+			searchKeyWords() {
+				
+			},
+			confrimSearch(query) {
+				this.query = query;
+				this.getProductList()
+			},
 			/**
 			 * 搜索当前平台
 			 * @param query
 			 */
-			searchList() {
-
-				uni.showModal({
-					title: '通知',
-					content: '本功能暂时受限,小埋正在紧急处理',
-					showCancel: false,
-					confirmText: '确定',
-					success: function (res) {
-						uni.navigateBack({
-							delta: 1
-						});
-					},
-				})
-				return false
-
-
-
-
-
-				let query = this.query.trim()
-				if (!query) {
-					return false
-				}
-
+			getProductList(page = 1) {
 				this.$loading('拼命拉取中...')
 				let data = {
 					platform: this.platform,
-					page: 1,
-					query: query,
+					page: page,
+					query: this.query,
 				}
 				getQueryList(data).then(res => {
-					console.log(res)
+					if(res.code !== ERR_OK) {
+						this.$toast(res.message)
+						return;
+					}
+					const productList = res.data.map(product => {
+						const {
+							item_picture: picture,
+							item_title: seller_name,
+						} = product;
+						
+						return Object.assign(product, {
+							seller_name,
+							picture
+						})
+					})
+					this.productList = this.productList.concat(productList)
 					this.$loading(false)
 				}).catch(err => {
 					this.$toast('您的网络状态不太好哦~')
@@ -100,6 +120,10 @@
 </script>
 
 <style lang="scss">
+.search-group{
+	padding: 0 24rpx;
+	box-sizing: border-box;
+}
 page {
 	background-color: #fff;
 }
@@ -112,35 +136,78 @@ page {
 }
 
 .header {
+	position: fixed;
+	top: 0;
+	z-index: 99;
+	width: 100%;
+	padding-bottom: 12px;
 	box-sizing: border-box;
+	background-color: #fff;
 }
 
-/*搜索框*/
-.search {
+.uni-product-list {
 	display: flex;
-	position: fixed;
 	width: 100%;
-	padding: 0 24rpx;
-	box-sizing: border-box;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
 
-	.search-input {
-		height: 100%;
-		border-radius: 20px;
-		background: #F2F2F2;
-		color: rgba(68, 66, 66, 0.63);
-		display: flex;
-		/* justify-content: center; */
-		align-items: center;
+.uni-product {
+	padding: 20rpx;
+	display: flex;
+	flex-direction: column;
+}
 
-		input {
-			padding-left: 18rpx;
-			width: 75%;
-		}
-		image {
-			padding-left: 20rpx;
-			width: 20px;
-			height: 20px;
-		}
-	}
+.image-view {
+	height: 330rpx;
+	width: 330rpx;
+	margin-bottom: 12rpx;
+}
+
+.uni-product-image {
+	height: 330rpx;
+	width: 330rpx;
+}
+
+.uni-product-title {
+	width: 300rpx;
+	word-break: break-all;
+	display: -webkit-box;
+	overflow: hidden;
+	line-height: 1.5;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	font-size: 12px;
+	word-break: break-all;
+}
+
+.uni-product-price {
+	margin-top: 10rpx;
+	font-size: 13px;
+	line-height: 1.5;
+	position: relative;
+}
+
+.uni-product-price-original {
+	color: #e80080;
+}
+
+.uni-product-price-favour {
+	color: #888888;
+	text-decoration: line-through;
+	margin-left: 10rpx;
+}
+
+.uni-product-tip {
+	max-width: max-content;
+	width: 300rpx;
+	background-color: #ff3333;
+	color: #ffffff;
+	padding: 0 10rpx;
+	border-radius: 5rpx;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 </style>
