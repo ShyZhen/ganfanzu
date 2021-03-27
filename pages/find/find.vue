@@ -18,14 +18,21 @@
 						<input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search" v-model="searchInput.inputVal"
 						 @input="getSuggest" @focus="getSuggest" @confirm="location">
 						 
-						<view v-show="showSearchList" ref="searchInp" class="close" style="width: 30px;height: 30px;background-color: red;" @click="clearSearchInfo"></view>
+						<view v-show="showSearchList" ref="searchInp" class="iconfont iconioscloseempty" style="font-size: 20px;width: 30px;" @click="clearSearchInfo"></view>
 					</view>
 
 					<!--关键词输入提示列表渲染-->
 					<view class="search-list" v-show="showSearchList">
+
+            <view class="search-list--item-position">
+              <view class="item-position" @tap="backFillPosition">
+                搜索附件 “{{searchInput.inputVal}}”
+              </view>
+            </view>
+
 						<view class="search-list--item" v-for="(item, index) in suggestion" :key="index">
 							<view style="text-align:center;" @tap="backFill" :id="index">{{item.title}}</view>
-							<!--<view style="font-size:12px;color:#666;text-align:center;">{{item.addr}}</view>-->
+							<view style="font-size:12px;color:#666;text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" @tap="backFill">{{item.addr}}</view>
 						</view>
 					</view>
 				</view>
@@ -83,7 +90,7 @@
 			this.width = this.$systemInfoSync.windowWidth
 
 			// 胶囊宽高坐标
-			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 30
+			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height
 			this.searchInput.top = this.$menuButtonRect.top
 
@@ -306,13 +313,20 @@
 				for (let i = 0; i < this.suggestion.length; i++) {
 					if (i == id) {
 						this.searchInput.inputVal = this.suggestion[i].title
-						this.location(this.searchInput.inputVal)
+						this.location()
 						
 						this.toggleSearchList(false)
 						// this.clearSearchList();
 					}
 				}
 			},
+      /**
+       * 表头 数据回填方法
+       */
+      backFillPosition() {
+        this.location()
+        this.toggleSearchList(false)
+      },
 			
 			/**
 			 * 切换搜索列表显示状态
@@ -379,7 +393,6 @@
 </script>
 
 <style lang="scss">
-	// @import '../../common/css/iconfont.css';
 	page {
 		background-color: #fff;
 	}
@@ -431,14 +444,14 @@
 		.search-input {
 			height: 100%;
 			border-radius: 20px;
-			background: #ffffffd6;
+			background: rgba(255, 255, 255, 0.9);
 			color: rgba(68, 66, 66, 0.63);
 			display: flex;
 			/* justify-content: center; */
 			align-items: center;
 			
 			input {
-				padding-left: 30rpx;
+				padding-left: 18rpx;
 				width: 75%;
 			}
 
@@ -459,11 +472,25 @@
 				// width: 100%;
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid rgba(34, 34, 34, .05);
-				height: 80rpx;
-				line-height: 80rpx;
+				height: 100rpx;
+				//line-height: 80rpx;
 				font-size: 32rpx;
 				color: #222;
 			}
+
+      &--item-position {
+        padding: 0 24rpx;
+        border-bottom: 1rpx solid rgba(34, 34, 34, .05);
+        line-height: 100rpx;
+        .item-position {
+          font-size:15px;
+          color:#666;
+          text-align:center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
 		}
 	}
 </style>
