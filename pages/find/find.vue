@@ -12,14 +12,20 @@
 				 @markertap="handle" @callouttap="handle" @regionchange="regionChange" @updated="finish" show-location="true"
 				 enable-indoorMap="true" enable-poi="true" enable-building="true" enable-3D="true">
 				</map>
-				<view class="search" :style="{top:searchInput.top+'px'}">
-					<view class="search-input" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-						<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-						<input type="text" placeholder="搜索附近吃喝玩乐..." maxlength="32" confirm-type="search" v-model="searchInput.inputVal"
-						 @input="getSuggest" @focus="getSuggest" @confirm="location">
-						 
-						<view v-show="showSearchList" ref="searchInp" class="iconfont iconioscloseempty" style="font-size: 20px;width: 30px;" @click="clearSearchInfo"></view>
+				<view class="search-content" :style="{top:searchInput.top+'px'}">
+					<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+						<v-search 
+							placeholder="搜索附近吃喝玩乐..."
+							@confrim="location"
+							@focus="getSearchKeyWords"
+							@input="getSearchKeyWords"
+							@clearSearchInfo="clearSearchInfo"
+						></v-search>
 					</view>
+					<!-- <view class="search-input" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+						<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+						<input type="text"  maxlength="32" confirm-type="search" v-model="searchInput.inputVal">
+					</view> -->
 
 					<!--关键词输入提示列表渲染-->
 					<view class="search-list" v-show="showSearchList">
@@ -93,6 +99,9 @@
 			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height
 			this.searchInput.top = this.$menuButtonRect.top
+			
+			
+			console.log(`this.searchInput------------> ${JSON.stringify(this.searchInput)}`)
 
 			this.location()
 
@@ -316,7 +325,6 @@
 						this.location()
 						
 						this.toggleSearchList(false)
-						// this.clearSearchList();
 					}
 				}
 			},
@@ -343,25 +351,18 @@
 			},
 			// 清空搜索信息
 			clearSearchInfo() {
-				this.searchInput.inputVal = '';
-				// TODO 自动获取焦点  微信开发者工具中 refs 不生效 
-				// this.$refs.searchInp.focus()
 				this.toggleSearchList(false);
 				this.clearSearchList()
 			},
-			/**
-			 * 触发关键词输入提示事件
-			 * @param e
-			 */
-			getSuggest(e) {
-				if (!e.detail.value.trim()) {
+			getSearchKeyWords(query) {
+				if (!query.trim()) {
 					this.toggleSearchList(false)
 					this.clearSearchList()
 					return true
 				}
 				let that = this;
 				this.qqmapsdk.getSuggestion({
-					keyword: e.detail.value.trim(),
+					keyword: query.trim(),
 					location: that.map.latitude + ',' + that.map.longitude,
 					policy: 1,
 					filter: encodeURI("category=美食,购物,娱乐休闲,酒店宾馆"),
@@ -435,32 +436,11 @@
 		transform: translate(-50%, -50%);
 	}
 
-	.search {
+	.search-content {
 		position: fixed;
 		width: 100%;
 		padding: 0 24rpx;
 		box-sizing: border-box;
-
-		.search-input {
-			height: 100%;
-			border-radius: 20px;
-			background: rgba(255, 255, 255, 0.9);
-			color: rgba(68, 66, 66, 0.63);
-			display: flex;
-			/* justify-content: center; */
-			align-items: center;
-			
-			input {
-				padding-left: 18rpx;
-				width: 75%;
-			}
-
-			image {
-				padding-left: 20rpx;
-				width: 20px;
-				height: 20px;
-			}
-		}
 
 		.search-list {
 			margin-top: 12rpx;

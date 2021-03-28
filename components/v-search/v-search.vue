@@ -1,7 +1,7 @@
 <template>
 	<view class="search">
 		<view class="search-input">
-			<image @click="toggleFocus" class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+			<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
 			<input 
 				type="text" 
 				confirm-type="search" 
@@ -9,7 +9,7 @@
 				:placeholder="placeholder" 
 				:maxlength="maxLength" 
 				:focus="needFocus"
-				@input="searchKeyWordsList"
+				@input="input"
 				@confirm="confrim"
 				@focus="focus"
 				@blur="blur"
@@ -54,12 +54,10 @@
 			this.query = this.searchText
 		},
 		methods: {
-			toggleFocus() {
-				this.needFocus = !this.needFocus
-			},
-			searchKeyWordsList() {
+			input() {
 				this.showClearBtn = this.query !== '';
-				this.$emit('searchKeyWordsList')
+				
+				this.$emit('input', this.query)
 			},
 			confrim() {
 				const query = this.query.trim()
@@ -71,6 +69,7 @@
 				if(this.query !== '') {
 					this.toggleShowClearBtn(true)
 				}
+				this.$emit('focus', this.query)
 			},
 			blur() {
 				this.toggleShowClearBtn(false)
