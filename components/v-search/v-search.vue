@@ -1,7 +1,7 @@
 <template>
 	<view class="search">
 		<view class="search-input">
-			<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+			<image @click="toggleFocus" class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
 			<input 
 				type="text" 
 				confirm-type="search" 
@@ -9,9 +9,10 @@
 				:placeholder="placeholder" 
 				:maxlength="maxLength" 
 				:focus="needFocus"
-				@input="searchKeyWordsList" 
+				@input="searchKeyWordsList"
 				@confirm="confrim"
 				@focus="focus"
+				@blur="blur"
 			>
 			<view 
 				v-show="showClearBtn"
@@ -53,24 +54,40 @@
 			this.query = this.searchText
 		},
 		methods: {
+			toggleFocus() {
+				this.needFocus = !this.needFocus
+			},
 			searchKeyWordsList() {
 				this.showClearBtn = this.query !== '';
-				console.log(this.showClearBtn)
 				this.$emit('searchKeyWordsList')
 			},
 			confrim() {
 				const query = this.query.trim()
 				if(query === '') return;
 				this.$emit('confrim', query)
+				this.toggleShowClearBtn(false)
 			},
 			focus() {
-				this.showClearBtn = false;
+				if(this.query !== '') {
+					this.toggleShowClearBtn(true)
+				}
+			},
+			blur() {
+				this.toggleShowClearBtn(false)
+			},
+			// 是否展示清空按钮
+			toggleShowClearBtn(showClearBtn) {
+				this.showClearBtn = showClearBtn;
 			},
 			clearSearchInfo() {
 				this.query = ''
-				this.needFocus = true;
-				this.showClearBtn = false;
-				this.$emit('clearSearchInfo')
+				this.needFocus = false;
+				
+				this.$nextTick(() => {
+					this.needFocus = true;
+					this.toggleShowClearBtn(false)
+					this.$emit('clearSearchInfo')
+				})
 			}
 		}
 	}

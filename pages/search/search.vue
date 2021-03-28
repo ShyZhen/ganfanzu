@@ -53,7 +53,6 @@
 		onLoad() {
 			// 胶囊宽高坐标
 			this.searchInput.width = this.$menuButtonRect.right - this.$menuButtonRect.width;
-			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect)
 			this.searchInput.height = this.$menuButtonRect.height
 			this.searchInput.top = this.$menuButtonRect.top
 			this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
