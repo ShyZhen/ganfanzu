@@ -22,10 +22,6 @@
 							@clearSearchInfo="clearSearchInfo"
 						></v-search>
 					</view>
-					<!-- <view class="search-input" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-						<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-						<input type="text"  maxlength="32" confirm-type="search" v-model="searchInput.inputVal">
-					</view> -->
 
 					<!--关键词输入提示列表渲染-->
 					<view class="search-list" v-show="showSearchList">
@@ -99,10 +95,6 @@
 			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height
 			this.searchInput.top = this.$menuButtonRect.top
-			
-			
-			console.log(`this.searchInput------------> ${JSON.stringify(this.searchInput)}`)
-
 			this.location()
 
 			this.initQQMap()
@@ -129,7 +121,7 @@
 			 */
 			location() {
 				let query = this.searchInput.inputVal ? this.searchInput.inputVal : '美食'
-				
+
 				let that = this
 				
 				this.toggleSearchList(false)
@@ -355,14 +347,17 @@
 				this.clearSearchList()
 			},
 			getSearchKeyWords(query) {
-				if (!query.trim()) {
+        this.searchInput.inputVal = query.trim()
+
+				if (!this.searchInput.inputVal) {
 					this.toggleSearchList(false)
 					this.clearSearchList()
 					return true
 				}
+
 				let that = this;
 				this.qqmapsdk.getSuggestion({
-					keyword: query.trim(),
+					keyword: that.searchInput.inputVal,
 					location: that.map.latitude + ',' + that.map.longitude,
 					policy: 1,
 					filter: encodeURI("category=美食,购物,娱乐休闲,酒店宾馆"),

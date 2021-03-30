@@ -64,15 +64,6 @@
 			this.getProductList(++this.page)
 		},
 		methods: {
-			handleLoad() {
-
-			},
-			handleRefresh() {
-
-			},
-			handleScroll() {
-
-			},
 			// 关键词联想
 			searchKeyWords() {
 				
