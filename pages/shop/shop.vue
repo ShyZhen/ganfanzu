@@ -112,15 +112,11 @@
 			this.changeTab({
 				type
 			})
-			// 系统屏幕宽高、状态栏高度
-			//this.height = this.$systemInfoSync.windowHeight
-			//this.width = this.$systemInfoSync.windowWidth
-			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect.width)
+
 			// 胶囊宽高坐标
 			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height || 32
 			this.searchInput.top = this.$menuButtonRect.top || 12
-			console.log(this.searchInput.top, this.searchInput.height)
 			this.headerHeight = this.searchInput.top + this.searchInput.height + 36 + 12;
 		},
 		onReady(e) {
