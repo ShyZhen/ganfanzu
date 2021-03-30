@@ -32,13 +32,17 @@
 			return getShareObj()
 		},
 		methods: {
+      // 获取产品详情信息
       getProductDetail(param) {
+        this.$loading('拼命加载中...')
         let that = this
         getProductDetail(param).then(res => {
           that.item = res.data
           that.handleData(that.item)
+          that.$loading(false)
         })
       },
+      // 点击领券购买调用
       getDetailLinkAndGoMp(item) {
         this.$loading('拼命加载中...')
         getDetailLink({
@@ -64,6 +68,7 @@
       // 处理当前页面展示
       handleData(item) {
         this.imgList = item.item_small_pictures
+        console.log(item)
       }
 		},
 	};
