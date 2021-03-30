@@ -55,7 +55,21 @@ function getCustomProduct() {
     })
 }
 
+/**
+ * 获取产品详情（与list中的一样）
+ * @param data {platform,item_id}
+ * @returns {Promise<unknown>}
+ */
+function getProductDetail(data) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', '?module=api&controller=Index&action=getDetail', data).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
 
 export {
-    getProductList, getDetailLink, getCustomProduct, getQueryList
+    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail
 }
