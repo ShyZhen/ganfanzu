@@ -8,7 +8,36 @@
     </view>
 
     <view class="banner">
-      <imgsBanner :imgList='imgList' :currentImg='currentImg'></imgsBanner>
+      <imgsBanner :imgList='item.item_small_pictures' :currentImg='currentImg'></imgsBanner>
+    </view>
+
+
+
+
+    <view>
+      <view>
+        {{item.item_title}}
+      </view>
+      <view>
+        {{item.item_price}}
+        {{item.item_final_price}}
+      </view>
+
+      <view>
+        {{item.item_volume}}
+      </view>
+      <view>
+        {{item.seller_name}}
+      </view>
+
+      <view class="bottom" @tap="getDetailLinkAndGoMp">
+        <text v-if="item.coupon || item.coupon_price">
+          领券购买
+        </text>
+        <text v-if="!item.coupon && !item.coupon_price">
+          去购买
+        </text>
+      </view>
     </view>
 
 	</view>
@@ -23,6 +52,7 @@
     components: {imgsBanner},
 		data() {
 			return {
+        pageOpacity: 0,
         /**
          * 状态栏高度、搜索框位置（胶囊对其）
          **/
@@ -34,7 +64,6 @@
           inputVal: ''
         },
 
-        imgList: [],
         currentImg: 0,
         item: null,
 			};
@@ -45,12 +74,8 @@
       this.searchInput.top = this.$menuButtonRect.top
       this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
 
-
 			let propItem = JSON.parse(decodeURIComponent(e.item))
       this.getProductDetail({"platform":propItem.platform, "item_id":propItem.item_id})
-		},
-		onReady(e) {
-			this.pageOpacity = 1
 		},
 
 		onShareAppMessage(res) {
@@ -62,38 +87,39 @@
         this.$loading('拼命加载中...')
         let that = this
         getProductDetail(param).then(res => {
-          that.item = res.data
-          that.handleData(that.item)
-          that.$loading(false)
+          that.handleData(res.data)
         })
       },
       // 点击领券购买调用
-      getDetailLinkAndGoMp(item) {
+      getDetailLinkAndGoMp() {
         this.$loading('拼命加载中...')
-        getDetailLink({
-          'item_url': item.item_url
-        }).then(res => {
+
+        let param = {
+          'item_url': this.item.item_url
+        }
+        getDetailLink(param).then(res => {
           this.goMPwexin(res.data)
           this.$loading(false)
         })
       },
-      goMPwexin(item) {
+      goMPwexin(detailLink) {
         //#ifdef H5
-        window.location.href = item.short_url
+        window.location.href = detailLink.short_url
         //#endif
         //微信小程序
         //#ifdef MP-WEIXIN
         wx.navigateToMiniProgram({
-          appId: item.wx_appid,
-          path: item.wx_path,
+          appId: detailLink.wx_appid,
+          path: detailLink.wx_path,
           success(res) {}
         })
         //#endif
       },
       // 处理当前页面展示
       handleData(item) {
-        this.imgList = item.item_small_pictures
-        console.log(item)
+        this.item = item
+        this.pageOpacity = 1
+        this.$loading(false)
       }
 		},
 	};
