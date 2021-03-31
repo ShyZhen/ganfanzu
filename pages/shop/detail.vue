@@ -1,8 +1,16 @@
 <template>
 	<view class="container" :style="{opacity:pageOpacity}">
-    <view>
+
+    <view class="header" :style="{paddingTop: searchInput.top + 'px'}">
+      <view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+        <v-back></v-back>
+      </view>
+    </view>
+
+    <view class="banner">
       <imgsBanner :imgList='imgList' :currentImg='currentImg'></imgsBanner>
     </view>
+
 	</view>
 </template>
 
@@ -15,12 +23,29 @@
     components: {imgsBanner},
 		data() {
 			return {
+        /**
+         * 状态栏高度、搜索框位置（胶囊对其）
+         **/
+        headerHeight: 0,
+        searchInput: {
+          width: 0,
+          height: 0,
+          top: 0,
+          inputVal: ''
+        },
+
         imgList: [],
         currentImg: 0,
         item: null,
 			};
 		},
 		onLoad(e) {
+      this.searchInput.width = this.$menuButtonRect.right - this.$menuButtonRect.width;
+      this.searchInput.height = this.$menuButtonRect.height
+      this.searchInput.top = this.$menuButtonRect.top
+      this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
+
+
 			let propItem = JSON.parse(decodeURIComponent(e.item))
       this.getProductDetail({"platform":propItem.platform, "item_id":propItem.item_id})
 		},
@@ -75,5 +100,8 @@
 </script>
 
 <style lang="scss">
-
+  .header {
+    position: absolute;
+    z-index: 1;
+  }
 </style>

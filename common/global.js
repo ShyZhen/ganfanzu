@@ -45,7 +45,7 @@ function toBack(pagesLength) {
         return;
     } else {
         uni.switchTab({
-            url: '../home/home'
+            url: '../index/index'
         });
         return;
     }
