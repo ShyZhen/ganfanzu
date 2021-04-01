@@ -70,6 +70,21 @@ function getProductDetail(data) {
     })
 }
 
+/**
+ * 获取产品 图文 详情
+ * @param data {platform,item_id}
+ * @returns {Promise<unknown>}
+ */
+function getProductHtml(data) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', '?module=api&controller=Index&action=getHtml', data).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 export {
-    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail
+    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail, getProductHtml
 }
