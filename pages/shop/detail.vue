@@ -131,7 +131,7 @@
       this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
 
 			let propItem = JSON.parse(decodeURIComponent(e.item))
-      this.propData.platform = propItem.platform
+      this.propData.platform = e.platform ? e.platform : propItem.platform
       this.propData.item_id = propItem.item_id
 
       let param = {
