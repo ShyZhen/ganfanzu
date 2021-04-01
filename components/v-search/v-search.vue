@@ -45,7 +45,7 @@
 		},
 		data() {
 			return {
-				needFocus: false,
+				needFocus: true,
 				showClearBtn: false,
 				query: ''
 			};

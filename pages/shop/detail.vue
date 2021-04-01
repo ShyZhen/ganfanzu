@@ -29,7 +29,7 @@
         <view class="promotion">
           <view class="promotion-text">优惠券</view>
           <i v-if="item.coupon_price && item.coupon_price !== '0.000'">
-            <view class="promotion-icon">{{ item.coupon_price}}</view>
+            <view class="promotion-icon">￥{{ item.coupon_price}}</view>
           </i>
           <i v-else>
             <view class="promotion-no-icon">无</view>
