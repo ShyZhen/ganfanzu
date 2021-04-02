@@ -27,6 +27,10 @@
 <script>
 	export default {
 		props: {
+      needFocus: {
+        type: Boolean,
+        default: false
+      },
 			// 最多输入长度
 			maxLength: {
 				type: Number,
@@ -45,7 +49,6 @@
 		},
 		data() {
 			return {
-				needFocus: true,
 				showClearBtn: false,
 				query: ''
 			};

@@ -14,7 +14,7 @@
 				</map>
 				<view class="search-content" :style="{top:searchInput.top+'px'}">
 					<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-						<v-search 
+						<v-search
 							placeholder="搜索附近吃喝玩乐..."
 							@confrim="location"
 							@focus="getSearchKeyWords"

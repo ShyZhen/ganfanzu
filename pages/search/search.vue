@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="header" :style="{paddingTop: searchInput.top + 'px'}">
 			<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-				<v-search @confrim="confrimSearch"></v-search>
+				<v-search @confrim="confrimSearch" needFocus="true"></v-search>
 			</view>
 		</view>
 		<view class="coupon" :style="{marginTop: headerHeight + 'px'}">
