@@ -22,6 +22,7 @@
 				</view>
 			</view>
 		</view>
+		<v-loading v-show="!canLoadMore" type="1"></v-loading>
 	</view>
 </template>
 
@@ -31,6 +32,8 @@
 	export default {
 		data() {
 			return {
+				// 是否可以加载更多
+				canLoadMore: true,
 				query: '',
 				platform: 'jd',
 				// 搜索关键字列表
@@ -69,14 +72,18 @@
 				
 			},
 			confrimSearch(query) {
+				this.canLoadMore = true
+				this.page = 1;
 				this.query = query;
-				this.getProductList()
+				this.productList = []
+				this.getProductList(this.page)
 			},
 			/**
 			 * 搜索当前平台
 			 * @param query
 			 */
 			getProductList(page = 1) {
+				if(!this.canLoadMore) return;
 				this.$loading('拼命拉取中...')
 				let data = {
 					platform: this.platform,
@@ -88,6 +95,8 @@
 						this.$toast(res.message)
 						return;
 					}
+					this.canLoadMore = res.pagination.has_more
+					
 					const productList = res.data.map(product => {
 						const {
 							item_picture: picture,
