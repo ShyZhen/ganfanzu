@@ -108,35 +108,31 @@
 			// //#endif
 
 			this.initTabs();
-			this.initCouponListInfo(this.tabs);
+			this.initCouponListInfo(this.tabs)
 			this.changeTab({
 				type
 			})
-			// 系统屏幕宽高、状态栏高度
-			//this.height = this.$systemInfoSync.windowHeight
-			//this.width = this.$systemInfoSync.windowWidth
-			console.log(this.$systemInfoSync.windowWidth, this.$menuButtonRect.width)
+
 			// 胶囊宽高坐标
 			this.searchInput.width = (this.$systemInfoSync.windowWidth - this.$menuButtonRect.width) - 24
 			this.searchInput.height = this.$menuButtonRect.height || 32
 			this.searchInput.top = this.$menuButtonRect.top || 12
-			console.log(this.searchInput.top, this.searchInput.height)
-			this.headerHeight = this.searchInput.top + this.searchInput.height + 36 + 12;
+			this.headerHeight = this.searchInput.top + this.searchInput.height + 36 + 12
 		},
 		onReady(e) {
 			this.pageOpacity = 1
 		},
 		onReachBottom() {
-			const type = this.tabType;
-			if(!type) return;
+			const type = this.tabType
+			if(!type) return
 			const couponListInfo = this.couponListInfo[type];
 			let {canLoadMore, page} = couponListInfo;
 			// 没有更多加载
-			if(!canLoadMore) return;
+			if(!canLoadMore) return
 
 			switch(type) {
 				case DEFAULR_CHECKED_TYPE:
-					break;
+					break
 				default:
 					this.getProductList(type, ++page)
 			}
@@ -212,9 +208,9 @@
 					}
 					const
 						couponListInfo = this.couponListInfo[platform],
-						handleList = this.handleData(res.data);
+						handleList = this.handleData(res.data, platform);
 
-					this.setChoosedTab(platform);
+					this.setChoosedTab(platform)
 					Object.assign(couponListInfo, {
 						page,
 						canLoadMore: handleList.length >= couponListInfo.size
@@ -231,17 +227,18 @@
 			changeTab(tabInfo) {
 				const {
 					type
-				} = tabInfo;
+				} = tabInfo
 				const {
 					[type]: {
 						list: couponList
 					}
 				} = this.couponListInfo;
 				if (couponList.length !== 0) {
-					this.setChoosedTab(type);
+					this.setChoosedTab(type)
 					return;
-				};
+				}
 				this.$loading('拼命拉取中...')
+
 				switch (type) {
 					// 默认下饭必备
 					case DEFAULR_CHECKED_TYPE:
@@ -253,7 +250,7 @@
 								return
 							}
 							this.setChoosedTab(type);
-							this.couponListInfo[DEFAULR_CHECKED_TYPE].list = this.handleData(res.data, true)
+							this.couponListInfo[DEFAULR_CHECKED_TYPE].list = this.handleData(res.data, type)
 							this.$loading(false)
 						}).catch(err => {
 							this.isLoading = false;
@@ -271,18 +268,26 @@
 				//#endif
 			},
 			toCoupon(item) {
-				if (item.custom === 1) {
-					this.goMPwexin(item)
-					this.$loading(false)
-				} else {
-					this.$loading('拼命加载中...')
-					getDetailLink({
-						'item_url': item.item_url
-					}).then(res => {
-						this.goMPwexin(res.data)
-						this.$loading(false)
-					})
-				}
+
+			  // 点击跳转到详情页
+        uni.navigateTo({
+          url: '../../pages/shop/detail?item='+encodeURIComponent(JSON.stringify(item))
+        })
+        return false;
+
+        // 全部统一，自定义与其他平台的处理方式，不再直接返回wx_path
+				// if (item.custom === 1) {
+				// 	this.goMPwexin(item)
+				// 	this.$loading(false)
+				// } else {
+				// 	this.$loading('拼命加载中...')
+				// 	getDetailLink({
+				// 		'item_url': item.item_url
+				// 	}).then(res => {
+				// 		this.goMPwexin(res.data)
+				// 		this.$loading(false)
+				// 	})
+				// }
 			},
 			xiaoMai() {
 				let messages = [{
@@ -303,9 +308,9 @@
 				this.$toast(message)
 			},
 			// 处理数据格式，区分自定义以及接口api返回
-			handleData(data, isCustom = false) {
+			handleData(data, type) {
 				let formatData = []
-				if (isCustom) {
+				if (type === DEFAULR_CHECKED_TYPE) {
 					data.forEach(item => {
 						let obj = {}
 						obj.custom = 1
@@ -316,10 +321,11 @@
 						obj.item_price = item.product_original_price // 原价
 						obj.item_final_price = item.product_coupon_after_price // 卷后价格
 
-						// 以下为自定义产品直接带有的信息，非自定义的需要去调用getLink接口拿
-						obj.short_url = item.short_url
-						obj.wx_appid = item.wx_appid
-						obj.wx_path = item.wx_path
+            obj.item_id = item.item_id
+            // 自定义产品返回platform
+            obj.platform = item.platform
+            obj.coupon = item.coupon
+            obj.coupon_price = item.coupon_price
 
 						formatData.push(obj)
 					})
@@ -334,26 +340,32 @@
 						obj.item_price = item.item_price // 原价
 						obj.item_final_price = item.item_final_price // 卷后价格
 
+            obj.item_id = item.item_id
+            // 其他产品使用当前tab
+            obj.platform = type
+            obj.coupon = item.coupon
+            obj.coupon_price = item.coupon_price
+
 						formatData.push(obj)
 					})
 				}
 				return formatData
 			},
-			goMPwexin(item) {
-				//#ifdef H5
-				window.location.href = item.short_url
-				//#endif
-				//微信小程序
-				//#ifdef MP-WEIXIN
-				wx.navigateToMiniProgram({
-					appId: item.wx_appid,
-					path: item.wx_path,
-					success(res) {}
-				})
-				//#endif
-			},
-		},
 
+			// goMPwexin(item) {
+			// 	//#ifdef H5
+			// 	window.location.href = item.short_url
+			// 	//#endif
+			// 	//微信小程序
+			// 	//#ifdef MP-WEIXIN
+			// 	wx.navigateToMiniProgram({
+			// 		appId: item.wx_appid,
+			// 		path: item.wx_path,
+			// 		success(res) {}
+			// 	})
+			// 	//#endif
+			// },
+		},
 	};
 </script>
 

@@ -1,6 +1,5 @@
 <template>
   <view class="container" :style="{opacity:pageOpacity}">
-	<v-fake-search></v-fake-search>
     <!--  header  -->
     <view class="header-container">
       <view class="header">

@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="header" :style="{paddingTop: searchInput.top + 'px'}">
 			<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-				<v-search @confrim="confrimSearch"></v-search>
+				<v-search @confrim="confrimSearch" needFocus="true"></v-search>
 			</view>
 		</view>
 		<view class="coupon" :style="{marginTop: headerHeight + 'px'}">
@@ -13,7 +13,7 @@
 							<image class="uni-product-image" :src="v.picture"></image>
 						</view>
 						<view class="uni-product-tip">{{v.seller_name}}</view>
-						<view class="uni-product-title">{{v.title}}</view>
+						<view class="uni-product-title">{{v.item_title}}</view>
 						<view class="uni-product-price">
 							<text v-if="v.item_price !==v.item_final_price" class="uni-product-price-favour">￥{{v.item_price}}</text>
 							<text class="uni-product-price-original">￥{{v.item_final_price}}</text>
@@ -64,15 +64,6 @@
 			this.getProductList(++this.page)
 		},
 		methods: {
-			handleLoad() {
-
-			},
-			handleRefresh() {
-
-			},
-			handleScroll() {
-
-			},
 			// 关键词联想
 			searchKeyWords() {
 				
@@ -113,7 +104,14 @@
 				}).catch(err => {
 					this.$toast('您的网络状态不太好哦~')
 				})
-			}
+			},
+      toCoupon(item) {
+        // 点击跳转到详情页
+        uni.navigateTo({
+          url: '../../pages/shop/detail?platform=jd&item='+encodeURIComponent(JSON.stringify(item))
+        })
+        return false;
+      },
 		}
 	}
 </script>

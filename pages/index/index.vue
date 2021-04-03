@@ -17,7 +17,10 @@
         <image src="/static/xiaomai_min.png" mode="widthFix" lazy-load @load="onoff='1'" @click="followNotice" />
       </view>
     </view>
-
+    <!--  扫码进入的关注公众号  -->
+    <view>
+      <official-account></official-account>
+    </view>
     <!--  内容  -->
     <view class="coupon" ref="coupon">
       <view class="item" v-for="(v, i) in couponList" @click="toCoupon(i)" :key="i">
@@ -34,11 +37,6 @@
         </view>
         <view class="bottom"><image :src="v.bannerPic" class="banner-image" mode="widthFix" lazy-load @load="onoff='1'" /></view>
       </view>
-    </view>
-
-    <!--  关于  -->
-    <view>
-
     </view>
   </view>
 </template>

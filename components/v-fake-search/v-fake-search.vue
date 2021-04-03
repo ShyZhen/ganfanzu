@@ -42,14 +42,15 @@
 		flex-direction: row;
 		align-items: center;
 		border-radius: 20px;
-		background: #ffffff;
-		color: rgba(68, 66, 66, 0.63);;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(68, 66, 66, 0.63);
 		&-icon{
 			width: 20px;
 			height: 20px;
 			flex-shrink: 0;
 		}
 		.search-input {
+      width: 100%;
 			flex-shrink: 1;
 			padding-left: 18rpx;
 		}

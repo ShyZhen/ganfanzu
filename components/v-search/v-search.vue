@@ -1,8 +1,8 @@
 <template>
 	<view class="search">
-		<view class="search-input">
-			<image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
-			<input 
+    <view class="search-input">
+      <image class="search-icon" src="../../static/icon/search.png" mode="widthFix" lazy-load @load="onoff='1'"></image>
+      <input
 				type="text" 
 				confirm-type="search" 
 				v-model="query" 
@@ -27,6 +27,10 @@
 <script>
 	export default {
 		props: {
+      needFocus: {
+        type: Boolean,
+        default: false
+      },
 			// 最多输入长度
 			maxLength: {
 				type: Number,
@@ -45,7 +49,6 @@
 		},
 		data() {
 			return {
-				needFocus: false,
 				showClearBtn: false,
 				query: ''
 			};
@@ -94,32 +97,35 @@
 
 <style lang="scss">
 $primary-padding: 24rpx;
-$innerInputHeight: 52rpx;
+$innerInputHeight: 60rpx;
 .search{
 	width: 100%;
 	height: 100%;
 	display: flex;
+  flex-direction: row;
 	align-items: center;
 	border-radius: 20px;
-	background: #F2F2F2;
+	background: rgba(255, 255, 255, 0.9);
 	color: rgba(68, 66, 66, 0.63);
-	
-	&-input{
-		display: flex;
-		width: 100%;
-		height: $innerInputHeight;
-		
-		.search-icon{
-			margin-left: $primary-padding / 2;
-			width: $innerInputHeight;
-			height: $innerInputHeight;
-		}
-		input{
-			margin: 0 $primary-padding / 2;
-			flex: 1;
-		}
-		
-	}
+    &-icon{
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      padding-left: 24rpx;
+    }
+  .search-input {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+
+    input {
+      width: 100%;
+      padding-left: 18rpx;
+    }
+  }
 
 	.close{
 		font-size: 20px;
