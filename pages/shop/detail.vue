@@ -219,7 +219,7 @@
   @import url("@/components/u-parse/u-parse.css");
 
   .header {
-    position: absolute;
+    position: fixed;
     z-index: 1;
   }
 

@@ -23,12 +23,16 @@
 	width: 100%;
 	height: 100%;
 	display: flex;
-  flex-direction: row;
+	flex-direction: row;
 	align-items: center;
-	color: rgba(68, 66, 66, 0.63);
+	color: #222;
     &-icon{
       font-size: 20px;
-      padding-left: 24rpx;
+	  background: rgba(255, 255, 255, .4);
+	  padding-left: 0;
+	  margin-left: 24rpx;
+	  padding: 0 24rpx;
+	  border-radius: 24rpx;
     }
 }
 </style>
