@@ -93,7 +93,7 @@ export default {
     /* 关闭btn黑白两色 或者自行添加 */
     closeColor: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     /* 动画效果 */
     isAm: {
@@ -196,6 +196,7 @@ export default {
     .close {
       height: 30rpx;
       width: 30rpx;
+      line-height: initial;
       .closeImg {
         height: 100%;
         width: 100%;
