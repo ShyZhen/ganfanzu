@@ -188,6 +188,8 @@ page {
     line-height: 230rpx;
     color: #fff;
     font-size: 16px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
   }
 
   .banner {
