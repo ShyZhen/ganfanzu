@@ -67,7 +67,7 @@ export default {
     /* 提示文字 */
     text: {
       type: String,
-      default: "添加到我的小程序",
+      default: "添加到我的小程序,下次访问更方便",
     },
     /* 提示文字样式 */
     fontObj: {
@@ -88,7 +88,7 @@ export default {
     /* 延时出现 */
     delay: {
       type: Number,
-      default: 0,
+      default: 1000,
     },
     /* 关闭btn黑白两色 或者自行添加 */
     closeColor: {
@@ -143,8 +143,7 @@ export default {
     },
   },
   onReady() {
-    // 不再自动展示
-    // this.init();
+    this.init();
   },
 };
 </script>
