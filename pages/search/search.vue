@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="header" :style="{paddingTop: searchInput.top + 'px'}">
 			<view class="search-group" :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
-				<v-search @confrim="confrimSearch" needFocus="true"></v-search>
+				<v-search @confrim="confirmSearch" needFocus="true"></v-search>
 			</view>
 		</view>
 		<view class="coupon" :style="{marginTop: headerHeight + 'px'}">
@@ -51,6 +51,14 @@
 					top: 0,
 					inputVal: ''
 				},
+				queryFilter: [
+					'会员',
+					'大会员',
+					'话费',
+					'点卡',
+					'Q币',
+					'充值',
+				]
 			}
 		},
 		onLoad() {
@@ -69,9 +77,13 @@
 		methods: {
 			// 关键词联想
 			searchKeyWords() {
-				
+
 			},
-			confrimSearch(query) {
+			confirmSearch(query) {
+				if (this.inArray(query, this.queryFilter)) {
+					this.$toast('虚拟物品暂时不支持购买')
+					return false
+				}
 				this.canLoadMore = true
 				this.page = 1;
 				this.query = query;
@@ -96,13 +108,13 @@
 						return;
 					}
 					this.canLoadMore = res.pagination.has_more
-					
+
 					const productList = res.data.map(product => {
 						const {
 							item_picture: picture,
 							item_title: seller_name,
 						} = product;
-						
+
 						return Object.assign(product, {
 							seller_name,
 							picture
@@ -114,106 +126,114 @@
 					this.$toast('您的网络状态不太好哦~')
 				})
 			},
-      toCoupon(item) {
-        // 点击跳转到详情页
-        uni.navigateTo({
-          url: '../../pages/shop/detail?platform=jd&item='+encodeURIComponent(JSON.stringify(item))
-        })
-        return false;
-      },
+			toCoupon(item) {
+				// 点击跳转到详情页
+				uni.navigateTo({
+					url: '../../pages/shop/detail?platform=jd&item='+encodeURIComponent(JSON.stringify(item))
+				})
+				return false;
+			},
+			inArray (search, array) {
+				for (let i in array){
+					if (array[i] == search) {
+						return true;
+					}
+				}
+				return false;
+			},
 		}
 	}
 </script>
 
 <style lang="scss">
-.search-group{
-	padding: 0 24rpx;
-	box-sizing: border-box;
-}
-page {
-	background-color: #fff;
-}
+	.search-group{
+		padding: 0 24rpx;
+		box-sizing: border-box;
+	}
+	page {
+		background-color: #fff;
+	}
 
-.container {
-	transition: all 0.5s linear;
-	font-size: 14px;
-	line-height: 24px;
-	position: relative;
-}
+	.container {
+		transition: all 0.5s linear;
+		font-size: 14px;
+		line-height: 24px;
+		position: relative;
+	}
 
-.header {
-	position: fixed;
-	top: 0;
-	z-index: 99;
-	width: 100%;
-	padding-bottom: 12px;
-	box-sizing: border-box;
-	background-color: #fff;
-}
+	.header {
+		position: fixed;
+		top: 0;
+		z-index: 99;
+		width: 100%;
+		padding-bottom: 12px;
+		box-sizing: border-box;
+		background-color: #fff;
+	}
 
-.uni-product-list {
-	display: flex;
-	width: 100%;
-	flex-wrap: wrap;
-	flex-direction: row;
-}
+	.uni-product-list {
+		display: flex;
+		width: 100%;
+		flex-wrap: wrap;
+		flex-direction: row;
+	}
 
-.uni-product {
-	padding: 20rpx;
-	display: flex;
-	flex-direction: column;
-}
+	.uni-product {
+		padding: 20rpx;
+		display: flex;
+		flex-direction: column;
+	}
 
-.image-view {
-	height: 330rpx;
-	width: 330rpx;
-	margin-bottom: 12rpx;
-}
+	.image-view {
+		height: 330rpx;
+		width: 330rpx;
+		margin-bottom: 12rpx;
+	}
 
-.uni-product-image {
-	height: 330rpx;
-	width: 330rpx;
-}
+	.uni-product-image {
+		height: 330rpx;
+		width: 330rpx;
+	}
 
-.uni-product-title {
-	width: 300rpx;
-	word-break: break-all;
-	display: -webkit-box;
-	overflow: hidden;
-	line-height: 1.5;
-	text-overflow: ellipsis;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	font-size: 12px;
-	word-break: break-all;
-}
+	.uni-product-title {
+		width: 300rpx;
+		word-break: break-all;
+		display: -webkit-box;
+		overflow: hidden;
+		line-height: 1.5;
+		text-overflow: ellipsis;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		font-size: 12px;
+		word-break: break-all;
+	}
 
-.uni-product-price {
-	margin-top: 10rpx;
-	font-size: 13px;
-	line-height: 1.5;
-	position: relative;
-}
+	.uni-product-price {
+		margin-top: 10rpx;
+		font-size: 13px;
+		line-height: 1.5;
+		position: relative;
+	}
 
-.uni-product-price-original {
-	color: #e80080;
-}
+	.uni-product-price-original {
+		color: #e80080;
+	}
 
-.uni-product-price-favour {
-	color: #888888;
-	text-decoration: line-through;
-	margin-left: 10rpx;
-}
+	.uni-product-price-favour {
+		color: #888888;
+		text-decoration: line-through;
+		margin-left: 10rpx;
+	}
 
-.uni-product-tip {
-	max-width: max-content;
-	width: 300rpx;
-	background-color: #ff3333;
-	color: #ffffff;
-	padding: 0 10rpx;
-	border-radius: 5rpx;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
+	.uni-product-tip {
+		max-width: max-content;
+		width: 300rpx;
+		background-color: #ff3333;
+		color: #ffffff;
+		padding: 0 10rpx;
+		border-radius: 5rpx;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
 </style>
