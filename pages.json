@@ -39,6 +39,13 @@
 			"navigationBarTitleText": "详情",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/index/detail",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "领取详情",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {
@@ -56,17 +63,18 @@
 			"selectedIconPath": "static/icon/find_b.png",
 			"text": "发现"
 		}
-//		,{
-//			"pagePath": "pages/shop/shop",
-//			"iconPath": "static/icon/shop.png",
-//			"selectedIconPath": "static/icon/shop_b.png",
-//			"text": "推荐"
-//		},{
-//			"pagePath": "pages/about/about",
-//			"iconPath": "static/icon/about.png",
-//			"selectedIconPath": "static/icon/about_b.png",
-//			"text": "关于"
-//		}
+		,{
+			"pagePath": "pages/shop/shop",
+			"iconPath": "static/icon/shop.png",
+			"selectedIconPath": "static/icon/shop_b.png",
+			"text": "推荐"
+		},
+		{
+			"pagePath": "pages/about/about",
+			"iconPath": "static/icon/about.png",
+			"selectedIconPath": "static/icon/about_b.png",
+			"text": "关于"
+		}
 		]
 	},
 	"globalStyle": {

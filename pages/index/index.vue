@@ -69,7 +69,10 @@ export default {
           minapp: {
             appid: couponsConfig.elmMpAppId,
             path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
-          }
+          },
+          imageList: [
+            "/static/detail/qr-elm.jpg",
+          ],
         },
         {
           name: '饿了么吃货联盟红包',
@@ -80,7 +83,10 @@ export default {
           minapp: {
             appid: couponsConfig.elmMpAppId,
             path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
-          }
+          },
+          imageList: [
+            "/static/detail/qr-elm.jpg",
+          ],
         },
         {
           name: '饿了么果蔬商超红包',
@@ -91,7 +97,10 @@ export default {
           minapp: {
             appid: couponsConfig.elmMpAppId,
             path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
-          }
+          },
+          imageList: [
+            "/static/detail/qr-elm.jpg",
+          ],
         },
         {
           name: '美团外卖每日红包',
@@ -102,7 +111,10 @@ export default {
           minapp: {
             appid: couponsConfig.mtMpAppId,
             path: '/index/pages/h5/h5?noshare=1&f_userId=0&f_openId=0&f_token=0&weburl=https%3A%2F%2Fact1.meituan.com%2Fclover%2Fpage%2Fadunioncps%2Fshare_coupon_new%3FutmSource%3D2055%26timestamp%3D1615167531%26utmMedium%3D98670413856f97f334a8066e04c00927%26version%3D1.0%26showKa%3D1%26requestId%3D9ad229c06587083df07a7f26ad026744%26activity%3DOwMkGzn6oK'
-          }
+          },
+          imageList: [
+            "/static/detail/qr-mt.jpg",
+          ],
         },
       ]
     };
@@ -139,6 +151,15 @@ export default {
       }, 500)
     },
     toCoupon(i) {
+
+      // 点击跳转到详情页
+      uni.navigateTo({
+        url: '../../pages/index/detail?item='+encodeURIComponent(JSON.stringify(this.couponList[i]))
+      })
+      return false;
+
+
+
       let that = this
       this.$loading('拼命拉取中...')
 
@@ -161,6 +182,8 @@ export default {
         })
       }
       //#endif
+
+
     },
     followNotice() {
       if (uni.getStorageSync(this.noticeKey)) {
