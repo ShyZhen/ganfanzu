@@ -74,7 +74,7 @@
 
       <view class="buyNow" @tap="getDetailLinkAndGoMp">
         <text v-if="item.coupon || item.coupon_price">
-          优惠卷￥{{ item.coupon_price}}
+          优惠 ￥{{ item.coupon_price}}
         </text>
         <text v-if="!item.coupon && !item.coupon_price">
           无优惠
