@@ -74,10 +74,10 @@
 
       <view class="buyNow" @tap="getDetailLinkAndGoMp">
         <text v-if="item.coupon || item.coupon_price">
-          领券购买
+          优惠卷￥{{ item.coupon_price}}
         </text>
         <text v-if="!item.coupon && !item.coupon_price">
-          立即购买
+          无优惠
         </text>
       </view>
     </view>
@@ -155,6 +155,11 @@
       },
       // 点击领券购买调用
       getDetailLinkAndGoMp() {
+
+        // 仅支持比价
+        this.$toast('仅支持优惠查询，购买还请到官方app下进行')
+        return false;
+
         this.$loading('拼命加载中...')
         let param = {
           'item_url': this.item.item_url
