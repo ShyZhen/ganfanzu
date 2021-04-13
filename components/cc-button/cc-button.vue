@@ -1,6 +1,7 @@
 <template>
   <view class="button-container">
     <button
+      :open-type=openType
       hover-class="none"
       @tap="tap"
       @click="onclick"
@@ -39,6 +40,10 @@ export default {
     return {};
   },
   props: {
+    openType: {
+      type: String,
+      default: ''
+    },
     loading: {
       type: Boolean,
       default: false

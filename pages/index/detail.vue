@@ -10,10 +10,10 @@
     </view>
 
     <view class="button-click">
-      <CcButton @cctap="showLoading('shareLoading')" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
-                :loading="shareLoading">分享</CcButton>
-      <CcButton @cctap="showLoading('saveLoading')" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
-                :loading="saveLoading">保存</CcButton>
+      <CcButton @cctap="showLoading('shareLoading', 1000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
+                :loading="shareLoading" openType="share">分享</CcButton>
+      <CcButton @cctap="showLoading('saveLoading', 30000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
+                :loading="saveLoading" @tap="saveTo">保存</CcButton>
     </view>
 
     <view class="bottom-bar">
@@ -29,6 +29,7 @@
 <script>
 import cardSwiper from "@/components/helang-cardSwiper/helang-cardSwiper"
 import CcButton from '@/components/cc-button/cc-button.vue'
+import { getShareObj } from "@/common/share.js";
 
 export default {
   data() {
@@ -58,19 +59,15 @@ export default {
   },
   onLoad(e) {
     this.coupon = JSON.parse(decodeURIComponent(e.item))
-    console.log(this.coupon)
   },
   // 页面滚动监听
   onPageScroll(e){
     this.pageScrollTop = Math.floor(e.scrollTop);
   },
+  onShareAppMessage(res) {
+    return getShareObj()
+  },
   methods: {
-    showLoading(type) {
-      this[type] = true
-      setTimeout(() => {
-        this[type] = false
-      }, 2000);
-    },
     goToMp() {
       let that = this
       this.$loading('拼命拉取中...')
@@ -96,7 +93,27 @@ export default {
         })
       }
       //#endif
-    }
+    },
+
+    saveTo() {
+      let that = this
+      uni.saveImageToPhotosAlbum({
+        filePath: this.coupon.imageList[0],
+        success: function () {
+          that.$toast('保存本地成功!')
+        },
+        complete: function() {
+          that.saveLoading = false
+        }
+      });
+    },
+    // 超过最大执行时间后，loading状态为false
+    showLoading(type, ttl = 3500) {
+      this[type] = true
+      setTimeout(() => {
+        this[type] = false
+      }, ttl);
+    },
   }
 }
 </script>
