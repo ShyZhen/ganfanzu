@@ -11,9 +11,9 @@
 				<view style="height: 44px;"></view>
 			 	<swiper class="swiper" :previous-margin="swiper.margin" :next-margin='swiper.margin' :circular="true" @change="swiperChange">
 			 		<swiper-item v-for="(item,index) in imageList" :key="index">
-			 			<image class='le-img' :src='item' :class="{'le-active':swiper.index == index}"></image>
+			 			<image class='le-img' :src='item' :class="{'le-active':swiper.index == index}" mode="aspectFill"></image>
 			 		</swiper-item>
-			 	</swiper> 
+			 	</swiper>
 			 </view>
 		</view>
 	</view>
@@ -30,7 +30,7 @@
 		data() {
 			return {
 				swiper: {
-					margin: "150rpx",
+					margin: "100rpx",
 					index: 0,
 				}
 			}
@@ -52,7 +52,7 @@
 
 <style lang="scss">
 	.top-swiper{
-		margin-bottom: 30rpx; 
+		//margin-bottom: 30rpx;
 		
 		.bg{
 			padding-top: var(--status-bar-height);
@@ -62,7 +62,7 @@
 			
 			.placeholder{
 				box-sizing: content-box;
-				padding-top: 600rpx;
+				padding-top: 780rpx;
 				height: 44px;
 			}
 			
@@ -115,8 +115,9 @@
 		}
 		
 		.swiper {
-			height: 600rpx;
-			margin: 0 20rpx;
+			//height: 600rpx;
+			//margin: 0 20rpx;
+      height: 780rpx;
 		
 			.le-img {
 				width: 100%;
@@ -125,7 +126,7 @@
 				transform: scale(0.9);
 				transition: transform 0.3s ease-in-out 0s;
 				border-radius: 4px;
-		
+
 				&.le-active {
 					transform: scale(1);
 				}

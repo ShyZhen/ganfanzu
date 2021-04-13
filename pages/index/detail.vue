@@ -1,18 +1,25 @@
 <template>
-  <view>
+  <view class="container">
     <view class="title" :class="topNavStyle.class" :style="topNavStyle.style">
       <view class="flex_col" :style="{height:buttonHeight+'px'}">
       </view>
     </view>
 
-    <card-swiper :imageList='coupon.imageList'></card-swiper>
+    <view>
+      <card-swiper :imageList='coupon.imageList'></card-swiper>
+    </view>
 
-
+    <view class="button-click">
+      <CcButton @cctap="showLoading('shareLoading')" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
+                :loading="shareLoading">分享</CcButton>
+      <CcButton @cctap="showLoading('saveLoading')" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);"
+                :loading="saveLoading">保存</CcButton>
+    </view>
 
     <view class="bottom-bar">
       <view class="buyNow" @tap="goToMp">
         <text>
-          立即领取
+          直接领取
         </text>
       </view>
     </view>
@@ -21,6 +28,8 @@
 
 <script>
 import cardSwiper from "@/components/helang-cardSwiper/helang-cardSwiper"
+import CcButton from '@/components/cc-button/cc-button.vue'
+
 export default {
   data() {
     return {
@@ -30,10 +39,13 @@ export default {
       topNavIndex:0,
       pageScrollTop:0,	// 页面滚动距离
       buttonHeight: this.$menuButtonRect.height + this.$systemInfoSync.statusBarHeight - 25,
+      shareLoading: false,
+      saveLoading: false,
     }
   },
   components:{
-    cardSwiper
+    cardSwiper,
+    CcButton
   },
   computed:{
     topNavStyle(){
@@ -53,6 +65,12 @@ export default {
     this.pageScrollTop = Math.floor(e.scrollTop);
   },
   methods: {
+    showLoading(type) {
+      this[type] = true
+      setTimeout(() => {
+        this[type] = false
+      }, 2000);
+    },
     goToMp() {
       let that = this
       this.$loading('拼命拉取中...')
@@ -89,6 +107,13 @@ export default {
 page{
   background-color: #fff;
 }
+.container {
+  transition: all 0.5s linear;
+  font-size: 14px;
+  line-height: 24px;
+  position: relative;
+}
+
 /* 标题栏 */
 .title{
   position: fixed;
@@ -100,66 +125,32 @@ page{
   z-index: 10;
   background-color: rgba(255, 87, 34, 0.81);
   color: rgba(255,255,255,0.8);
-
-  //&>view{
-  //  height: 60px;
-  //}
-
-  .box1{
-    width: 60rpx;
-    margin: 0 40rpx;
-    font-size: 36rpx;
-  }
-
-
-  .tab{
-    &>view{
-      margin: 0 30rpx;
-      line-height: 64rpx;
-      font-size: 36rpx;
-      position: relative;
-      letter-spacing: 0;
-      transition: transform 0.3s ease-in-out 0s;
-      transform: scale(1,1);
-
-      &.active{
-        color: rgba(255,255,255,1);
-        transform: scale(1.15,1.15);
-      }
-    }
-  }
-
-  &.style2{
-    color: #FFF;
-    background-color: rgba(255, 87, 34, 0.81);
-
-    .tab{
-      &>view{
-        &.active{
-          color: #FFF;
-        }
-      }
-    }
-  }
 }
 
 .bottom-bar{
   background-color: #fff;
   position: fixed;
   bottom: 0;
-  height: 45px;
+  height: 50px;
   width: 100%;
   overflow: hidden;
   box-shadow: 0 0 10px #ccc;
   display: flex;
   .buyNow{
     width: 100%;
-    font-size: 28rpx;
+    font-size: 14px;
     text-align: center;
-    line-height: 90rpx;
-    background-color: #f14116;
+    line-height: 50px;
+    background: linear-gradient(-45deg, rgba(87, 225, 181, 1) 0%, rgba(0, 63, 255, 1) 100%);;
+
     color: #fff;
   }
 }
 
+// 优惠券
+.button-click {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+}
 </style>

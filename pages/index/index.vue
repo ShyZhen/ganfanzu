@@ -71,7 +71,7 @@ export default {
             path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
           },
           imageList: [
-            "/static/detail/qr-elm.jpg",
+            "/static/detail/zx_750.jpg",
           ],
         },
         {
@@ -85,7 +85,7 @@ export default {
             path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
           },
           imageList: [
-            "/static/detail/qr-elm.jpg",
+            "/static/detail/ch_750.jpg",
           ],
         },
         {
@@ -99,7 +99,7 @@ export default {
             path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
           },
           imageList: [
-            "/static/detail/qr-elm.jpg",
+            "/static/detail/cs_750.jpg",
           ],
         },
         {
@@ -113,7 +113,7 @@ export default {
             path: '/index/pages/h5/h5?noshare=1&f_userId=0&f_openId=0&f_token=0&weburl=https%3A%2F%2Fact1.meituan.com%2Fclover%2Fpage%2Fadunioncps%2Fshare_coupon_new%3FutmSource%3D2055%26timestamp%3D1615167531%26utmMedium%3D98670413856f97f334a8066e04c00927%26version%3D1.0%26showKa%3D1%26requestId%3D9ad229c06587083df07a7f26ad026744%26activity%3DOwMkGzn6oK'
           },
           imageList: [
-            "/static/detail/qr-mt.jpg",
+            "/static/detail/mt_750.jpg",
           ],
         },
       ]
