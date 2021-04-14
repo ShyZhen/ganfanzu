@@ -83,11 +83,9 @@ export default {
           appId: that.coupon.minapp.appid,
           path: that.coupon.minapp.path,
           success(res) {
-            console.log(3)
             // 打开成功
           },
           complete() {
-            console.log(2)
             that.$loading(false)
           }
         })
@@ -103,7 +101,9 @@ export default {
           that.$toast('保存本地成功!')
         },
         complete: function() {
-          that.saveLoading = false
+          setTimeout(() => {
+            that.saveLoading = false
+          }, 500);
         }
       });
     },

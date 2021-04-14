@@ -1,12 +1,15 @@
 <template>
 	<view>
 		<view class="top-swiper">
-			 <view class="bg">
+      <!-- 背景 -->
+      <view class="bg">
 				 <view class="placeholder"></view>
 				 <view class="image">
 					 <image :src="imageList[swiper.index]" mode="aspectFill"></image>
 				 </view>
 			 </view>
+
+       <!-- 图片 -->
 			 <view class="box">
 				<view style="height: 44px;"></view>
 			 	<swiper class="swiper" :previous-margin="swiper.margin" :next-margin='swiper.margin' :circular="true" @change="swiperChange">
@@ -62,8 +65,8 @@
 			
 			.placeholder{
 				box-sizing: content-box;
-				padding-top: 780rpx;
-				height: 44px;
+				padding-top: 580rpx;
+				height: 144px;
 			}
 			
 			.image{
@@ -95,7 +98,7 @@
 					top: 0;
 					left: 0;
 					width: 100%;
-					height: 80%;
+					height: 100%;
 					top: -60px;
 					left: -60px;
 					filter: blur(50px);
