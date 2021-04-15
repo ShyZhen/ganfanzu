@@ -98,7 +98,7 @@ export default {
       uni.saveImageToPhotosAlbum({
         filePath: this.coupon.imageList[0],
         success: function () {
-          that.$toast('保存本地成功!')
+          that.$toast('已保存到手机相册!')
         },
         complete: function() {
           setTimeout(() => {
