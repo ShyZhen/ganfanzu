@@ -296,7 +296,7 @@ page {
           width: 150rpx;
           height: 22px;
           border-radius: 30rpx;
-          background: linear-gradient(135deg, #f6704f, #f14116);
+          background: linear-gradient(135deg, #f6704f, #ef3305);
           color: #fdfdfd;
           font-size: 24rpx;
           line-height: 22px;
