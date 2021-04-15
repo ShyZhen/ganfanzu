@@ -46,6 +46,13 @@
 			"navigationBarTitleText": "领取详情",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/mine/mine",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "个人信息",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {
@@ -74,6 +81,12 @@
 //			"iconPath": "static/icon/about.png",
 //			"selectedIconPath": "static/icon/about_b.png",
 //			"text": "关于"
+//		},
+//		,{
+//			"pagePath": "pages/mine/mine",
+//			"iconPath": "static/icon/me.png",
+//			"selectedIconPath": "static/icon/me_b.png",
+//			"text": "我"
 //		}
 		]
 	},
