@@ -35,21 +35,6 @@ function logout() {
     })
 }
 
-// 发送注册验证码
-function registerCode(data) {
-    let params = {
-        "account": data.account,
-    }
-
-    return new Promise((resolve, reject) => {
-        request.request('POST', 'V1/register-code', params).then(res => {
-            resolve(res.data)
-        }).catch(e => {
-            reject(e)
-        })
-    })
-}
-
 // 注册
 function accountRegister(data) {
     return new Promise((resolve, reject) => {
@@ -167,7 +152,39 @@ function getUserDetail(uuid) {
     })
 }
 
+
+
+
+
+
+// 发送注册验证码
+function registerCode(data) {
+    let params = {
+        "account": data.account,
+    }
+
+    return new Promise((resolve, reject) => {
+        request.request('POST', 'V1/login-code', params).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
+// 快捷登录
+function loginQuick(account, code) {
+    let params = {"account":account, "code":code}
+    return new Promise((resolve, reject) => {
+        request.request('POST', 'V1/login-quick', params).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 export {
     wxmpLogin, accountLogin, logout, registerCode, accountRegister, getAccountStatus, githubLogin, getasswordCode, updatePassword,
-    getMyInfo, updateMyInfo, updateMyName, updateAvatar, getUserDetail
+    getMyInfo, updateMyInfo, updateMyName, updateAvatar, getUserDetail, loginQuick
 }

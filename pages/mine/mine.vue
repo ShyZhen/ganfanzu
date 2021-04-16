@@ -2,17 +2,25 @@
   <view class="t-login">
     <view class="t-b">{{title}}</view>
     <form class="cl">
+
       <view class="t-a">
-        <image src="/static/icon/xiaomai_2.png"></image>
-        <input name="phone" placeholder="请输入手机号" />
+        <image src="/static/icon/mobile.png"></image>
+        <input type="text" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
       </view>
+
       <view class="t-a">
-        <image src="/static/icon/xiaomai_2.png"></image>
-        <input name="code" placeholder="请输入验证码" />
-        <view class="t-c">发送短信</view>
+        <image src="/static/icon/code.png"></image>
+        <input type="text" clearable v-model="verify_code" placeholder="请输入验证码" />
+        <view class="t-c" @tap="registerCode">{{codeDuration ? codeDuration + 's' : '发送短信' }}</view>
       </view>
+
       <view class="t-d">未注册的手机号验证后将自动注册</view>
-      <button form-type="submit">立即登录</button>
+
+      <view>
+        <CcButton @cctap="showLoading('loginLoading')" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                  :loading="loginLoading" @tap="login">立即登录</CcButton>
+      </view>
+
     </form>
     <view class="t-f">登录即同意<text>用户协议</text></view>
     <view class="t-e cl">
@@ -24,17 +32,99 @@
   </view>
 </template>
 <script>
+import CcButton from '@/components/cc-button/cc-button.vue'
+import { mapState, mapActions } from 'vuex'
+import * as Common from '@/utils/common.js'
+import { registerCode, loginQuick } from '@/utils/loginPlugin.js'
+
 export default {
   data() {
     return {
       title: '欢迎回来',
+      loginLoading: false,
+      account: '',
+      // 是否是正确的邮箱或者手机号码
+      isCorrectAccount: false,
+      // 是否可以获取注册码|剩余时间
+      codeDuration: 0,
+      // 验证码
+      verify_code: '',
     }
   },
+  computed: {
+    ...mapState(['hasBinding', 'hasLogin']),
+  },
+  components:{
+    CcButton
+  },
   onLoad() {
+    // 在需要登录的地方执行初始化方法
+    this.initLoginState()
 
+    // 判断登录状态 并跳转到首页
+    if (this.hasLogin) {
+      this.$toHome()
+    }
   },
   methods: {
+    ...mapActions(['initLoginState']),
 
+    checkIsCorAccount() {
+      const account = this.account;
+      this.isCorrectAccount = Common.regular('phone', account)
+    },
+
+    registerCode() {
+      if (this.codeDuration) {
+        this.$toast(`请在${this.codeDuration}秒后重试`)
+        return
+      }
+      if (!this.isCorrectAccount) {
+        this.$toast('手机号码格式不对/(ㄒoㄒ)/~~')
+        return
+      }
+
+      // TODO 极验
+
+      let data = {
+        account: this.account
+      }
+      registerCode(data).then(res => {
+        this.$toast(res.message)
+        // 触发倒计时
+        this.codeDuration = 60
+        this.codeInterVal = setInterval(() => {
+          this.codeDuration--
+          if (this.codeDuration === 0) {
+            if (this.codeInterVal) {
+              clearInterval(this.codeInterVal)
+              this.codeInterVal = null
+            }
+          }
+        }, 1000)
+      }).catch(err => {
+        this.$toast('验证码发送失败：' + err.data.message)
+      })
+    },
+
+    login() {
+      let that = this
+
+      loginQuick(this.account, this.verify_code).then(res => {
+        that.$toast('欢迎回来')
+        setTimeout(() => {
+          that.saveLoading = false
+          that.$toHome()
+        }, 500);
+      })
+    },
+
+    showLoading(type, ttl = 3500) {
+      this[type] = true
+      setTimeout(() => {
+        this[type] = false
+      }, ttl);
+    },
   }
 }
 </script>
@@ -44,15 +134,6 @@ export default {
   margin: 0 auto;
   font-size: 28rpx;
   color: #000
-}
-
-.t-login button {
-  font-size: 28rpx;
-  background: #000;
-  color: #fff;
-  height: 90rpx;
-  line-height: 90rpx;
-  border-radius: 50rpx
 }
 
 .t-login input {
@@ -90,13 +171,14 @@ export default {
   position: absolute;
   right: 22rpx;
   top: 22rpx;
-  background: #000;
+  background: linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);
   color: #fff;
-  font-size: 24rpx;
+  font-size: 10px;
   border-radius: 50rpx;
   height: 50rpx;
   line-height: 50rpx;
-  padding: 0 25rpx
+  padding: 0 25rpx;
+  z-index: 2;
 }
 
 .t-login .t-d {

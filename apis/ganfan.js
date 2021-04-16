@@ -7,7 +7,7 @@ import request from '../utils/request';
  */
 function getProductList(data) {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/list/'+ data.platform, data).then(res => {
+        request.request('POST', '/V1/duomai/list/'+ data.platform, data).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -22,7 +22,7 @@ function getProductList(data) {
  */
 function getQueryList(data) {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/search/'+ data.platform, data).then(res => {
+        request.request('POST', '/V1/duomai/search/'+ data.platform, data).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -37,7 +37,7 @@ function getQueryList(data) {
  */
 function getDetailLink(itemUrl) {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/link/', itemUrl).then(res => {
+        request.request('POST', '/V1/duomai/link/', itemUrl).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -47,7 +47,7 @@ function getDetailLink(itemUrl) {
 
 function getCustomProduct() {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/custom/').then(res => {
+        request.request('POST', '/V1/duomai/custom/').then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -62,7 +62,7 @@ function getCustomProduct() {
  */
 function getProductDetail(data) {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/detail/'+ data.platform, data).then(res => {
+        request.request('POST', '/V1/duomai/detail/'+ data.platform, data).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -77,7 +77,7 @@ function getProductDetail(data) {
  */
 function getProductHtml(data) {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/duomai/html/'+ data.platform, data).then(res => {
+        request.request('POST', '/V1/duomai/html/'+ data.platform, data).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)

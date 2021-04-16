@@ -92,17 +92,6 @@ function logout() {
     })
 }
 
-// 注册验证码
-function registerCode(data) {
-    return new Promise((resolve, reject) => {
-        AuthApi.registerCode(data).then(res => {
-            resolve(res)
-        }).catch(err => {
-            reject(err)
-        })
-    })
-}
-
 // 账号密码注册插件
 function accountRegister(data) {
     return new Promise((resolve, reject) => {
@@ -164,6 +153,37 @@ function updatePassword(data) {
     })
 }
 
+
+
+
+// 快捷登录验证码（注册验证码）
+function registerCode(data) {
+    return new Promise((resolve, reject) => {
+        AuthApi.registerCode(data).then(res => {
+            resolve(res)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+function loginQuick(account, code) {
+    return new Promise((resolve, reject) => {
+        AuthApi.loginQuick(account, code).then(res => {
+            if (res.access_token) {
+                // 保存token 绑定状态到storage；保存vuex状态
+                setToken(res.access_token)
+                setBinding(res.binding_status)
+                store.commit('login')
+                store.commit('binding')
+            }
+            resolve(res)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
 export {
-    accountLogin, wxmpLogin, logout, registerCode, accountRegister, getAccountStatus, githubLogin, githubCallback, getasswordCode, updatePassword
+    accountLogin, wxmpLogin, logout, registerCode, accountRegister, getAccountStatus, githubLogin, githubCallback, getasswordCode, updatePassword, loginQuick
 }
