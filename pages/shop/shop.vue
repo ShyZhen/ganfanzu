@@ -202,10 +202,10 @@
 					page
 				}).then(res => {
 					this.isLoading = false
-					if (res.code !== ERR_OK) {
-						this.$toast(res.msg || '您的网络状态不太好哦~')
-						return
-					}
+					// if (res.code !== ERR_OK) {
+					// 	this.$toast(res.msg || '您的网络状态不太好哦~')
+					// 	return
+					// }
 					const
 						couponListInfo = this.couponListInfo[platform],
 						handleList = this.handleData(res.data, platform);
@@ -245,10 +245,10 @@
 						this.isLoading = true;
 						getCustomProduct().then(res => {
 							this.isLoading = false;
-							if (res.code !== ERR_OK) {
-								this.$toast(res.msg || '您的网络状态不太好哦~')
-								return
-							}
+							// if (res.code !== ERR_OK) {
+							// 	this.$toast(res.msg || '您的网络状态不太好哦~')
+							// 	return
+							// }
 							this.setChoosedTab(type);
 							this.couponListInfo[DEFAULR_CHECKED_TYPE].list = this.handleData(res.data, type)
 							this.$loading(false)
