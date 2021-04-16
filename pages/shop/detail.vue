@@ -92,7 +92,7 @@
 
 <script>
   import { getDetailLink, getProductDetail, getProductHtml } from "@/apis/ganfan.js"
-  import { getShareObj } from "@/common/share.js"
+  import { getShareObj } from "@/utils/share.js"
   import imgsBanner from '../../components/imgsBanner-tag/imgsBanner-tag.vue'
   import uParse from '@/components/u-parse/u-parse.vue'
 

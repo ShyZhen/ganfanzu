@@ -1,8 +1,9 @@
 /**
- * 废弃了，使用utils中的request
  * 公共请求方法 封装Authorization
  */
-import Config from "../../config/config.js"
+import Config from "../config/config.js"
+import * as Auth from "./auth.js"
+import store from "../store";
 
 class Request
 {
@@ -11,7 +12,7 @@ class Request
      * @param {string} uri
      */
     buildFullUrl(uri) {
-        let baseUrl = Config.ganFanApi;
+        let baseUrl = Config.apiBaseUrl;
         (baseUrl.substring(baseUrl.length-1) !== '/') && (baseUrl += '/');
         (uri.substring(0, 1) === '/') && (uri = uri.substring(1));
         return baseUrl + uri
@@ -22,8 +23,7 @@ class Request
      * @param {Object} headers
      */
     buildHeader(headers) {
-        // let auth = {'Authorization': 'Bearer ' + Auth.getToken()};
-        let auth = {}
+        let auth = {'Authorization': 'Bearer ' + Auth.getToken()};
         return Object.assign({'Accept': 'application/json'}, headers || {}, auth);
     }
 
@@ -51,6 +51,15 @@ class Request
                         duration: 2000,
                     })
 
+                    if (Auth.removeLoginStorage()) {
+                        store.commit('logout')
+                        // setTimeout(() => {
+                        //     uni.navigateTo({
+                        //         url: '/pages/login/login',
+                        //     });
+                        // }, 2000);
+                    }
+
                     // 调试输出
                     reject(error)
 
@@ -62,6 +71,16 @@ class Request
                             icon: 'none',
                             duration: 2000,
                         });
+
+                        // 防止重复登录引起的token前端有效、后端失效的问题
+                        if (Auth.removeLoginStorage()) {
+                            store.commit('logout')
+                            // setTimeout(() => {
+                            //     uni.navigateTo({
+                            //         url: '/pages/login/login',
+                            //     });
+                            // }, 2000);
+                        }
                         // 调试输出
                         reject(res)
 

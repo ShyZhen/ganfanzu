@@ -29,7 +29,7 @@
 <script>
 import cardSwiper from "@/components/helang-cardSwiper/helang-cardSwiper"
 import CcButton from '@/components/cc-button/cc-button.vue'
-import { getShareObj } from "@/common/share.js";
+import { getShareObj } from "@/utils/share.js";
 
 export default {
   data() {

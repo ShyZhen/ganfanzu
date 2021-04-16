@@ -43,7 +43,7 @@
 
 <script>
 import aTip from "@/components/a_tip/aTip";
-import { getShareObj } from "@/common/share.js";
+import { getShareObj } from "@/utils/share.js";
 import Config from "../../config/config";
 
 export default {

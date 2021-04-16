@@ -57,7 +57,7 @@
 <script>
 	import {
 		getShareObj
-	} from "@/common/share.js"
+	} from "@/utils/share.js"
 	import CONTANTS, {
 		ERR_OK
 	} from '@/common/config'

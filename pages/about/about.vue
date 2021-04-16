@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getShareObj } from "@/common/share.js";
+import { getShareObj } from "@/utils/share.js";
 import Config from "../../config/config";
 
 export default {

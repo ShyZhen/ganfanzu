@@ -51,7 +51,7 @@
 	import Config from "../../config/config";
 	import {
 		getShareObj
-	} from "@/common/share";
+	} from "@/utils/share.js";
 	import QQMapWX from '../../libs/qqmap/qqmap-wx-jssdk.min.js'
 
 	let map

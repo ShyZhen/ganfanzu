@@ -34,7 +34,7 @@ function toLogin() {
 
 function toHome() {
     uni.switchTab({
-        url: '../home/home'
+        url: '../index/index'
     });
 }
 
