@@ -53,6 +53,13 @@
 			"navigationBarTitleText": "个人信息",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/login/login",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "登录",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {
