@@ -8,12 +8,12 @@
 
       <view class="t-a">
         <image src="/static/icon/mobile.png"></image>
-        <input type="text" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
+        <input type="number" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
       </view>
 
       <view class="t-a">
         <image src="/static/icon/code.png"></image>
-        <input type="text" clearable v-model="verify_code" placeholder="请输入验证码" />
+        <input type="number" clearable v-model="verify_code" placeholder="请输入验证码" />
         <view class="t-c" @tap="registerCode">{{codeDuration ? codeDuration + 's' : '发送短信' }}</view>
       </view>
 
@@ -116,7 +116,7 @@
             }
           }, 1000)
         }).catch(err => {
-          this.$toast('验证码发送失败：' + err.data.message)
+          this.$toast(err.data.message)
         })
       },
 
