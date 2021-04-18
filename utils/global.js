@@ -27,9 +27,22 @@ function toast(text, config) {
 
 // 跳转到登录
 function toLogin() {
-    uni.reLaunch({
+    uni.navigateTo({
         url: '../login/login'
     });
+}
+
+// 登录成功后刷新数据跳回当前页面
+function reLunchBack() {
+    let pages = getCurrentPages();
+    let currPage = pages[pages.length - 2];
+    if (currPage) {
+        uni.reLaunch({
+            url: '/' + currPage.route
+        });
+    } else {
+        toHome()
+    }
 }
 
 function toHome() {
@@ -44,20 +57,16 @@ function toBack(pagesLength) {
         uni.navigateBack(1)
         return;
     } else {
-        uni.switchTab({
-            url: '../index/index'
-        });
+        toHome()
         return;
     }
     // #endif
     if (getCurrentPages().length > 1) {
         uni.navigateBack(1)
     } else {
-        uni.switchTab({
-            url: '../index/index'
-        });
+        toHome()
     }
 
 }
 
-export { loading, toast, toLogin, toBack, toHome }
+export { loading, toast, toLogin, toBack, toHome, reLunchBack }

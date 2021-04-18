@@ -94,7 +94,7 @@
 
       // 判断登录状态 并跳转到首页
       if (this.hasLogin) {
-        this.$toHome()
+        this.$reLunchBack()
       }
     },
     onReady(e) {
@@ -159,7 +159,7 @@
           that.$toast('欢迎回来')
           setTimeout(() => {
             that.loginLoading = false
-            that.$toHome()
+            that.$reLunchBack()
           }, 500);
         })
       },
@@ -169,7 +169,7 @@
         if (detail.userInfo) {
           wxmpLogin(detail.userInfo).then(res => {
             this.$loading(false)
-            this.$toHome()
+            this.$reLunchBack()
           }).catch(err => {
             setTimeout(() => {this.$toast('微信登录失败'), 500})
           })
@@ -187,7 +187,7 @@
             if (res.userInfo) {
               wxmpLogin(res.userInfo).then(res => {
                 this.$loading(false)
-                this.$toHome()
+                this.$reLunchBack()
               }).catch(err => {
                 setTimeout(() => {this.$toast('微信登录失败'), 500})
               })
