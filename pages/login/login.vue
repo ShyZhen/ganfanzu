@@ -1,43 +1,51 @@
 <template>
-  <view class="t-login container" :style="{opacity:pageOpacity}">
-    <view>
-      <v-back></v-back>
-    </view>
-    <view class="t-b">{{title}}</view>
-    <form class="cl">
+  <view class="container" :style="{opacity:pageOpacity}">
 
-      <view class="t-a">
-        <image src="/static/icon/mobile.png"></image>
-        <input type="number" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
-      </view>
-
-      <view class="t-a">
-        <image src="/static/icon/code.png"></image>
-        <input type="number" clearable v-model="verify_code" placeholder="请输入验证码" />
-        <view class="t-c" @tap="registerCode">{{codeDuration ? codeDuration + 's' : '发送短信' }}</view>
-      </view>
-
-      <view class="t-d">未注册的手机号验证后将自动注册</view>
-
-      <view>
-        <CcButton @cctap="showLoading('loginLoading')" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
-                  :loading="loginLoading" @tap="login">立即登录</CcButton>
-      </view>
-
-    </form>
-    <view class="t-f">登录即同意<text>用户协议</text></view>
-    <view class="t-e cl">
-      <view class="t-g">
-
-        <!--        <button open-type="getUserInfo" @getuserinfo="getUserInfo">-->
-        <!--          <image src="/static/icon/weixin.png"></image>-->
-        <!--        </button>-->
-
-        <button @tap="getUserProfile">
-          <image src="/static/icon/weixin.png"></image>
-        </button>
+    <view style="position:absolute;z-index:12;" :style="{paddingTop: searchInput.top + 'px'}">
+      <view :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+        <v-back></v-back>
       </view>
     </view>
+
+    <view class="t-login" :style="{opacity:pageOpacity}">
+      <view class="t-b">{{title}}</view>
+      <form class="cl">
+
+        <view class="t-a">
+          <image src="/static/icon/mobile.png"></image>
+          <input type="number" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
+        </view>
+
+        <view class="t-a">
+          <image src="/static/icon/code.png"></image>
+          <input type="number" clearable v-model="verify_code" placeholder="请输入验证码" />
+          <view class="t-c" @tap="registerCode">{{codeDuration ? codeDuration + 's' : '发送短信' }}</view>
+        </view>
+
+        <view class="t-d">未注册的手机号验证后将自动注册</view>
+
+        <view>
+          <CcButton @cctap="showLoading('loginLoading')" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                    :loading="loginLoading" @tap="login">立即登录</CcButton>
+        </view>
+
+      </form>
+      <view class="t-f">登录即同意<text>用户协议</text></view>
+      <view class="t-e cl">
+        <view class="t-g">
+
+          <!--        <button open-type="getUserInfo" @getuserinfo="getUserInfo">-->
+          <!--          <image src="/static/icon/weixin.png"></image>-->
+          <!--        </button>-->
+
+          <button @tap="getUserProfile">
+            <image src="/static/icon/weixin.png"></image>
+          </button>
+        </view>
+      </view>
+    </view>
+
+
   </view>
 </template>
 <script>
@@ -49,7 +57,6 @@
   export default {
     data() {
       return {
-        pageOpacity: 0,
         title: '欢迎回来',
         loginLoading: false,
         account: '',
@@ -59,6 +66,14 @@
         codeDuration: 0,
         // 验证码
         verify_code: '',
+
+        pageOpacity: 0,
+        searchInput: {
+          width: 0,
+          height: 0,
+          top: 0,
+          inputVal: ''
+        },
       }
     },
     computed: {
@@ -68,6 +83,12 @@
       CcButton
     },
     onLoad() {
+
+      this.searchInput.width = this.$menuButtonRect.right - this.$menuButtonRect.width;
+      this.searchInput.height = this.$menuButtonRect.height
+      this.searchInput.top = this.$menuButtonRect.top
+      this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
+
       // 在需要登录的地方执行初始化方法
       this.initLoginState()
 

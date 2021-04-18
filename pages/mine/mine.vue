@@ -1,10 +1,17 @@
 <template>
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="head comm-center">
-			<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'"></image>
-			<view class="name">{{user.name}}</view>
-			<view class="remarks">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
+			<view v-if="hasLogin">
+				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'"></image>
+				<view class="name">{{user.name}}</view>
+				<view class="remarks">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
+			</view>
+			<view v-else>
+				<CcButton @cctap="showLoading('loginLoading')"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+						  :loading="loginLoading" @tap="goLogin">登录</CcButton>
+			</view>
 		</view>
+
 		<view class="home-menu">
 			<view class="row comm-center">
 				<view>{{user.id}}</view>
@@ -19,6 +26,7 @@
 				<view>我的评论</view>
 			</view>
 		</view>
+
 		<view class="list-menu">
 			<view class="cell">
 				<view class="left-icon comm-center">
@@ -58,7 +66,7 @@
 			</view>
 		</view>
 
-		<view class="logout">
+		<view v-if="hasLogin" class="logout">
 			<CcButton @cctap="showLoading('logoutLoading')" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
 					  :loading="logoutLoading" @tap="logout">退出登录</CcButton>
 		</view>
@@ -77,6 +85,7 @@
 				pageOpacity: 0,
 				user: {},
 				logoutLoading: false,
+				loginLoading: false,
 			}
 		},
 		components:{
@@ -89,7 +98,7 @@
 
 			// 判断登录状态 并跳转到首页
 			if (!this.hasLogin) {
-				this.$toLogin()
+				//this.$toLogin()
 			} else {
 				this.initUserInfo()
 			}
@@ -112,7 +121,13 @@
 					this.$loading(false)
 				})
 			},
-
+			goLogin() {
+				let that = this
+				setTimeout(() => {
+					that.loginLoading = false
+					that.$toLogin()
+				}, 500);
+			},
 			logout() {
 				this.bindLogout()
 			},

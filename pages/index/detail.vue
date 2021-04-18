@@ -1,5 +1,13 @@
 <template>
-  <view class="container">
+  <view class="container" :style="{opacity:pageOpacity}">
+
+    <view style="position:absolute;z-index:12;" :style="{paddingTop: searchInput.top + 'px'}">
+      <view :style="{width:searchInput.width+'px', height:searchInput.height+'px'}">
+        <v-back></v-back>
+      </view>
+    </view>
+
+
     <view class="title" :class="topNavStyle.class" :style="topNavStyle.style">
       <view class="flex_col" :style="{height:buttonHeight+'px'}">
       </view>
@@ -9,20 +17,20 @@
       <card-swiper :imageList='coupon.imageList'></card-swiper>
     </view>
 
-    <view class="button-click">
-      <CcButton @cctap="showLoading('shareLoading', 1000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
-                :loading="shareLoading" openType="share">分享</CcButton>
-      <CcButton @cctap="showLoading('saveLoading', 30000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
-                :loading="saveLoading" @tap="saveTo">保存</CcButton>
-    </view>
+    <view>
+      <view class="button-click">
+        <CcButton @cctap="showLoading('jumpLoading', 30000)" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                  :loading="jumpLoading" @tap="goToMp">直接领取</CcButton>
+      </view>
 
-    <view class="bottom-bar">
-      <view class="buyNow" @tap="goToMp">
-        <text>
-          直接领取
-        </text>
+      <view class="button-click-small">
+        <CcButton @cctap="showLoading('shareLoading', 1000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(249, 203, 199, 1) 100%);"
+                  :loading="shareLoading" openType="share">分享</CcButton>
+        <CcButton @cctap="showLoading('saveLoading', 30000)" width="200rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(249, 203, 199, 1) 100%);"
+                  :loading="saveLoading" @tap="saveTo">保存</CcButton>
       </view>
     </view>
+
   </view>
 </template>
 
@@ -42,6 +50,15 @@ export default {
       buttonHeight: this.$menuButtonRect.height + this.$systemInfoSync.statusBarHeight - 25,
       shareLoading: false,
       saveLoading: false,
+      jumpLoading: false,
+
+      pageOpacity: 0,
+      searchInput: {
+        width: 0,
+        height: 0,
+        top: 0,
+        inputVal: ''
+      },
     }
   },
   components:{
@@ -58,19 +75,23 @@ export default {
     }
   },
   onLoad(e) {
+    this.searchInput.width = this.$menuButtonRect.right - this.$menuButtonRect.width;
+    this.searchInput.height = this.$menuButtonRect.height
+    this.searchInput.top = this.$menuButtonRect.top
+    this.headerHeight = this.searchInput.top + this.searchInput.height + 12;
+
     this.coupon = JSON.parse(decodeURIComponent(e.item))
   },
-  // 页面滚动监听
-  onPageScroll(e){
-    this.pageScrollTop = Math.floor(e.scrollTop);
+  onReady(e) {
+    this.pageOpacity = 1
   },
+
   onShareAppMessage(res) {
     return getShareObj()
   },
   methods: {
     goToMp() {
       let that = this
-      this.$loading('拼命拉取中...')
 
       //h5
       //#ifdef H5
@@ -86,7 +107,9 @@ export default {
             // 打开成功
           },
           complete() {
-            that.$loading(false)
+            setTimeout(() => {
+              that.jumpLoading = false
+            }, 500);
           }
         })
       }
@@ -144,29 +167,14 @@ page{
   color: rgba(255,255,255,0.8);
 }
 
-.bottom-bar{
-  background-color: #fff;
-  position: fixed;
-  bottom: 0;
-  height: 50px;
-  width: 100%;
-  overflow: hidden;
-  box-shadow: 0 0 10px #ccc;
-  display: flex;
-  .buyNow{
-    width: 100%;
-    font-size: 14px;
-    text-align: center;
-    line-height: 50px;
-    background: linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);
-
-    color: #fff;
-  }
-}
-
 // 优惠券
 .button-click {
   margin-top: 35px;
+  display: flex;
+  justify-content: center;
+}
+.button-click-small {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
