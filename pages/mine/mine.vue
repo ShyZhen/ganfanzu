@@ -14,15 +14,15 @@
 
 		<view class="home-menu">
 			<view class="row comm-center">
-				<view>{{user.id}}</view>
-				<view>我的ID</view>
+				<view></view>
+				<view>ID {{user.id}}</view>
 			</view>
 			<view class="row edge comm-center">
-				<view>23</view>
+				<view></view>
 				<view>我的日记</view>
 			</view>
 			<view class="row comm-center">
-				<view>45</view>
+				<view></view>
 				<view>我的评论</view>
 			</view>
 		</view>
@@ -32,7 +32,7 @@
 				<view class="left-icon comm-center">
 					<image src="/static/icon/xiaomai_2.png"></image>
 				</view>
-				<view class="txt">我的鼻血</view>
+				<view class="txt">收藏的日记</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
@@ -41,25 +41,25 @@
 				<view class="left-icon comm-center">
 					<image src="/static/icon/xiaomai_2.png"></image>
 				</view>
-				<view class="txt">我的眼泪</view>
+				<view class="txt">待定</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
-			<view class="cell">
+			<view class="cell" @tap="goShop">
 				<view class="left-icon comm-center">
 					<image src="/static/icon/xiaomai_2.png"></image>
 				</view>
-				<view class="txt">我的便便</view>
+				<view class="txt">商品优惠券查询</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
-			<view class="cell">
+			<view class="cell" @tap="goAbout">
 				<view class="left-icon comm-center">
 					<image src="/static/icon/xiaomai_2.png"></image>
 				</view>
-				<view class="txt">我的帅气</view>
+				<view class="txt">关于</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
@@ -83,7 +83,12 @@
 		data() {
 			return {
 				pageOpacity: 0,
-				user: {},
+				user: {
+					id: 0,
+					avatar: '',
+					name: '',
+					bio: '',
+				},
 				logoutLoading: false,
 				loginLoading: false,
 			}
@@ -145,6 +150,16 @@
 				setTimeout(() => {
 					this[type] = false
 				}, ttl);
+			},
+			goAbout() {
+				uni.navigateTo({
+					url: '../about/about'
+				});
+			},
+			goShop() {
+				uni.navigateTo({
+					url: '../shop/shop'
+				});
 			},
 		}
 	}

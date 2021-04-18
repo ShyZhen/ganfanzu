@@ -50,7 +50,14 @@ function toBack(pagesLength) {
         return;
     }
     // #endif
-    uni.navigateBack(1)
+    if (getCurrentPages().length > 1) {
+        uni.navigateBack(1)
+    } else {
+        uni.switchTab({
+            url: '../index/index'
+        });
+    }
+
 }
 
 export { loading, toast, toLogin, toBack, toHome }
