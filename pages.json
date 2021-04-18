@@ -60,6 +60,13 @@
 			"navigationBarTitleText": "登录",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/article/article",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "干饭日记",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {
@@ -89,6 +96,12 @@
 //			"selectedIconPath": "static/icon/about_b.png",
 //			"text": "关于"
 //		}
+		,{
+		    "pagePath": "pages/article/article",
+			"iconPath": "static/icon/jiaoyin.png",
+		    "selectedIconPath": "static/icon/jiaoyin_b.png",
+		    "text": "日记"
+		}
 		,{
 			"pagePath": "pages/mine/mine",
 			"iconPath": "static/icon/me.png",

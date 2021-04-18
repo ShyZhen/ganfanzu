@@ -12,12 +12,12 @@
       <form class="cl">
 
         <view class="t-a">
-          <image src="/static/icon/mobile.png"></image>
+          <image src="/static/icon/mobile.png" mode="widthFix"></image>
           <input type="number" clearable v-model="account" @input="checkIsCorAccount" placeholder="请输入手机号" />
         </view>
 
         <view class="t-a">
-          <image src="/static/icon/code.png"></image>
+          <image src="/static/icon/code.png" mode="widthFix"></image>
           <input type="number" clearable v-model="verify_code" placeholder="请输入验证码" />
           <view class="t-c" @tap="registerCode">{{codeDuration ? codeDuration + 's' : '发送短信' }}</view>
         </view>

@@ -28,38 +28,38 @@
 		</view>
 
 		<view class="list-menu">
-			<view class="cell">
+			<view class="cell" @tap="myCollect">
 				<view class="left-icon comm-center">
-					<image src="/static/icon/xiaomai_2.png"></image>
+					<image src="/static/icon/collect.png"></image>
 				</view>
 				<view class="txt">收藏的日记</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
-			<view class="cell">
+			<view class="cell" @tap="goShop">
 				<view class="left-icon comm-center">
-					<image src="/static/icon/xiaomai_2.png"></image>
+					<image src="/static/icon/shop_b.png"></image>
 				</view>
-				<view class="txt">待定</view>
+				<view class="txt">优惠券查询</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
-			<view class="cell" @tap="goShop">
+			<view class="cell" @tap="report">
 				<view class="left-icon comm-center">
-					<image src="/static/icon/xiaomai_2.png"></image>
+					<image src="/static/icon/report.png"></image>
 				</view>
-				<view class="txt">商品优惠券查询</view>
+				<view class="txt">向小埋反馈</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
 			<view class="cell" @tap="goAbout">
 				<view class="left-icon comm-center">
-					<image src="/static/icon/xiaomai_2.png"></image>
+					<image src="/static/icon/about_b.png"></image>
 				</view>
-				<view class="txt">关于</view>
+				<view class="txt">关于干饭组</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
@@ -157,10 +157,18 @@
 				});
 			},
 			goShop() {
+				this.$toast('为规范化小程序环境，该功能暂时下线整改 ┮﹏┭')
+				return false
 				uni.navigateTo({
 					url: '../shop/shop'
 				});
 			},
+			report() {
+
+			},
+			myCollect() {
+
+			}
 		}
 	}
 </script>
