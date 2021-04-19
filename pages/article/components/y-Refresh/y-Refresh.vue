@@ -31,7 +31,7 @@
 		<!-- 下拉刷新 -->
 		<view class="mix-loading-wrapper">
 			<text class="cuIcon-icloading cu-load loading"></text>
-			<text>既许一人之偏爱，愿尽余生之慷慨</text>
+			<text>{{loadingText}}</text>
 		</view>
 		<slot></slot>
 	</view>
@@ -56,7 +56,22 @@
 				pageTransition: 0, //回弹过渡时间
 				refreshReady: false, //进入刷新准备状态
 				refreshing: false, // 进入刷新状态
-				loadingText: ['人前显贵，人后受罪']
+        loadingText: '等我解决完温饱，再来解决你',
+        loadingTextArr: [
+          '所有事情都变得和长胖一样简单就好了',
+          '难过的时候可以摸摸自己的小肚子',
+          '吃好喝好,长生不老',
+          '你说的很对,不过我不听',
+          '物极必反,人美必单',
+          '吃过全家桶就算一家人了',
+          '我不是真的胖,只是女娲捏我的时候土用多了',
+          '你是人间四月天,我是东北地三鲜',
+          '美丑有命,胖瘦在天',
+          '从今天开始,我不再是单身狗,而是热狗',
+          '走自己的路,和爱情兵分两路',
+          '我只要吃得够快,脂肪就追不上我',
+          '不让我早恋,等我三十可别逼婚',
+        ],
 			};
 		},
 		computed: {
@@ -128,6 +143,10 @@
 			},
 			//结束下拉刷新
 			endPulldownRefresh(){
+
+			  // 更换loadingText
+        this.loadingText = this.loadingTextArr[Math.floor(Math.random()*this.loadingTextArr.length)]
+
 				let that = this
 				setTimeout(function(){
 					that.refreshing = false;

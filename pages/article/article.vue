@@ -56,13 +56,13 @@
         //fab的设置
         fabList: [
           {
-            bgColor: '#16C2C2',
+            bgColor: '#F46845',
             text: '发布',
             fontSize: 28,
             color: '#fff'
           },
           {
-            bgColor: '#37b59d',
+            bgColor: '#fa7e62',
             text: '分享',
             fontSize: 28,
             color: '#fff'
@@ -87,16 +87,6 @@
       that.loadData('add');
     },
     methods: {
-      toDetails(id){
-        uni.navigateTo({
-          url: '../diary/details/details?id=' + id
-        })
-      },
-      toOther(id){
-        uni.navigateTo({
-          url: '../mine/other/other?id=' + id
-        })
-      },
       loadData(type) {
         if (type === 'add') {
           // 上拉加载

@@ -58,7 +58,7 @@
 			//默认按钮背景颜色
 			bgColor: {
 				type: String,
-				default: "#435257"
+				default: "#f3a391"
 			},
 			//字体颜色
 			color: {

@@ -63,8 +63,19 @@
 	},{
 		"path" : "pages/article/article",
 		"style" : {
-			"navigationStyle": "custom",
 			"navigationBarTitleText": "干饭日记",
+			"enablePullDownRefresh": false
+		}
+	},{
+		"path" : "pages/article/details",
+		"style" : {
+			"navigationBarTitleText": "日记详情",
+			"enablePullDownRefresh": false
+		}
+	},{
+		"path" : "pages/mine/other",
+		"style" : {
+			"navigationBarTitleText": "用户详情",
 			"enablePullDownRefresh": false
 		}
 	}

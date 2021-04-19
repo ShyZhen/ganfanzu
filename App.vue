@@ -16,16 +16,8 @@ export default {
     @import 'colorui/main.css';
     @import 'colorui/icon.css';
     @import 'colorui/animation.css';
-
-    /*每个页面公共css */
     @font-face {
-        font-family: 'AliR';
-        src: url(https://vkceyugu.cdn.bspapp.com/VKCEYUGU-matchbox/a003f470-a6fa-11ea-a30b-e311646dfaf2.otf);
-    }
-
-    @font-face {
-        font-family: 'AliM';
-        src: url(https://vkceyugu.cdn.bspapp.com/VKCEYUGU-matchbox/9ff65fe0-a6fa-11ea-a30b-e311646dfaf2.otf);
+      font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
     }
 
     page {
@@ -34,8 +26,8 @@ export default {
     }
 
     body {
-        font-family: 'AliR';
-        background-color: #f5f8f9;
+      font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+      background-color: #f5f8f9;
     }
 
     view {
@@ -76,7 +68,6 @@ export default {
         border: 1upx solid var(--activeColor) !important;
     }
 
-    /* 点赞和评论 */
     .bottom-btn {
         display: flex;
 

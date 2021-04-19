@@ -66,7 +66,7 @@
 			},
 			toDetails(id) {
 				uni.navigateTo({
-					url: '../../pages/diary/details?id=' + id
+          url: './details?id=' + id
 				});
 			},
 			handleLike(id, isLike, likeNum) {
@@ -80,7 +80,7 @@
 			},
 			toOthers() {
 				uni.navigateTo({
-					url: '../../pages/mine/other'
+					url: '/pages/mine/other'
 				});
 			},
 			ViewImage(index, arr) {
