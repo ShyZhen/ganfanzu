@@ -44,10 +44,10 @@
         // tab的名称
         tabList: [
           {
-            title: '漂流瓶'
+            title: '最新'
           },
           {
-            title: '聚集岛'
+            title: '热门'
           }
         ],
         cardList: [],
@@ -75,6 +75,14 @@
       yDiaryItem,
       yLoadMore,
       yFab
+    },
+    onShareAppMessage(res) {
+      return {
+        title: '干饭人日记',
+        path: '/pages/article/article',
+        imageUrl: '',
+        desc: '等我解决完温饱，再来解决你',
+      }
     },
     onLoad() {
       that = this;
@@ -131,7 +139,7 @@
         switch (index) {
           case 0:
             uni.navigateTo({
-              url: '../push/push'
+              url: './push'
             });
             break;
           case 1:

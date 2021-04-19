@@ -78,6 +78,12 @@
 			"navigationBarTitleText": "用户详情",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/article/push",
+		"style" : {
+			"navigationBarTitleText": "说点啥呢",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {

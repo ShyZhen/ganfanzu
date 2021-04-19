@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="head comm-center">
 			<view v-if="hasLogin">
-				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'"></image>
+				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix"></image>
 				<view class="name">{{user.name}}</view>
 				<view class="remarks">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
 			</view>
