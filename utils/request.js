@@ -65,7 +65,7 @@ class Request
 
                 } else {
                     // 认证失败状态，不需要返回，直接跳转登录
-                    if (res.statusCode === 401) {
+                    if (res.statusCode === 401 || res.data.message === "Unauthenticated.") {
                         uni.showToast({
                             title: '需要登录才能访问',
                             icon: 'none',
@@ -75,11 +75,11 @@ class Request
                         // 防止重复登录引起的token前端有效、后端失效的问题
                         if (Auth.removeLoginStorage()) {
                             store.commit('logout')
-                            // setTimeout(() => {
-                            //     uni.navigateTo({
-                            //         url: '/pages/login/login',
-                            //     });
-                            // }, 2000);
+                            setTimeout(() => {
+                                uni.navigateTo({
+                                    url: '/pages/login/login',
+                                });
+                            }, 2000);
                         }
                         // 调试输出
                         reject(res)

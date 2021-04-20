@@ -45,6 +45,7 @@ function uploadImage(data) {
 }
 
 // 上传图片(uniapp通用方式)
+// 小程序只支持一张一张传，循环调用
 function uniUploadImage(filePath) {
     return new Promise((resolve, reject) => {
         uni.uploadFile({

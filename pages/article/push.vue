@@ -1,7 +1,7 @@
 <template>
 	<view class="publish-wrap bg-white">
 		<view class="input-box padding-sm">
-			<textarea class="area-top" placeholder="碎碎念..." v-model="content"></textarea>
+			<textarea class="area-top" placeholder="碎碎念..." v-model="content" @blur="saveTemp"></textarea>
 		</view>
 		<view class="cu-form-group img-box">
 			<view class="next-title">上传图片（最多9张）</view>
@@ -9,7 +9,7 @@
 				<view class="grid col-4 grid-square flex-sub padding-top-lg">
 					<view class="bg-img" v-for="(item,index) in imgList" :key="index">
 						<image :src="imgList[index]" mode="aspectFill" @tap="ViewImage(index)" class="img-item"></image>
-						<image src="@/static/img/publish/img_close.png" @tap.stop="DelImg" :data-index="index" mode="widthFix" class="close-img"></image>
+						<image src="@/static/icon/close.png" @tap.stop="DelImg" :data-index="index" mode="widthFix" class="close-img"></image>
 					</view>
 					<view class="add-img" @tap="ChooseImage" v-if="imgList.length<9">
 						<text class='cuIcon-add link-color'></text>
@@ -18,40 +18,74 @@
 			</view>
 		</view>
 		<view class="bottom-btn flex-center">
-			<view class="btn">发布</view>
+      <CcButton @cctap="showLoading('saveLoading', 30000)" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                :loading="saveLoading" @tap="submitSave">发布</CcButton>
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
+  import { uniUploadImage, createTimeline } from '@/apis/timelines.js'
+  import CcButton from '@/components/cc-button/cc-button.vue'
+
+  let tempImageListKey = 'GANFANZUJIAOYINIMAGE'
+  let tempContentKey = 'GANFANZUJIAOYINCONTENT'
+
+  export default {
 		data() {
 			return {
+        saveLoading: false,
 				imgList: [],
 				content: ''
 			};
 		},
+    components:{
+      CcButton
+    },
+    onLoad() {
+		  // 未提交记录
+      let tempImageList = uni.getStorageSync(tempImageListKey)
+      let tempContent = uni.getStorageSync(tempContentKey)
+      if (tempImageList) {
+        this.imgList = tempImageList
+      }
+      if (tempContent) {
+        this.content = tempContent
+      }
+    },
 		methods: {
 			// 选择图片
 			ChooseImage() {
 				let that = this
 				uni.chooseImage({
 					count: 9, //默认9
-					sizeType: ['original'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album'], //从相册选择
+					sizeType: ['compressed'],
+					sourceType: ['album', 'camera'],
 					success: (res) => {
-						if (that.imgList.length != 0) {
-							that.imgList = that.imgList.concat(res.tempFilePaths)
-						} else {
-							that.imgList = res.tempFilePaths
-						}
+            if (res.tempFilePaths.length) {
+              that.$loading()
+              uniUploadImage(res.tempFilePaths[0]).then(res => {
+
+                // 回显
+                that.imgList = that.imgList.concat(JSON.parse(res.data).data)
+
+                // 保存到本地，未提交下次进来回显
+                that.saveTemp()
+
+                that.$loading(false)
+
+              }).catch(err => {
+                that.$toast('上传失败，请重试')
+              })
+            }
 					}
 				});
 			},
 			//显示删除弹窗
 			DelImg(e) {
-				let that = this
-				that.imgList.splice(e.currentTarget.dataset.index, 1)
+				this.imgList.splice(e.currentTarget.dataset.index, 1)
+        // 保存到本地，未提交下次进来回显
+        this.saveTemp()
 			},
 			// 预览图片
 			ViewImage(index) {
@@ -61,6 +95,40 @@
 					urls: that.imgList
 				})
 			},
+      submitSave() {
+			  let that = this
+        if (this.content || this.imgList.length) {
+          let data = {
+            title: this.content,
+            poster_list: this.imgList,
+          }
+          createTimeline(data).then(res => {
+            that.clearTemp()
+            setTimeout(() => {
+              that.saveLoading = false
+              that.$reLunchBack()
+            }, 500);
+          }).catch(err => {
+            setTimeout(() => {
+              that.saveLoading = false
+            }, 500);
+          })
+        }
+      },
+      saveTemp() {
+        uni.setStorageSync(tempImageListKey, this.imgList)
+        uni.setStorageSync(tempContentKey, this.content)
+      },
+      clearTemp() {
+        uni.removeStorageSync(tempImageListKey)
+        uni.removeStorageSync(tempContentKey)
+      },
+      showLoading(type, ttl = 3500) {
+        this[type] = true
+        setTimeout(() => {
+          this[type] = false
+        }, ttl);
+      },
 		}
 	}
 </script>
@@ -111,19 +179,6 @@
 			bottom: 0;
 			width: 100%;
 			padding: 20rpx 0;
-
-			.btn {
-				border-radius: 40rpx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				color: #FFFFFF;
-				border: 1rpx solid var(--activeColor);
-				background-color: var(--activeColor);
-				box-shadow: 0 1px 10px 0px var(--activeColor);
-				width: 400rpx;
-				height: 80rpx;
-			}
 		}
 	}
 

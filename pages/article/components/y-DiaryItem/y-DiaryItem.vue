@@ -2,34 +2,36 @@
 	<view :class="['card-item',radius ? 'radius' : '']">
 		<view class="item-head">
 			<view class="left-info">
-				<view class="img-wrap flex-center" @tap="toOthers(item.id)">
-					<image :src="item.avatarUrl" mode="widthFix" class="avatar"></image>
+				<view class="img-wrap flex-center" @tap="toOthers(item.user_info.uuid)">
+					<image :src="item.user_info.avatar ? item.user_info.avatar : '/static/default_avatar.jpg'" mode="widthFix" class="avatar"></image>
 				</view>
-				<view class="head-name">{{ item.nickName }}</view>
+				<view class="head-name">{{ item.user_info.username }}</view>
+<!--        <view class="head-bio">{{ item.user_info.bio }}</view>-->
 			</view>
-			<text class="color-nine">{{item.createTime}}</text>
+			<text class="color-nine">{{item.created_at.substring(0, 10)}}</text>
 		</view>
-		<view class="content" @tap="toDetails(item.id)">
+
+		<view class="content" @tap="toDetails(item.uuid)">
 			<view class="text-content">{{ item.title }}</view>
-			<view class="img-wrap padding-bottom-lg" v-if="item.imgList.length == 1">
+			<view class="img-wrap padding-bottom-lg" v-if="item.poster_list.length == 1">
 				<view class="img-box">
-					<image v-for="(child, idx) in item.imgList" :key="idx" :src="child.url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.imgList)"></image>
+					<image v-for="(url, idx) in item.poster_list" :key="idx" :src="url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.poster_list)"></image>
 				</view>
 			</view>
-			<view class="img-list padding-bottom-lg" v-if="item.imgList.length > 1">
-				<view class="img-box" v-for="(child, idx) in item.imgList" :key="idx">
-					<image :src="child.url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.imgList)"></image>
+			<view class="img-list padding-bottom-lg" v-if="item.poster_list.length > 1">
+				<view class="img-box" v-for="(url, idx) in item.poster_list" :key="idx">
+					<image :src="url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.poster_list)"></image>
 				</view>
 			</view>
 			<view class="bottom-btn padding-bottom-sm">
 				<view class="btn-item flex-center">
 					<image class="img" src="/static/icon/comment.png" mode="widthFix"></image>
-					<text>{{ item.commentNum }}</text>
+					<text>{{ item.comment_num }}</text>
 				</view>
-				<view class="btn-item flex-center" @tap.stop @tap="handleLike(item.id, item.isLike, item.likeNum)">
-					<image class="img" v-if="!item.isLike" src="/static/icon/like.png" mode="widthFix"></image>
+				<view class="btn-item flex-center" @tap.stop @tap="handleLike(item.uuid, item.is_like, item.likeNum)">
+					<image class="img" v-if="!item.is_like" src="/static/icon/like.png" mode="widthFix"></image>
 					<image class="img" v-else src="/static/icon/like_b.png" mode="widthFix"></image>
-					<text>{{ item.likeNum }}</text>
+					<text>{{ item.like_num }}</text>
 				</view>
 			</view>
 		</view>
@@ -86,7 +88,7 @@
 			ViewImage(index, arr) {
 				let list = [];
 				for (let i = 0; i < arr.length; i++) {
-					list.push(arr[i].url);
+					list.push(arr[i]);
 				}
 				uni.previewImage({
 					current: index,
