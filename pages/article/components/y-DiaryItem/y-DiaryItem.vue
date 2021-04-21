@@ -39,6 +39,8 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
+
 	export default {
 		props: {
 			obj: {
@@ -56,13 +58,24 @@
 				commentList: []
 			};
 		},
+    computed: {
+      ...mapState(['hasBinding', 'hasLogin', 'statusH']),
+    },
 		watch: {
 			obj(val) {
 				this.list = val;
 			}
 		},
+    onLoad() {
+      // 在需要登录的地方执行初始化方法
+      this.initLoginState()
+
+      this.loadTabbars()
+    },
 		methods: {
-			handleFollow(id) {
+      ...mapActions(['initLoginState']),
+
+      handleFollow(id) {
 				let that = this;
 				that.item.follow = !that.item.follow;
 			},
@@ -81,9 +94,16 @@
 				that.item.isLike = !that.item.isLike;
 			},
 			toOthers() {
-				uni.navigateTo({
-					url: '/pages/mine/other'
-				});
+        if (this.hasLogin) {
+          uni.navigateTo({
+            url: '/pages/mine/other?id='+this.item.user_info.uuid
+          });
+        } else {
+          this.$toast('需要先登录呢')
+          setTimeout(() => {
+            this.$toLogin()
+          }, 1000);
+        }
 			},
 			ViewImage(index, arr) {
 				let list = [];

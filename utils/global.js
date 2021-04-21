@@ -37,9 +37,15 @@ function reLunchBack() {
     let pages = getCurrentPages();
     let currPage = pages[pages.length - 2];
     if (currPage) {
-        uni.reLaunch({
-            url: '/' + currPage.route
-        });
+        if (currPage.route === 'pages/article/details') {
+            uni.reLaunch({
+                url: '/pages/article/article'
+            });
+        } else {
+            uni.reLaunch({
+                url: '/' + currPage.route
+            });
+        }
     } else {
         toHome()
     }

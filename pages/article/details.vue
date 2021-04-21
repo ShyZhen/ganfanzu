@@ -234,9 +234,11 @@ export default {
     }
 
     // 获取评论
-    setTimeout(() => {
-      this.getAllComment()
-    }, 1000);
+    if (this.hasLogin) {
+      setTimeout(() => {
+        this.getAllComment()
+      }, 1000);
+    }
   },
   methods: {
     ...mapActions(['initLoginState']),
@@ -387,12 +389,28 @@ export default {
       this.current = e.detail.current;
     },
     toOthers() {
-      uni.navigateTo({
-        url: '../mine/other?id='+this.detail.user_info.uuid
-      });
+      if (this.hasLogin) {
+        uni.navigateTo({
+          url: '../mine/other?id='+this.detail.user_info.uuid
+        });
+      } else {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+        }, 1000);
+      }
     },
 
     follow() {
+      if (!this.hasLogin) {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+          this.followLoading = false
+        }, 1000);
+        return false
+      }
+
       let that = this
       if (this.detail.user_info.uuid !== 'user-anonymous') {
         followUser(this.detail.user_info.uuid).then(res => {
