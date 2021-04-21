@@ -118,7 +118,7 @@
 			...mapActions(['initLoginState']),
 
 			initUserInfo() {
-				this.$loading()
+				this.$loading('拼命拉取中...')
 				getMyInfo().then(res => {
 					this.user = res.data
 					this.$loading(false)

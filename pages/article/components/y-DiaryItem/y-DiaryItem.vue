@@ -29,7 +29,7 @@
 					<text>{{ item.comment_num }}</text>
 				</view>
 				<view class="btn-item flex-center" @tap.stop @tap="handleLike(item.uuid, item.is_like, item.likeNum)">
-					<image class="img" v-if="!item.is_like" src="/static/icon/like.png" mode="widthFix"></image>
+					<image class="img" v-if="!item.is_like" src="/static/icon/zan.png" mode="widthFix"></image>
 					<image class="img" v-else src="/static/icon/like_b.png" mode="widthFix"></image>
 					<text>{{ item.like_num }}</text>
 				</view>

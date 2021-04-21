@@ -7,62 +7,70 @@
             <image :src="detail.user_info.avatar" mode="widthFix" class="avatar"></image>
           </view>
           <view class="head-name">{{ detail.user_info.username }}</view>
-          <view class="head-name">{{ detail.user_info.bio }}</view>
+          <!-- <view class="head-name">{{ detail.user_info.bio }}</view> -->
         </view>
 
         <view>
-          <button type="primary" size="mini" @click="follow">{{followText}}</button>
+          <CcButton @cctap="showLoading('followLoading', 3000)" width="160rpx" height="60rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                    :loading="followLoading" @tap="follow">{{followText}}</CcButton>
         </view>
       </view>
 
+      <!-- 图 -->
+      <view v-if="detail.poster_list.length">
       <view class="swiper-wrap">
         <swiper class="swiper-box" @change="swiperChange">
           <swiper-item v-for="(url, index) in detail.poster_list" :key="index" class="swipers flex-center">
-            <image :src="url" mode="widthFix" @tap="ViewImage(index, detail.poster_list)" class="img"></image>
+            <image :src="url" mode="widthFix" @tap="viewImage(index, detail.poster_list)" class="img"></image>
           </swiper-item>
         </swiper>
         <div class="custom-indicator flex-center">{{ current+1 }} / {{ detail.poster_list.length }}</div>
       </view>
-
-      <view class="content-box" v-html="detail.title"></view>
-      <view class="bottom-time">
-        <text>2020-07-01</text>
       </view>
-      <view class="comment-wrap">
+
+      <!-- 内容 -->
+      <view class="content-box" v-html="detail.title"></view>
+      <!-- 分割线 -->
+      <view class="bottom-time">
+        <text v-if="detail.created_at">{{detail.created_at.substring(0, 10)}}</text>
+      </view>
+
+      <!-- 评论 -->
+      <view class="comment-wrap" v-if="commentList.length">
         <view class="scroll-wrap">
           <view class="top-num padding-tb">共{{commentList.length}}条评论</view>
           <template v-if="commentList && commentList.length > 0">
             <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
               <view class="left-avatar">
-                <image class="avatar" :src="item.avatarUrl" mode="widthFix"></image>
+                <image class="avatar" :src="item.user_info.avatar" mode="widthFix"></image>
               </view>
               <view class="right-box">
-                <view class="right-mine">
+                <view class="right-mine" @tap="reply(item)">
                   <view class="right-top">
                     <p class="title">
-                      {{ item.nickName }}
-                      <text class="author">作者</text>
+                      {{ item.user_info.username }}
+                      <text class="author" v-if="item.user_info.uuid == detail.user_info.uuid">作者</text>
                     </p>
-                    <text class="time">{{item.time}}</text>
+                    <text class="time">{{item.created_at.substring(0, 10)}}</text>
                   </view>
                   <p class="content">{{ item.content }}</p>
                 </view>
-                <!-- 子评论 -->
-                <template v-if="item.children && item.children.length > 0">
-                  <view class="comment-item margin-top-sm" v-for="(child,idx) in item.children" :key="idx">
+                <!-- 父级评论 -->
+                <template v-if="item.parent_info">
+                  <view class="comment-item margin-top-sm">
                     <view class="left-avatar margin-right-sm">
-                      <image :src="child.avatarUrl" mode="widthFix" class="avatar"></image>
+                      <image :src="item.parent_info.user_info.avatar" mode="widthFix" class="avatar"></image>
                     </view>
-                    <view class="right-mine">
+                    <view class="right-mine" @tap.stop="reply(item.parent_info)">
                       <view class="right-top">
                         <view class="reply">
-                          <p class="title">{{ child.nickName }}</p>
-                          <text class="padding-lr-xs">回复</text>
-                          <p class="title active">{{ item.nickName }}</p>
+                          <p class="title">{{ item.parent_info.user_info.username }}</p>
+                          <text class="padding-lr-xs active">原评论</text>
+                          <!-- <p class="title active">{{ item.user_info.username }}</p> -->
                         </view>
-                        <text class="time">{{child.time}}</text>
+                        <text class="time">{{item.parent_info.created_at.substring(0, 10)}}</text>
                       </view>
-                      <p class="content">{{ child.content }}</p>
+                      <p class="content">{{ item.parent_info.content }}</p>
                     </view>
                   </view>
                 </template>
@@ -76,10 +84,48 @@
           </template>
         </view>
       </view>
-      <view class="comment-input">
-        <input type="text" v-model="commentVal" class="top-input" placeholder="说点什么吧..." />
-        <view class="send-btn" @tap="addCommon">发送</view>
+      <view class="comment-wrap" v-else>
+        {{ noCommentsTxt }}
       </view>
+
+      <!-- 底部操作栏 -->
+      <view class="e-fixed_bottom e-bottom-btnGroup e-flex_center e-b-top">
+        <view class="e-flex_left">
+          <input type="text" v-model="commentVal" class="top-input" maxlength="128" confirm-type="send" @confirm="addCommon" :placeholder=placeholder />
+        </view>
+        <view class="e-flex_left">
+          <view v-if="bottom.status.liked">
+            <image src="/static/icon/zan_b.png" @tap="userAction('like')"></image>
+          </view>
+          <view v-else>
+            <image src="/static/icon/zan.png" @tap="userAction('like')"></image>
+          </view>
+<!--          <text>{{bottom.num.likeNum}}</text>-->
+        </view>
+        <view class="e-flex_left">
+          <view v-if="bottom.status.collected">
+            <image src="/static/icon/collect.png" @tap="userAction('collect')"></image>
+          </view>
+          <view v-else>
+            <image src="/static/icon/collect_a.png" @tap="userAction('collect')"></image>
+          </view>
+<!--          <text>{{bottom.num.collectedNum}}</text>-->
+        </view>
+
+<!--        <view class="e-flex_left">-->
+<!--          <view>-->
+<!--            <image src="/static/icon/comment_b.png" @tap=getAllComment()></image>-->
+<!--          </view>-->
+<!--          <text>{{bottom.num.commentNum}}</text>-->
+<!--        </view>-->
+
+        <view class="e-flex_left">
+          <view>
+            <image src="/static/icon/report_b.png" @tap=report()></image>
+          </view>
+        </view>
+      </view>
+
     </view>
   </view>
 </template>
@@ -88,11 +134,14 @@
 import { getTimelineDetail } from '@/apis/timelines.js'
 import { getInitStatus, like, dislike, collect, unCollect } from '@/apis/action';
 import { followUser, followStatus } from '@/apis/users';
+import { getAllComment, createComment } from '@/apis/comment';
 import { mapState, mapActions } from 'vuex'
+import CcButton from '@/components/cc-button/cc-button.vue'
 
 export default {
   data() {
     return {
+      followLoading: false,
       title: '',
       actionType: 'timeline',
       pageOpacity: 0,
@@ -118,22 +167,17 @@ export default {
 
       commentVal: '',
       current: 0,
-      commentList: [{
-        avatarUrl: 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/avatar.png',
-        content: '生活已经如此艰辛，让我怎能不努力',
-        nickName: '小紫',
-        time: '6-15',
-        children: [{
-          avatarUrl: 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/avatar.png',
-          content: '生活已经如此艰辛，让我怎能不努力',
-          nickName: '小紫',
-          time: '6-15'
-        }]
-      }],
+      commentList: [],
+      noCommentsTxt: '',
+      commentParentId: 0,
+      placeholder: '写评论...',
     };
   },
   computed: {
     ...mapState(['hasBinding', 'hasLogin', 'statusH']),
+  },
+  components:{
+    CcButton
   },
   onShareAppMessage(res) {
     return {
@@ -153,9 +197,8 @@ export default {
   onReady(e) {
     this.pageOpacity = 1
 
-
     // 获取文章详情
-    this.$loading()
+    this.$loading('拼命拉取中...')
     getTimelineDetail(this.detailId).then(res => {
       this.$loading(false)
       this.detail = res.data
@@ -170,7 +213,7 @@ export default {
       }
 
       // 当前用户与我的互粉关系(匿名用户除外)
-      if (res.data.user_info.uuid !== 'user-anonymous') {
+      if (this.hasLogin && res.data.user_info.uuid !== 'user-anonymous') {
         followStatus(res.data.user_info.uuid).then(followRes => {
           this.bottom.status.inMyFollows = followRes.data.inMyFollows
           this.bottom.status.inMyFans = followRes.data.inMyFans
@@ -182,16 +225,155 @@ export default {
     })
 
     // 获取底栏文字赞踩收藏状态
-    getInitStatus(this.detailId, this.actionType).then(res => {
-      this.bottom.status.liked = res.data.liked
-      this.bottom.status.disliked =res.data.disliked
-      this.bottom.status.collected = res.data.collected
-    })
+    if (this.hasLogin) {
+      getInitStatus(this.detailId, this.actionType).then(res => {
+        this.bottom.status.liked = res.data.liked
+        this.bottom.status.disliked =res.data.disliked
+        this.bottom.status.collected = res.data.collected
+      })
+    }
+
+    // 获取评论
+    setTimeout(() => {
+      this.getAllComment()
+    }, 1000);
   },
   methods: {
     ...mapActions(['initLoginState']),
 
-    ViewImage(index, arr) {
+    // 底部操作栏
+    userAction(action) {
+      this.postAction(action).then(() => {
+        this.actionFinish && this.postStatus(action)
+      })
+    },
+
+    // 同步接口请求
+    async postAction(action) {
+      this.$loading()
+      switch (action) {
+        case 'like':
+          await like(this.detailId, this.actionType).then(res => {
+            this.actionFinish = true;
+            this.$loading(false)
+          }).catch(err => {
+            console.log('err', err)
+          })
+          break;
+        case 'dislike':
+          await dislike(this.detailId, this.actionType).then(res => {
+            this.actionFinish = true;
+            this.$loading(false)
+          }).catch(err => {
+            console.log('err', err)
+          })
+          break;
+        case 'collect':
+          let data = {
+            resource_uuid: this.detailId,
+            type: this.actionType
+          }
+          if (this.bottom.status.collected) {
+            // 取消收藏
+            await unCollect(data.resource_uuid, data.type).then(res => {
+              this.actionFinish = true;
+              this.$loading(false)
+            }).catch(err => {
+              console.log('err', err)
+            })
+          } else {
+            // 收藏
+            await collect(data).then(res => {
+              this.actionFinish = true;
+              this.$loading(false)
+            }).catch(err => {
+              console.log('err', err)
+            })
+          }
+          break;
+        default:
+          this.$loading(false)
+          break;
+      }
+    },
+
+    // 异步更新状态及数值
+    postStatus(action) {
+      switch (action) {
+        case 'like':
+          if (this.bottom.status.liked) {
+            this.bottom.status.liked = false
+            this.bottom.num.likeNum -= 1
+          } else {
+            this.bottom.status.liked = true
+            this.bottom.num.likeNum += 1
+          }
+          break
+        case 'dislike':
+          if (this.bottom.status.disliked) {
+            this.bottom.status.disliked = false
+            this.bottom.num.dislikeNum -= 1
+          } else {
+            this.bottom.status.disliked = true
+            this.bottom.num.dislikeNum += 1
+          }
+          break
+        case 'collect':
+          if (this.bottom.status.collected) {
+            this.bottom.status.collected = false
+            this.bottom.num.collectedNum -= 1
+          } else {
+            this.bottom.status.collected = true
+            this.bottom.num.collectedNum += 1
+          }
+          break
+        default:
+          break
+      }
+    },
+
+    // 获取评论列表,下拉刷新（时间排序）
+    // TODO 热评、点赞、滚动加载 功能
+    getAllComment() {
+      let that = this
+      let page = 1
+      this.$loading()
+      getAllComment(this.detailId, this.actionType, 'new', page).then(res => {
+        that.$loading(false)
+        that.commentList = res.data.data
+        if (!that.commentList || that.commentList.length === 0) {
+          that.noCommentsTxt = '暂无评论'
+        }
+      }).catch(err => {
+        that.$loading(false)
+      })
+    },
+
+    // 点击回复的效果 再评论框展示@xx
+    reply(item) {
+      this.commentParentId = item.id
+      this.placeholder = '@'+item.user_info.username
+    },
+    // 写评论,动态加到评论列表最上方
+    addCommon() {
+      let data = {
+        resource_uuid: this.detail.uuid,
+        parent_id: this.commentParentId,
+        content: this.commentVal,
+        type: this.actionType,
+      }
+      createComment(data).then(res => {
+        this.commentVal = ''
+        this.commentParentId = 0
+        this.commentList = [...res.data, ...this.commentList]
+      })
+    },
+
+    // 举报
+    report() {
+      // 举报弹窗，举报理由
+    },
+    viewImage(index, arr) {
       let list = [];
       for (let i = 0; i < arr.length; i++) {
         list.push(arr[i]);
@@ -201,40 +383,33 @@ export default {
         urls: list
       });
     },
-    addCommon() {
-      let time = new Date().Format('MM-dd hh:mm');
-      let params = {
-        avatarUrl: 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/avatar.png',
-        content: this.commentVal == '' ?  '奥里给' : this.commentVal,
-        nickName: '小黄吖',
-        time: time
-      }
-      this.commentList.splice(0,0,params)
-      this.commentVal = ''
-    },
     swiperChange(e) {
       this.current = e.detail.current;
     },
     toOthers() {
-      console.log('yonghu')
       uni.navigateTo({
-        url: '../mine/other'
+        url: '../mine/other?id='+this.detail.user_info.uuid
       });
     },
 
     follow() {
+      let that = this
       if (this.detail.user_info.uuid !== 'user-anonymous') {
-        this.$loading()
         followUser(this.detail.user_info.uuid).then(res => {
-          if (this.bottom.status.inMyFollows) {
-            this.bottom.status.inMyFollows = false
+          if (that.bottom.status.inMyFollows) {
+            that.bottom.status.inMyFollows = false
           } else {
-            this.bottom.status.inMyFollows = true
+            that.bottom.status.inMyFollows = true
           }
-          this.updateFollowText(this.bottom.status.inMyFans, this.bottom.status.inMyFollows)
-          this.$toast(res.message)
+          that.updateFollowText(this.bottom.status.inMyFans, this.bottom.status.inMyFollows)
+          that.$toast(res.message)
+          setTimeout(() => {
+            that.followLoading = false
+          }, 500);
         }).catch(err => {
-          this.$loading(false)
+          setTimeout(() => {
+            that.followLoading = false
+          }, 500);
         })
       } else {
         this.$toast('匿名用户无法被关注')
@@ -253,6 +428,12 @@ export default {
         this.followText = '关注'
       }
     },
+    showLoading(type, ttl = 3500) {
+      this[type] = true
+      setTimeout(() => {
+        this[type] = false
+      }, ttl);
+    },
   }
 };
 </script>
@@ -266,7 +447,7 @@ export default {
 }
 .detail-wrap {
   background-color: #ffffff;
-  padding: 120rpx 0 100rpx;
+  padding: 164rpx 0 100rpx;
 
   .item-head {
     display: flex;
@@ -274,7 +455,7 @@ export default {
     padding: 20rpx 40rpx;
     width: 100%;
     justify-content: space-between;
-    border-bottom: 1rpx solid var(--mainColor);
+    //border-bottom: 1rpx solid var(--mainColor);
     position: fixed;
     top: 0;
     left: 0;
@@ -359,7 +540,7 @@ export default {
 
     .scroll-wrap {
       height: 100%;
-      border-top: 1rpx solid var(--mainColor);
+      border-top: 1rpx solid #d5d5d4;
     }
 
     .comment-item {
@@ -427,42 +608,57 @@ export default {
     }
   }
 
-  .comment-input {
+  .top-input {
+    width: 200rpx;
+    height: 60rpx;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    padding: 20rpx 40rpx;
-    border-top: 1rpx solid #ECECEC;
-
-    .top-input {
-      width: 100%;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-      padding: 0 40rpx;
-      background-color: #f5f5f5;
-      color: #000;
-      border-radius: 80rpx;
-      flex: 1;
-    }
-
-    .send-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 60rpx;
-      width: 140rpx;
-      margin-left: 20rpx;
-      border-radius: 40rpx;
-      border: 1rpx solid var(--activeColor);
-      color: var(--activeColor);
-      background-color: #ffffff;
-    }
+    padding: 0 40rpx;
+    background-color: #f5f5f5;
+    color: #848383;
+    border-radius: 80rpx;
+    flex: 1;
   }
+}
+
+// 底部操作栏
+.e-fixed_bottom{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  margin: 0 auto;
+}
+// 底部按钮栏
+.e-bottom-btnGroup {
+  height: 100rpx;
+  background-color: #fff;
+  padding: 12rpx 60rpx;
+  image {
+    height: 45rpx;
+    width: 45rpx;
+  }
+}
+// 上下居中
+.e-flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.e-b-top {
+  background-image:
+      linear-gradient(0deg, #efefef, 60%, transparent 40%),
+      linear-gradient(90deg, transparent, transparent),
+      linear-gradient(180deg, transparent, transparent),
+      linear-gradient(270deg, transparent, transparent);
+  background-repeat: no-repeat;
+  background-position: top, right, bottom, left;
+  background-size: 100% 1px, 0, 0, 0;
+}
+.e-flex_left {
+  display: flex;
+  //align-items: center;
+  justify-content: flex-start;
 }
 </style>

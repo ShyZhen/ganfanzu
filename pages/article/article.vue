@@ -35,6 +35,7 @@ import yDiaryItem from './components/y-DiaryItem/y-DiaryItem'
 import yLoadMore from './components/y-LoadMore/y-LoadMore'
 import yFab from './components/y-Fab/y-Fab'
 import { getTimelineList } from '@/apis/timelines.js'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -72,6 +73,9 @@ export default {
       pageOpacity: 0,
     };
   },
+  computed: {
+    ...mapState(['hasBinding', 'hasLogin', 'statusH']),
+  },
   components:{
     yRefresh,
     yDiaryItem,
@@ -88,12 +92,17 @@ export default {
   },
 
   onLoad() {
+    // 在需要登录的地方执行初始化方法
+    this.initLoginState()
+
     this.loadTabbars()
   },
   onReady(e) {
     this.pageOpacity = 1
   },
   methods: {
+    ...mapActions(['initLoginState']),
+
     // 获取分类
     loadTabbars() {
       this.tabList.forEach(item => {
@@ -166,9 +175,18 @@ export default {
       let index = e.index;
       switch (index) {
         case 0:
-          uni.navigateTo({
-            url: './push'
-          });
+          if (this.hasLogin) {
+            uni.navigateTo({
+              url: './push'
+            });
+          } else {
+            this.$toast('发文需要先登录呢')
+            setTimeout(() => {
+              this.saveLoading = false
+              this.$toLogin()
+            }, 1000);
+            return false
+          }
           break;
         case 1:
           console.log(1);
@@ -214,8 +232,8 @@ export default {
       }
 
       .active {
-        color: var(--mainColor);
-        border-bottom: 4rpx solid var(--mainColor);
+        color: var(--activeColor);
+        border-bottom: 4rpx solid var(--activeColor);
       }
     }
   }

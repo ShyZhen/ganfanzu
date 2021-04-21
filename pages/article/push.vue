@@ -2,7 +2,7 @@
   <view class="container" :style="{opacity:pageOpacity}">
     <view class="publish-wrap bg-white">
       <view class="input-box padding-sm">
-        <textarea class="area-top" placeholder="碎碎念..." v-model="content" @blur="saveTemp"></textarea>
+        <textarea class="area-top" placeholder="等我解决完温饱，再来解决你..." v-model="content" @blur="saveTemp"></textarea>
       </view>
       <view class="cu-form-group img-box">
         <view class="next-title">上传图片（最多9张）</view>
@@ -83,7 +83,10 @@ export default {
             uniUploadImage(res.tempFilePaths[0]).then(res => {
 
               // 回显
-              that.imgList = that.imgList.concat(JSON.parse(res.data).data)
+              let url = JSON.parse(res.data).data
+              if (url) {
+                that.imgList = that.imgList.concat(url)
+              }
 
               // 保存到本地，未提交下次进来回显
               that.saveTemp()
