@@ -199,7 +199,7 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  transition: all 0.7s linear;
+  transition: all 0.8s linear;
   font-size: 14px;
   line-height: 24px;
   position: relative;
