@@ -1,40 +1,41 @@
 <template>
   <view class="container" :style="{opacity:pageOpacity}">
     <view class="detail-wrap">
-      <view class="item-head">
-        <view class="left-info">
-          <view class="img-wrap flex-center" @tap="toOthers">
-            <image :src="detail.user_info.avatar" mode="widthFix" class="avatar"></image>
+      <view @tap="clearReply">
+        <view class="item-head">
+          <view class="left-info">
+            <view class="img-wrap flex-center" @tap="toOthers">
+              <image :src="detail.user_info.avatar ? detail.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
+            </view>
+            <view class="head-name">{{ detail.user_info.username }}</view>
+            <!-- <view class="head-name">{{ detail.user_info.bio }}</view> -->
           </view>
-          <view class="head-name">{{ detail.user_info.username }}</view>
-          <!-- <view class="head-name">{{ detail.user_info.bio }}</view> -->
+
+          <view>
+            <CcButton @cctap="showLoading('followLoading', 3000)" width="160rpx" height="60rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                      :loading="followLoading" @tap="follow">{{followText}}</CcButton>
+          </view>
         </view>
 
-        <view>
-          <CcButton @cctap="showLoading('followLoading', 3000)" width="160rpx" height="60rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
-                    :loading="followLoading" @tap="follow">{{followText}}</CcButton>
+        <!-- 图 -->
+        <view v-if="detail.poster_list.length">
+          <view class="swiper-wrap">
+            <swiper class="swiper-box" @change="swiperChange">
+              <swiper-item v-for="(url, index) in detail.poster_list" :key="index" class="swipers flex-center">
+                <image :src="url" mode="widthFix" @tap="viewImage(index, detail.poster_list)" class="img"></image>
+              </swiper-item>
+            </swiper>
+            <div class="custom-indicator flex-center">{{ current+1 }} / {{ detail.poster_list.length }}</div>
+          </view>
+        </view>
+
+        <!-- 内容 -->
+        <view class="content-box" v-html="detail.title"></view>
+        <!-- 分割线 -->
+        <view class="bottom-time">
+          <text v-if="detail.created_at">{{detail.created_at.substring(0, 10)}}</text>
         </view>
       </view>
-
-      <!-- 图 -->
-      <view v-if="detail.poster_list.length">
-      <view class="swiper-wrap">
-        <swiper class="swiper-box" @change="swiperChange">
-          <swiper-item v-for="(url, index) in detail.poster_list" :key="index" class="swipers flex-center">
-            <image :src="url" mode="widthFix" @tap="viewImage(index, detail.poster_list)" class="img"></image>
-          </swiper-item>
-        </swiper>
-        <div class="custom-indicator flex-center">{{ current+1 }} / {{ detail.poster_list.length }}</div>
-      </view>
-      </view>
-
-      <!-- 内容 -->
-      <view class="content-box" v-html="detail.title"></view>
-      <!-- 分割线 -->
-      <view class="bottom-time">
-        <text v-if="detail.created_at">{{detail.created_at.substring(0, 10)}}</text>
-      </view>
-
       <!-- 评论 -->
       <view class="comment-wrap" v-if="commentList.length">
         <view class="scroll-wrap">
@@ -42,10 +43,10 @@
           <template v-if="commentList && commentList.length > 0">
             <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
               <view class="left-avatar">
-                <image class="avatar" :src="item.user_info.avatar" mode="widthFix"></image>
+                <image class="avatar" :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix"></image>
               </view>
               <view class="right-box">
-                <view class="right-mine" @tap="reply(item)">
+                <view class="right-mine" @tap.stop="reply(item)">
                   <view class="right-top">
                     <p class="title">
                       {{ item.user_info.username }}
@@ -59,7 +60,7 @@
                 <template v-if="item.parent_info">
                   <view class="comment-item margin-top-sm">
                     <view class="left-avatar margin-right-sm">
-                      <image :src="item.parent_info.user_info.avatar" mode="widthFix" class="avatar"></image>
+                      <image :src="item.parent_info.user_info.avatar ? item.parent_info.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
                     </view>
                     <view class="right-mine" @tap.stop="reply(item.parent_info)">
                       <view class="right-top">
@@ -100,7 +101,7 @@
           <view v-else>
             <image src="/static/icon/zan.png" @tap="userAction('like')"></image>
           </view>
-<!--          <text>{{bottom.num.likeNum}}</text>-->
+          <!--          <text>{{bottom.num.likeNum}}</text>-->
         </view>
         <view class="e-flex_left">
           <view v-if="bottom.status.collected">
@@ -109,15 +110,15 @@
           <view v-else>
             <image src="/static/icon/collect_a.png" @tap="userAction('collect')"></image>
           </view>
-<!--          <text>{{bottom.num.collectedNum}}</text>-->
+          <!--          <text>{{bottom.num.collectedNum}}</text>-->
         </view>
 
-<!--        <view class="e-flex_left">-->
-<!--          <view>-->
-<!--            <image src="/static/icon/comment_b.png" @tap=getAllComment()></image>-->
-<!--          </view>-->
-<!--          <text>{{bottom.num.commentNum}}</text>-->
-<!--        </view>-->
+        <!--        <view class="e-flex_left">-->
+        <!--          <view>-->
+        <!--            <image src="/static/icon/comment_b.png" @tap=getAllComment()></image>-->
+        <!--          </view>-->
+        <!--          <text>{{bottom.num.commentNum}}</text>-->
+        <!--        </view>-->
 
         <view class="e-flex_left">
           <view>
@@ -141,6 +142,7 @@ import CcButton from '@/components/cc-button/cc-button.vue'
 export default {
   data() {
     return {
+      defaultAvatar: '/static/default_avatar.jpg',
       followLoading: false,
       title: '',
       actionType: 'timeline',
@@ -252,12 +254,10 @@ export default {
 
     // 同步接口请求
     async postAction(action) {
-      this.$loading()
       switch (action) {
         case 'like':
           await like(this.detailId, this.actionType).then(res => {
             this.actionFinish = true;
-            this.$loading(false)
           }).catch(err => {
             console.log('err', err)
           })
@@ -265,7 +265,6 @@ export default {
         case 'dislike':
           await dislike(this.detailId, this.actionType).then(res => {
             this.actionFinish = true;
-            this.$loading(false)
           }).catch(err => {
             console.log('err', err)
           })
@@ -279,7 +278,6 @@ export default {
             // 取消收藏
             await unCollect(data.resource_uuid, data.type).then(res => {
               this.actionFinish = true;
-              this.$loading(false)
             }).catch(err => {
               console.log('err', err)
             })
@@ -287,14 +285,12 @@ export default {
             // 收藏
             await collect(data).then(res => {
               this.actionFinish = true;
-              this.$loading(false)
             }).catch(err => {
               console.log('err', err)
             })
           }
           break;
         default:
-          this.$loading(false)
           break;
       }
     },
@@ -355,6 +351,10 @@ export default {
     reply(item) {
       this.commentParentId = item.id
       this.placeholder = '@'+item.user_info.username
+    },
+    clearReply() {
+      this.commentParentId = 0
+      this.placeholder = ''
     },
     // 写评论,动态加到评论列表最上方
     addCommon() {

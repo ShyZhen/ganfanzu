@@ -3,7 +3,7 @@
 		<view class="item-head">
 			<view class="left-info">
 				<view class="img-wrap flex-center" @tap="toOthers(item.user_info.uuid)">
-					<image :src="item.user_info.avatar ? item.user_info.avatar : '/static/default_avatar.jpg'" mode="widthFix" class="avatar"></image>
+					<image :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
 				</view>
 				<view class="head-name">{{ item.user_info.username }}</view>
 <!--        <view class="head-bio">{{ item.user_info.bio }}</view>-->
@@ -53,7 +53,8 @@
 		},
 		data() {
 			return {
-				item: this.obj,
+        defaultAvatar: '/static/default_avatar.jpg',
+        item: this.obj,
 				showPop: false,
 				commentList: []
 			};
