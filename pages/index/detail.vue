@@ -7,10 +7,7 @@
       </view>
     </view>
 
-
-
     <view class="waimai-content" :style="pageBg.bgc">
-
       <view class="content">
         <!-- 正文内容 -->
         <view class="top">
@@ -19,7 +16,7 @@
         <view class="center">
           <!-- 导购三标栏 -->
           <view class="cen-top">
-            <image :src="pageBg.step" mode="widthFix" lazy-load @load="onoff='1'"></image>
+            <image :src="stepImg" mode="widthFix" lazy-load @load="onoff='1'"></image>
             <view class="y y1" :style="pageBg.bgc"></view>
             <view class="y y2" :style="pageBg.bgc"></view>
           </view>
@@ -40,13 +37,12 @@
                       :loading="saveLoading" @tap="saveTo">保存</CcButton>
           </view>
           <view class="bttext">
-            返利注意事项:<br />
-            1.领券下单均有返利,返利按照订单实际支付金额为准;<br />
-            2.必须使用从本页获得的红包码领券,领券后使用红包下单才有返利;<br />
-            3.领券后在红包有效期内下单均有返利;<br />
-            4.饿了么绑定的手机号，需与领券登录的手机号—致;<br />
-            5.下单后30分钟内会有订单返现提醒;<br />
-            6.无论饿了么新老用户,每个手机号每天可领一次,红包金额随机发放;
+            干饭组使用说明:<br />
+            1.本产品为广大用户提供每日领取外卖红包的快捷方式;<br />
+            2.领取的红包可在该平台下的任何客户端查询与使用;<br />
+            3.首次使用外卖平台小程序领取红包需授权微信登录;<br />
+            4.本项目不会未经允许收集您的任何私人信息;<br />
+            5.红包每天可领24小时有效,金额随机;<br />
           </view>
         </view>
       </view>
@@ -82,18 +78,22 @@ export default {
         inputVal: ''
       },
 
-      pageBg: {},
-      pageBgElm: {
-        backgroundColor: '#027ed8',
-        bgc: 'background-color:#027ed8',
+      stepImg: '/static/detail/bg/step.jpg',
+      pageBg: {
+        bgc: 'background:linear-gradient(-45deg, #0163D2 0%, #0178D6 100%);',
         topBg: '/static/detail/bg/elm_zx_top.jpg',
-        step: '/static/detail/bg/elm_step.jpg',
+      },
+      pageBgCh: {
+        bgc: 'background:linear-gradient(-45deg, #55ADCD 0%, #89C9E2 100%);',
+        topBg: '/static/detail/bg/elm_ch_top.jpg',
+      },
+      pageBgCs: {
+        bgc: 'background:linear-gradient(-45deg, #EA6D71 0%, #EB7979 100%);',
+        topBg: '/static/detail/bg/elm_cs_top.jpg',
       },
       pageBgMt: {
-        backgroundColor: '#feac00',
-        bgc: 'background-color:#fdc413',
+        bgc: 'background:linear-gradient(-45deg, #FDB101 0%, #FEBB06 100%);',
         topBg: '/static/detail/bg/mt_top.jpg',
-        step: '/static/detail/bg/mt_step.jpg',
       },
     }
   },
@@ -109,16 +109,16 @@ export default {
 
     this.coupon = JSON.parse(decodeURIComponent(e.item))
 
-    // 皮肤
+    // 皮肤切换
     switch (this.coupon.id) {
       case 1:
         this.pageBg = this.pageBgElm
         break
       case 2:
-        this.pageBg = this.pageBgElm
+        this.pageBg = this.pageBgCh
         break
       case 3:
-        this.pageBg = this.pageBgElm
+        this.pageBg = this.pageBgCs
         break
       case 4:
         this.pageBg = this.pageBgMt
@@ -299,8 +299,9 @@ page{
       }
       .bttext {
         color: #fff;
-        line-height: 50rpx;
+        line-height: 60rpx;
         margin-top: 40rpx;
+        font-size: 12px;
         text {
           color: rgb(236, 76, 21)
         }
