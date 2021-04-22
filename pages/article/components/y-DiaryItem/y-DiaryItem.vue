@@ -5,8 +5,10 @@
 				<view class="img-wrap flex-center" @tap="toOthers(item.user_info.uuid)">
 					<image :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
 				</view>
-				<view class="head-name">{{ item.user_info.username }}</view>
-<!--        <view class="head-bio">{{ item.user_info.bio }}</view>-->
+        <view class="head-box">
+          <view class="head-name">{{ item.user_info.username }}</view>
+          <view class="head-bio">{{ item.user_info.bio }}</view>
+        </view>
 			</view>
 			<text class="color-nine">{{item.created_at.substring(0, 10)}}</text>
 		</view>
@@ -151,11 +153,30 @@
 					}
 				}
 
-				.head-name {
-					padding-left: 40rpx;
-					color: #666666;
-					font-size: 32rpx;
-				}
+        .head-box {
+          color: #999;
+          font-size: 12px;
+          line-height: 14px;
+          padding-left: 40rpx;
+          .head-name {
+
+            color: #666666;
+            font-size: 32rpx;
+            margin-bottom: 8px;
+          }
+          .head-bio {
+            max-width: 150px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-line-clamp:1;
+            word-break:break-all;
+            text-overflow:ellipsis;
+            overflow:hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
 			}
 
 			.follow-btn {

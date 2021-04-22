@@ -7,11 +7,13 @@
             <view class="img-wrap flex-center" @tap="toOthers">
               <image :src="detail.user_info.avatar ? detail.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
             </view>
-            <view class="head-name">{{ detail.user_info.username }}</view>
-            <!-- <view class="head-name">{{ detail.user_info.bio }}</view> -->
+            <view class="head-box">
+              <view class="head-name">{{ detail.user_info.username }}</view>
+              <view class="head-bio">{{ detail.user_info.bio }}</view>
+            </view>
           </view>
 
-          <view>
+          <view style="margin-right: 30px;">
             <CcButton @cctap="showLoading('followLoading', 3000)" width="160rpx" height="60rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
                       :loading="followLoading" @tap="follow">{{followText}}</CcButton>
           </view>
@@ -36,6 +38,12 @@
           <text v-if="detail.created_at">{{detail.created_at.substring(0, 10)}}</text>
         </view>
       </view>
+
+      <view style="margin-top: 40px" v-if="!hasLogin">
+        <CcButton @cctap="showLoading('loginLoading', 3000)" width="500rpx"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
+                  :loading="loginLoading" @tap="toLogin">登录才能查看评论哦</CcButton>
+      </view>
+
       <!-- 评论 -->
       <view class="comment-wrap" v-if="commentList.length">
         <view class="scroll-wrap">
@@ -85,7 +93,7 @@
           </template>
         </view>
       </view>
-      <view class="comment-wrap" v-else>
+      <view class="comment-wrap" style="color: #999" v-else>
         {{ noCommentsTxt }}
       </view>
 
@@ -144,6 +152,7 @@ export default {
     return {
       defaultAvatar: '/static/default_avatar.jpg',
       followLoading: false,
+      loginLoading: false,
       title: '',
       actionType: 'timeline',
       pageOpacity: 0,
@@ -401,6 +410,12 @@ export default {
       }
     },
 
+    toLogin() {
+      setTimeout(() => {
+        this.$toLogin()
+        this.loginLoading = false
+      }, 1000);
+    },
     follow() {
       if (!this.hasLogin) {
         this.$toast('需要先登录呢')
@@ -487,21 +502,37 @@ export default {
       align-items: center;
 
       .img-wrap {
-        width: 80rpx;
-        height: 80rpx;
-        overflow: hidden;
-        border-radius: 50%;
-        border: 1rpx solid #ECECEC;
-
         .avatar {
-          width: 100%;
+          width: 80rpx;
+          height: 80rpx;
+          //width: 100%;
+          border-radius: 50%;
+          border: 1rpx solid #ECECEC;
         }
       }
-
-      .head-name {
+      .head-box {
+        color: #999;
+        font-size: 12px;
+        line-height: 14px;
         padding-left: 40rpx;
-        color: #666666;
-        font-size: 32rpx;
+        .head-name {
+
+          color: #666666;
+          font-size: 32rpx;
+          margin-bottom: 8px;
+        }
+        .head-bio {
+          max-width: 150px;
+          overflow: hidden;
+          display: -webkit-box;
+          /*!autoprefixer:ignorenext*/
+          -webkit-box-orient:vertical;
+          -webkit-line-clamp:1;
+          word-break:break-all;
+          text-overflow:ellipsis;
+          overflow:hidden;
+          
+        }
       }
     }
 
