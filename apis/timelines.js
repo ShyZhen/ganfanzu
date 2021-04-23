@@ -85,6 +85,17 @@ function getUserTimelines(userUuid) {
     })
 }
 
+// 举报
+function report(uuid) {
+    return new Promise((resolve, reject) => {
+        request.request('PUT', 'V1/timeline/report/' + uuid).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 export {
-    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines
+    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report
 }

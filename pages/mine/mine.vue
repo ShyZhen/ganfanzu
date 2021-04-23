@@ -157,7 +157,7 @@
 				});
 			},
 			goShop() {
-				this.$toast('为规范化小程序环境，该功能暂时下线整改 ┮﹏┭')
+				this.$toast('为规范化小程序环境，该功能暂时下线')
 				return false
 				uni.navigateTo({
 					url: '../shop/shop'

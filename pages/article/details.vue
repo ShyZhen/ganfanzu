@@ -44,57 +44,59 @@
                   :loading="loginLoading" @tap="toLogin">登录才能查看评论哦</CcButton>
       </view>
 
-      <!-- 评论 -->
-      <view class="comment-wrap" v-if="commentList.length">
-        <view class="scroll-wrap">
-          <view class="top-num padding-tb">共{{commentList.length}}条评论</view>
-          <template v-if="commentList && commentList.length > 0">
-            <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
-              <view class="left-avatar">
-                <image class="avatar" :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix"></image>
-              </view>
-              <view class="right-box">
-                <view class="right-mine" @tap.stop="reply(item)">
-                  <view class="right-top">
-                    <p class="title">
-                      {{ item.user_info.username }}
-                      <text class="author" v-if="item.user_info.uuid == detail.user_info.uuid">作者</text>
-                    </p>
-                    <text class="time">{{item.created_at.substring(0, 10)}}</text>
-                  </view>
-                  <p class="content">{{ item.content }}</p>
+      <view v-else>
+        <!-- 评论 -->
+        <view class="comment-wrap" v-if="commentList.length">
+          <view class="scroll-wrap">
+            <view class="top-num padding-tb">共{{commentList.length}}条评论</view>
+            <template v-if="commentList && commentList.length > 0">
+              <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
+                <view class="left-avatar">
+                  <image class="avatar" :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix"></image>
                 </view>
-                <!-- 父级评论 -->
-                <template v-if="item.parent_info">
-                  <view class="comment-item margin-top-sm">
-                    <view class="left-avatar margin-right-sm">
-                      <image :src="item.parent_info.user_info.avatar ? item.parent_info.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
+                <view class="right-box">
+                  <view class="right-mine" @tap.stop="reply(item)">
+                    <view class="right-top">
+                      <p class="title">
+                        {{ item.user_info.username }}
+                        <text class="author" v-if="item.user_info.uuid == detail.user_info.uuid">作者</text>
+                      </p>
+                      <text class="time">{{item.created_at.substring(0, 10)}}</text>
                     </view>
-                    <view class="right-mine" @tap.stop="reply(item.parent_info)">
-                      <view class="right-top">
-                        <view class="reply">
-                          <p class="title">{{ item.parent_info.user_info.username }}</p>
-                          <text class="padding-lr-xs active">原评论</text>
-                          <!-- <p class="title active">{{ item.user_info.username }}</p> -->
-                        </view>
-                        <text class="time">{{item.parent_info.created_at.substring(0, 10)}}</text>
-                      </view>
-                      <p class="content">{{ item.parent_info.content }}</p>
-                    </view>
+                    <p class="content">{{ item.content }}</p>
                   </view>
-                </template>
+                  <!-- 父级评论 -->
+                  <template v-if="item.parent_info">
+                    <view class="comment-item margin-top-sm">
+                      <view class="left-avatar margin-right-sm">
+                        <image :src="item.parent_info.user_info.avatar ? item.parent_info.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
+                      </view>
+                      <view class="right-mine" @tap.stop="reply(item.parent_info)">
+                        <view class="right-top">
+                          <view class="reply">
+                            <p class="title">{{ item.parent_info.user_info.username }}</p>
+                            <text class="padding-lr-xs active">原评论</text>
+                            <!-- <p class="title active">{{ item.user_info.username }}</p> -->
+                          </view>
+                          <text class="time">{{item.parent_info.created_at.substring(0, 10)}}</text>
+                        </view>
+                        <p class="content">{{ item.parent_info.content }}</p>
+                      </view>
+                    </view>
+                  </template>
+                </view>
               </view>
-            </view>
-          </template>
-          <template v-else>
-            <view class="flex-center margin">
-              <y-Empty />
-            </view>
-          </template>
+            </template>
+            <template v-else>
+              <view class="flex-center margin">
+                <y-Empty />
+              </view>
+            </template>
+          </view>
         </view>
-      </view>
-      <view class="comment-wrap" style="color: #999" v-else>
-        {{ noCommentsTxt }}
+        <view class="comment-wrap" style="color: #999" v-else>
+          {{ noCommentsTxt }}
+        </view>
       </view>
 
       <!-- 底部操作栏 -->
@@ -140,7 +142,7 @@
 </template>
 
 <script>
-import { getTimelineDetail } from '@/apis/timelines.js'
+import { getTimelineDetail, report } from '@/apis/timelines.js'
 import { getInitStatus, like, dislike, collect, unCollect } from '@/apis/action';
 import { followUser, followStatus } from '@/apis/users';
 import { getAllComment, createComment } from '@/apis/comment';
@@ -256,6 +258,16 @@ export default {
 
     // 底部操作栏
     userAction(action) {
+
+      if (!this.hasLogin) {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+          this.followLoading = false
+        }, 1000);
+        return false
+      }
+
       this.postAction(action).then(() => {
         this.actionFinish && this.postStatus(action)
       })
@@ -344,15 +356,11 @@ export default {
     getAllComment() {
       let that = this
       let page = 1
-      this.$loading()
       getAllComment(this.detailId, this.actionType, 'new', page).then(res => {
-        that.$loading(false)
         that.commentList = res.data.data
         if (!that.commentList || that.commentList.length === 0) {
           that.noCommentsTxt = '暂无评论'
         }
-      }).catch(err => {
-        that.$loading(false)
       })
     },
 
@@ -367,6 +375,16 @@ export default {
     },
     // 写评论,动态加到评论列表最上方
     addCommon() {
+
+      if (!this.hasLogin) {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+          this.followLoading = false
+        }, 1000);
+        return false
+      }
+
       let data = {
         resource_uuid: this.detail.uuid,
         parent_id: this.commentParentId,
@@ -382,7 +400,31 @@ export default {
 
     // 举报
     report() {
+      let that = this
       // 举报弹窗，举报理由
+      if (!this.hasLogin) {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+          this.followLoading = false
+        }, 1000);
+        return false
+      }
+
+      uni.showModal({
+        title: '我要举报',
+        content: '本图文中包含违规内容?',
+        cancelText: '违规举报',
+        cancelColor: '#656464',
+        confirmText: '点错了',
+        success: function (res) {
+          if (res.cancel) {
+            report(that.detailId).then(res => {
+              that.$toast('举报成功')
+            })
+          }
+        },
+      });
     },
     viewImage(index, arr) {
       let list = [];
