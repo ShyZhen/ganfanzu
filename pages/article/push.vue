@@ -82,6 +82,12 @@ export default {
             that.$loading()
             uniUploadImage(res.tempFilePaths[0]).then(res => {
 
+              // 此处无法依赖request中的错误处理
+              if (res.statusCode !== 201) {
+                that.$toast(JSON.parse(res.data).message)
+                return false
+              }
+
               // 回显
               let url = JSON.parse(res.data).data
               if (url) {

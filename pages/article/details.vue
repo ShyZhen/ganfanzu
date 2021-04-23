@@ -39,7 +39,7 @@
         </view>
       </view>
 
-      <view style="margin-top: 40px" v-if="!hasLogin">
+      <view style="margin-top: 40px;margin-bottom: 30px" v-if="!hasLogin">
         <CcButton @cctap="showLoading('loginLoading', 3000)" width="500rpx"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
                   :loading="loginLoading" @tap="toLogin">登录才能查看评论哦</CcButton>
       </view>
