@@ -14,25 +14,34 @@
 
 		<view class="home-menu">
 			<view class="row comm-center">
-				<view></view>
-				<view>ID {{user.id}}</view>
+				<view>{{user.id}}</view>
+				<view>ID</view>
 			</view>
-			<view class="row edge comm-center">
-				<view></view>
-				<view>我的日记</view>
+			<view class="row edge comm-center" @tap="myFans">
+				<view>{{user.fans_num}}</view>
+				<view>关注</view>
 			</view>
-			<view class="row comm-center">
-				<view></view>
-				<view>我的评论</view>
+			<view class="row comm-center" @tap="myFollows">
+				<view>{{user.followed_num}}</view>
+				<view>粉丝</view>
 			</view>
 		</view>
 
 		<view class="list-menu">
+			<view class="cell" @tap="myTimeline">
+				<view class="left-icon comm-center">
+					<image src="/static/icon/mytimeline.png"></image>
+				</view>
+				<view class="txt">我的日记</view>
+				<view class="right-icon comm-center">
+					<image src="/static/icon/youjiantou.png"></image>
+				</view>
+			</view>
 			<view class="cell" @tap="myCollect">
 				<view class="left-icon comm-center">
 					<image src="/static/icon/collect.png"></image>
 				</view>
-				<view class="txt">收藏的日记</view>
+				<view class="txt">我的收藏</view>
 				<view class="right-icon comm-center">
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
@@ -162,6 +171,30 @@
 				uni.navigateTo({
 					url: '../shop/shop'
 				});
+			},
+
+			updateMyName() {
+
+			},
+
+			updateAvatar() {
+
+			},
+
+			updateMyInfo() {
+				console.log('bio')
+			},
+
+			myFans() {
+
+			},
+
+			myFollows() {
+
+			},
+
+			myTimeline() {
+
 			},
 			report() {
 
