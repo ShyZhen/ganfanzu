@@ -53,16 +53,13 @@
 </template>
 
 <script>
-import cardSwiper from "@/components/helang-cardSwiper/helang-cardSwiper"
 import CcButton from '@/components/cc-button/cc-button.vue'
 import { getShareObj } from "@/utils/share.js";
 
 export default {
   data() {
     return {
-      coupon: {
-        imageList: [],
-      },
+      coupon: {},
       topNavIndex:0,
       pageScrollTop:0,	// 页面滚动距离
       buttonHeight: this.$menuButtonRect.height + this.$systemInfoSync.statusBarHeight - 25,
@@ -98,7 +95,6 @@ export default {
     }
   },
   components:{
-    cardSwiper,
     CcButton
   },
   onLoad(e) {
@@ -164,7 +160,7 @@ export default {
     saveTo() {
       let that = this
       uni.saveImageToPhotosAlbum({
-        filePath: this.coupon.imageList[0],
+        filePath: this.coupon.originImage,
         success: function () {
           that.$toast('已保存到手机相册!')
         },

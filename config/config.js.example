@@ -10,10 +10,6 @@ const env = {
 
     subkey: '',
 
-    // 优惠券领取通知 1891
-    subscribe: '',
-
-
     // API 地址
     apiBaseUrl: 'https://api.fmock-test.com:81',
 
