@@ -174,14 +174,15 @@
 			},
 
 			updateMyName() {
-
+				// 安全校验
 			},
 
 			updateAvatar() {
-
+				// 安全校验
 			},
 
 			updateMyInfo() {
+				// 安全校验
 				console.log('bio')
 			},
 
@@ -197,7 +198,7 @@
 
 			},
 			report() {
-
+				// 安全校验
 			},
 			myCollect() {
 
