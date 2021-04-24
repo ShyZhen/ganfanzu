@@ -16,7 +16,7 @@
       </view>
     </view>
     <view class="top-menu">
-      <view class="menu-box flex-center" @tap="handleMenu('like')">
+      <view class="menu-box flex-center" @tap="handleMenu('id')">
         <text class="title">{{ info.id }}</text>
         <text>ID</text>
       </view>

@@ -99,20 +99,23 @@ export default {
     },
 
     handleMenu(index) {
+      if (!this.hasLogin) {
+        this.$toast('需要先登录呢')
+        setTimeout(() => {
+          this.$toLogin()
+        }, 1000);
+        return false
+      }
+
       switch (index) {
-        case 0:
+        case 'follow':
           uni.navigateTo({
-            url: './like'
+            url: '/pages/mine/fans?type=follow&id='+this.userUuid
           });
           break;
-        case 1:
+        case 'fans':
           uni.navigateTo({
-            url: './fans'
-          });
-          break;
-        case 2:
-          uni.navigateTo({
-            url: './fans'
+            url: '/pages/mine/fans?type=fans&id='+this.userUuid
           });
           break;
       }

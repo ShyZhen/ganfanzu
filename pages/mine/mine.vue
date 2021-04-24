@@ -17,12 +17,12 @@
 				<view>{{user.id}}</view>
 				<view>ID</view>
 			</view>
-			<view class="row edge comm-center" @tap="myFans">
-				<view>{{user.fans_num}}</view>
+			<view class="row edge comm-center" @tap="myFollows">
+				<view>{{user.followed_num}}</view>
 				<view>关注</view>
 			</view>
-			<view class="row comm-center" @tap="myFollows">
-				<view>{{user.followed_num}}</view>
+			<view class="row comm-center" @tap="myFans">
+				<view>{{user.fans_num}}</view>
 				<view>粉丝</view>
 			</view>
 		</view>
@@ -30,7 +30,7 @@
 		<view class="list-menu">
 			<view class="cell" @tap="myTimeline">
 				<view class="left-icon comm-center">
-					<image src="/static/icon/mytimeline.png"></image>
+					<image src="/static/icon/my-timeline.png"></image>
 				</view>
 				<view class="txt">我的日记</view>
 				<view class="right-icon comm-center">
@@ -93,7 +93,7 @@
 			return {
 				pageOpacity: 0,
 				user: {
-					id: 0,
+					id: '',
 					avatar: '',
 					name: '',
 					bio: '',
@@ -187,21 +187,69 @@
 			},
 
 			myFans() {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+					}, 1000);
+					return false
+				}
 
+				uni.navigateTo({
+					url: '/pages/mine/fans?type=fans&id='+this.user.uuid
+				});
 			},
 
 			myFollows() {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+					}, 1000);
+					return false
+				}
 
+				uni.navigateTo({
+					url: '/pages/mine/fans?type=follow&id='+this.user.uuid
+				});
 			},
 
 			myTimeline() {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+					}, 1000);
+					return false
+				}
 
-			},
-			report() {
-				// 安全校验
+				uni.navigateTo({
+					url: '/pages/mine/list'
+				});
 			},
 			myCollect() {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+					}, 1000);
+					return false
+				}
 
+				uni.navigateTo({
+					url: '/pages/mine/list'
+				});
+			},
+			report() {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+					}, 1000);
+					return false
+				}
+
+				// 安全校验
 			}
 		}
 	}
@@ -252,6 +300,15 @@
 		.remarks {
 			padding-top: 10rpx;
 			font-size: 24rpx;
+			max-width: 300px;
+			overflow: hidden;
+			display: -webkit-box;
+			/* !autoprefixer: ignorenext; */
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+			word-break: break-all;
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 	}
 

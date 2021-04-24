@@ -84,6 +84,18 @@
 			"navigationBarTitleText": "说点啥呢",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/mine/fans",
+		"style" : {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+	},{
+		"path" : "pages/mine/list",
+		"style" : {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {

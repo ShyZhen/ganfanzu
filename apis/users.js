@@ -42,18 +42,18 @@ function followStatus(uuid) {
         })
     })
 }
-function followList(uuid) {
+function followList(uuid, page) {
     return new Promise((resolve, reject) => {
-        request.request('GET', 'V1/follows/list/' + uuid).then(res => {
+        request.request('GET', 'V1/follows/list/' + uuid + '?page='+page).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
         })
     })
 }
-function fanList(uuid) {
+function fanList(uuid, page) {
     return new Promise((resolve, reject) => {
-        request.request('GET', 'V1/fans/list/' + uuid).then(res => {
+        request.request('GET', 'V1/fans/list/' + uuid + '?page='+page).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
