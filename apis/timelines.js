@@ -75,9 +75,9 @@ function deleteTimeline(uuid) {
 }
 
 // 某用户发布的所有文章(包括自己)
-function getUserTimelines(userUuid) {
+function getUserTimelines(userUuid, page) {
     return new Promise((resolve, reject) => {
-        request.request('GET', 'V1/timeline/user-timeline/' + userUuid).then(res => {
+        request.request('GET', 'V1/timeline/user-timeline/' + userUuid +'?page='+page).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)

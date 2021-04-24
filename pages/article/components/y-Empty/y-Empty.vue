@@ -1,6 +1,6 @@
 <template>
 	<view class="empty-wrap" :style="{height: height + 'px'}">
-		<view class="img-box"><image src="@/static/img/img_empty.png" mode="widthFix" class="img"></image></view>
+		<view class="img-box"><image src="@/static/icon/empty.png" mode="widthFix" class="img"></image></view>
 		<p class="empty-text">{{emptyText}}</p>
 		<slot></slot>
 	</view>
@@ -11,7 +11,7 @@
 		props:{
 			emptyText: {
 				type: String,
-				default: '暂无数据哦！'
+				default: '空空哦！'
 			},
 			height: {
 				type: [Number,String],

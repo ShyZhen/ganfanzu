@@ -147,6 +147,11 @@ export default {
             that.saveLoading = false
           }, 500);
         })
+      } else {
+        this.$toast('是不是忘记写什么啦')
+        setTimeout(() => {
+          that.saveLoading = false
+        }, 500);
       }
     },
     saveTemp() {

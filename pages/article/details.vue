@@ -4,7 +4,7 @@
       <view @tap="clearReply">
         <view class="item-head">
           <view class="left-info">
-            <view class="img-wrap flex-center" @tap="toOthers">
+            <view class="img-wrap flex-center" @tap="toOthers(detail.user_info.uuid)">
               <image :src="detail.user_info.avatar ? detail.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
             </view>
             <view class="head-box">
@@ -51,7 +51,7 @@
             <view class="top-num padding-tb">共{{commentList.length}}条评论</view>
             <template v-if="commentList && commentList.length > 0">
               <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
-                <view class="left-avatar">
+                <view class="left-avatar" @tap="toOthers(item.user_info.uuid)">
                   <image class="avatar" :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix"></image>
                 </view>
                 <view class="right-box">
@@ -68,7 +68,7 @@
                   <!-- 父级评论 -->
                   <template v-if="item.parent_info">
                     <view class="comment-item margin-top-sm">
-                      <view class="left-avatar margin-right-sm">
+                      <view class="left-avatar margin-right-sm" @tap="toOthers(item.parent_info.user_info.uuid)">
                         <image :src="item.parent_info.user_info.avatar ? item.parent_info.user_info.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
                       </view>
                       <view class="right-mine" @tap.stop="reply(item.parent_info)">
@@ -439,10 +439,10 @@ export default {
     swiperChange(e) {
       this.current = e.detail.current;
     },
-    toOthers() {
+    toOthers(uuid) {
       if (this.hasLogin) {
         uni.navigateTo({
-          url: '../mine/other?id='+this.detail.user_info.uuid
+          url: '../mine/other?id='+uuid
         });
       } else {
         this.$toast('需要先登录呢')

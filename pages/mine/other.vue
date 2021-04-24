@@ -21,11 +21,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { getUserInfo } from '@/apis/users.js'
+import { getUserTimelines } from '@/apis/timelines.js'
 import yDiaryItem from '../article/components/y-DiaryItem/y-DiaryItem'
 import yLoadMore from '../article/components/y-LoadMore/y-LoadMore'
 import yPersionInfo from '../article/components/y-PersionInfo/y-PersionInfo'
-import yRefresh from "../article/components/y-Refresh/y-Refresh";
-import yFab from "../article/components/y-Fab/y-Fab";
+import yEmpty from '../article/components/y-Empty/y-Empty'
 
 var that;
 export default {
@@ -34,7 +34,10 @@ export default {
       pageOpacity: 0,
       info: {},
       cardList: [],
-      loadMoreStatus: 2
+      loadMoreStatus: 0,
+      pageSize: 10,
+      curragePage: 1,
+      userUuid: 0,
     };
   },
   onLoad(e) {
@@ -48,21 +51,19 @@ export default {
         this.$toLogin()
       }, 1000);
     } else {
-      this.initUserInfo(e.id)
+      this.userUuid = e.id
+      this.initUserInfo(this.userUuid)
+      this.getUserTimelines(this.userUuid, this.curragePage)
     }
-
-    // that.info = that.$store.state.user.userInfo;
-    // that.cardList = that.$store.state.diary.cardList;
   },
   computed: {
     ...mapState(['hasBinding', 'hasLogin']),
   },
   components:{
-    yRefresh,
     yDiaryItem,
     yLoadMore,
     yPersionInfo,
-    yFab,
+    yEmpty,
   },
   methods: {
     ...mapActions(['initLoginState']),
@@ -75,6 +76,26 @@ export default {
       }).catch(err => {
         this.$loading(false)
       })
+    },
+
+    getUserTimelines(userUuid, page) {
+      if (this.loadMoreStatus === 2) {
+        return false
+      }
+      this.loadMoreStatus = 1
+
+      let that = this
+      getUserTimelines(userUuid, page).then(res => {
+        that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
+        that.cardList = that.cardList.concat(res.data.data)
+      })
+    },
+    //上滑加载
+    onReachBottom() {
+      this.curragePage = this.curragePage + 1
+      setTimeout(() => {
+        this.getUserTimelines(this.userUuid, this.curragePage);
+      }, 1000);
     },
 
     handleMenu(index) {

@@ -11,7 +11,7 @@
             <!-- 漂流瓶 -->
             <view v-if="activeTab == 0">
               <view class="margin-bottom" v-for="(item, index) in tabList[activeTab].postsList" :key="index">
-                <y-DiaryItem :obj="item" :radius="8" />
+                <y-DiaryItem :obj="item" :radius=true />
               </view>
             </view>
             <view v-else>
