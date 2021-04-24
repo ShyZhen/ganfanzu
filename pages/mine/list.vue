@@ -15,6 +15,7 @@
 
 <script>
 	import { mapState, mapActions } from 'vuex'
+	import yEmpty from "../article/components/y-Empty/y-Empty";
 
 	var that;
 	export default {
@@ -22,27 +23,44 @@
 			return {
 				pageOpacity: 0,
 				cardList: [],
-				startNum: 1
+				startNum: 1,
+				type: '',
+				uuid: '',
 			}
 		},
 		computed: {
 			...mapState(['hasBinding', 'hasLogin']),
 		},
-		onLoad() {
-			// ÔÚĞèÒªµÇÂ¼µÄµØ·½Ö´ĞĞ³õÊ¼»¯·½·¨
+		components:{
+			yEmpty
+		},
+		onLoad(e) {
+			// åœ¨éœ€è¦ç™»å½•çš„åœ°æ–¹æ‰§è¡Œåˆå§‹åŒ–æ–¹æ³•
 			this.initLoginState()
 
-			// ÅĞ¶ÏµÇÂ¼×´Ì¬ ²¢Ìø×ªµ½Ê×Ò³
+			// åˆ¤æ–­ç™»å½•çŠ¶æ€ å¹¶è·³è½¬åˆ°é¦–é¡µ
 			if (!this.hasLogin) {
-				this.$toast('ĞèÒªÏÈµÇÂ¼ÄØ')
+				this.$toast('éœ€è¦å…ˆç™»å½•å‘¢')
 				setTimeout(() => {
 					this.$toLogin()
 				}, 1000);
 			} else {
-				that = this
-				that.getDiary()
-			}
+				this.type = e.type
+				this.uuid = e.id
 
+				if (this.type === 'collect') {
+					uni.setNavigationBarTitle({
+						title: 'æˆ‘çš„æ”¶è—'
+					})
+					this.getMyCollect()
+
+				} else {
+					uni.setNavigationBarTitle({
+						title: 'æˆ‘çš„æ—¥è®°'
+					})
+					this.getMyTimeline()
+				}
+			}
 		},
 		onReady(e) {
 			this.pageOpacity = 1
@@ -50,9 +68,12 @@
 		methods: {
 			...mapActions(['initLoginState']),
 
-			getDiary() {
-				that.cardList = that.$store.state.diary.cardList
+			getMyCollect() {
+
 			},
+			getMyTimeline() {
+				
+			}
 		}
 	}
 </script>

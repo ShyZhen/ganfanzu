@@ -50,6 +50,10 @@
 			radius:{
 				type: Boolean,
 				default: false
+			},
+			noGoOther:{
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
@@ -84,6 +88,10 @@
 			},
 			toOthers() {
 				if (this.hasLogin) {
+					// 防止无限循环
+					if (this.noGoOther) {
+						return false
+					}
 					uni.navigateTo({
 						url: '/pages/mine/other?id='+this.item.user_info.uuid
 					});

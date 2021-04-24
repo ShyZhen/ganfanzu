@@ -28,7 +28,7 @@
 		</view>
 
 		<view class="list-menu">
-			<view class="cell" @tap="myTimeline">
+			<view class="cell" @tap="myTimeline('timeline')">
 				<view class="left-icon comm-center">
 					<image src="/static/icon/my-timeline.png"></image>
 				</view>
@@ -37,7 +37,7 @@
 					<image src="/static/icon/youjiantou.png"></image>
 				</view>
 			</view>
-			<view class="cell" @tap="myCollect">
+			<view class="cell" @tap="myTimeline('collect')">
 				<view class="left-icon comm-center">
 					<image src="/static/icon/collect.png"></image>
 				</view>
@@ -214,7 +214,7 @@
 				});
 			},
 
-			myTimeline() {
+			myTimeline(type) {
 				if (!this.hasLogin) {
 					this.$toast('需要先登录呢')
 					setTimeout(() => {
@@ -224,22 +224,10 @@
 				}
 
 				uni.navigateTo({
-					url: '/pages/mine/list'
+					url: '/pages/mine/list?type='+type+'&id='+this.user.uuid
 				});
 			},
-			myCollect() {
-				if (!this.hasLogin) {
-					this.$toast('需要先登录呢')
-					setTimeout(() => {
-						this.$toLogin()
-					}, 1000);
-					return false
-				}
 
-				uni.navigateTo({
-					url: '/pages/mine/list'
-				});
-			},
 			report() {
 				if (!this.hasLogin) {
 					this.$toast('需要先登录呢')

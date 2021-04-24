@@ -88,6 +88,7 @@
               </view>
             </template>
           </view>
+          <y-LoadMore :status="loadMoreStatus" />
         </view>
         <view class="comment-wrap" v-else v-show="commentStatus">
           <y-Empty emptyText="暂无评论哦"/>
@@ -137,6 +138,7 @@ import { getAllComment, createComment } from '@/apis/comment';
 import { mapState, mapActions } from 'vuex'
 import CcButton from '@/components/cc-button/cc-button.vue'
 import yEmpty from '../article/components/y-Empty/y-Empty'
+import yLoadMore from "./components/y-LoadMore/y-LoadMore";
 
 export default {
   data() {
@@ -185,7 +187,8 @@ export default {
   },
   components:{
     CcButton,
-    yEmpty
+    yEmpty,
+    yLoadMore
   },
   onShareAppMessage(res) {
     return {

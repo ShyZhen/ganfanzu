@@ -1,27 +1,31 @@
 <template>
 	<view class="container" :style="{opacity:pageOpacity}">
-	<view class="fans-wrap">
-		<template v-if="usersList && usersList.length > 0">
-			<view class="fans-item" v-for="(item,index) in usersList" :key="index">
-				<view class="left-wrap">
-					<view class="img-wrap flex-center margin-right" @tap="toOthers(item.uuid)">
-						<image :src="item.avatar ? item.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
+		<view class="fans-wrap">
+				<view v-if="usersList && usersList.length > 0">
+					<view class="fans-item" v-for="(item,index) in usersList" :key="index">
+						<view class="left-wrap">
+							<view class="img-wrap flex-center margin-right" @tap="toOthers(item.uuid)">
+								<image :src="item.avatar ? item.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>
+							</view>
+							<text>{{item.name}}</text>
+							<!--					<text class="remark">{{item.bio}}</text>-->
+						</view>
+						<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item)">{{item.inMyFollows ? '已关注' : '关注'}}</view>
 					</view>
-					<text>{{item.name}}</text>
+					<y-LoadMore :status="loadMoreStatus" />
 				</view>
-				<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item)">{{item.inMyFollows ? '已关注' : '关注'}}</view>
+			<view v-else>
+				<y-Empty emptyText="他很高傲"/>
 			</view>
-		</template>
-		<template v-else>
-			<y-Empty />
-		</template>
-	</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import { mapState, mapActions } from 'vuex'
 	import { followList, fanList, followUser } from '@/apis/users.js'
+	import yEmpty from '../article/components/y-Empty/y-Empty'
+	import yLoadMore from "../article/components/y-LoadMore/y-LoadMore";
 
 	export default {
 		data() {
@@ -39,6 +43,10 @@
 		},
 		computed: {
 			...mapState(['hasBinding', 'hasLogin']),
+		},
+		components:{
+			yEmpty,
+			yLoadMore
 		},
 		onLoad(options) {
 			// 在需要登录的地方执行初始化方法
@@ -58,13 +66,13 @@
 					uni.setNavigationBarTitle({
 						title: '粉丝列表'
 					})
-					this.getFansList()
+					this.getFansList(this.currentPage)
 
-				}else{
+				} else {
 					uni.setNavigationBarTitle({
 						title: '关注列表'
 					})
-					this.getFollowList()
+					this.getFollowList(this.currentPage)
 				}
 			}
 		},
@@ -74,33 +82,55 @@
 		methods: {
 			...mapActions(['initLoginState']),
 
-			getFansList() {
-				let that = this
-				fanList(this.uuid).then(res => {
-					that.usersList = that.usersList.concat(res.data)
-				})
-			},
-			getFollowList() {
-				let that = this
-				followList(this.uuid).then(res => {
-					that.usersList = that.usersList.concat(res.data)
-				})
-			},
+			getFansList(page) {
+				if (this.loadMoreStatus === 2) {
+					return false
+				}
+				this.loadMoreStatus = 1
 
+				let that = this
+				fanList(this.uuid, page).then(res => {
+					that.loadMoreStatus = res.data.length < this.pageSize ? 2: 0
+					that.usersList = that.usersList.concat(res.data)
+				})
+			},
+			getFollowList(page) {
+				if (this.loadMoreStatus === 2) {
+					return false
+				}
+				this.loadMoreStatus = 1
+
+				let that = this
+				followList(this.uuid, page).then(res => {
+					that.loadMoreStatus = res.data.length < this.pageSize ? 2: 0
+					that.usersList = that.usersList.concat(res.data)
+				})
+			},
+			onReachBottom() {
+				if (this.type === 'fans') {
+					this.currentPage = this.currentPage + 1
+					setTimeout(() => {
+						this.getFansList(this.currentPage);
+					}, 1000);
+				} else {
+					this.currentPage = this.currentPage + 1
+					setTimeout(() => {
+						this.getFollowList(this.currentPage);
+					}, 1000);
+				}
+			},
 			toOthers(uuid) {
 				uni.navigateTo({
 					url: '/pages/mine/other?id='+uuid
 				});
 			},
 			handleFans(info) {
-				const { id, status } = info;
+				const { uuid, inMyFollows } = info;
 				let that = this
-				if (id !== 'user-anonymous') {
-					followUser(id).then(res => {
-						item.status = !status;
-						
+				if (uuid !== 'user-anonymous') {
+					followUser(uuid).then(res => {
+						info.inMyFollows = !inMyFollows;
 						that.$toast(res.message)
-
 					})
 				} else {
 					this.$toast('匿名用户无法被关注')
@@ -119,7 +149,7 @@
 	}
 	.fans-wrap {
 		.fans-item {
-			padding: 20rpx 30rpx;
+			padding: 45rpx 30rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -147,7 +177,7 @@
 			}
 
 			.right-btn {
-				width: 170rpx;
+				width: 130rpx;
 			}
 		}
 	}

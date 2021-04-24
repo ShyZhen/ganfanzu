@@ -7,7 +7,7 @@
       <view class="scroll-wrapper">
         <!-- 日记list -->
         <view class="margin-bottom" v-for="(item, index) in cardList" :key="index">
-          <y-DiaryItem :obj="item" :radius="true" />
+          <y-DiaryItem :obj="item" :radius="true" :noGoOther="true" />
         </view>
         <y-LoadMore :status="loadMoreStatus" />
       </view>

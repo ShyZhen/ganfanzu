@@ -110,7 +110,7 @@ export default {
         // 加载更多 0加载前，1加载中，2没有更多了
         this.$set(item, 'loadMoreStatus', 0)
         this.$set(item, 'refreshing', 0)
-        this.$set(item, 'curragePage', 1)
+        this.$set(item, 'currentPage', 1)
       })
       this.loadData('add')
     },
@@ -127,10 +127,10 @@ export default {
       }
       // 刷新
       if (type === 'refresh') {
-        tabItem.curragePage = 1
+        tabItem.currentPage = 1
       }
 
-      getTimelineList(tabItem.id, tabItem.curragePage).then(res => {
+      getTimelineList(tabItem.id, tabItem.currentPage).then(res => {
         let list = res.data.data
         if(type === 'refresh'){
           // 刷新前清空数组
@@ -153,7 +153,7 @@ export default {
         if (type === 'add') {
           tabItem.loadMoreStatus = list.length < this.pageSize ? 2: 0
         }
-        tabItem.curragePage += 1
+        tabItem.currentPage += 1
       }).catch(err => {})
     },
     onReachBottom() {
