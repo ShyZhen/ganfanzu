@@ -46,10 +46,10 @@
 
       <view v-else>
         <!-- 评论 -->
-        <view class="comment-wrap" v-if="commentList.length">
+        <view class="comment-wrap" v-if="commentList && commentList.length > 0">
           <view class="scroll-wrap">
             <view class="top-num padding-tb">共{{commentList.length}}条评论</view>
-            <template v-if="commentList && commentList.length > 0">
+            <template>
               <view class="comment-item margin-bottom-lg" v-for="(item, index) in commentList" :key="index">
                 <view class="left-avatar" @tap="toOthers(item.user_info.uuid)">
                   <image class="avatar" :src="item.user_info.avatar ? item.user_info.avatar : defaultAvatar" mode="widthFix"></image>
@@ -87,15 +87,10 @@
                 </view>
               </view>
             </template>
-            <template v-else>
-              <view class="flex-center margin">
-                <y-Empty />
-              </view>
-            </template>
           </view>
         </view>
-        <view class="comment-wrap" style="color: #999" v-else>
-          {{ noCommentsTxt }}
+        <view class="comment-wrap" v-else v-show="commentStatus">
+          <y-Empty emptyText="暂无评论哦"/>
         </view>
       </view>
 
@@ -123,13 +118,6 @@
           <!--          <text>{{bottom.num.collectedNum}}</text>-->
         </view>
 
-        <!--        <view class="e-flex_left">-->
-        <!--          <view>-->
-        <!--            <image src="/static/icon/comment_b.png" @tap=getAllComment()></image>-->
-        <!--          </view>-->
-        <!--          <text>{{bottom.num.commentNum}}</text>-->
-        <!--        </view>-->
-
         <view class="e-flex_left">
           <view>
             <image src="/static/icon/report_b.png" @tap=report()></image>
@@ -148,6 +136,7 @@ import { followUser, followStatus } from '@/apis/users';
 import { getAllComment, createComment } from '@/apis/comment';
 import { mapState, mapActions } from 'vuex'
 import CcButton from '@/components/cc-button/cc-button.vue'
+import yEmpty from '../article/components/y-Empty/y-Empty'
 
 export default {
   data() {
@@ -181,16 +170,22 @@ export default {
       commentVal: '',
       current: 0,
       commentList: [],
-      noCommentsTxt: '',
       commentParentId: 0,
       placeholder: '写评论...',
+
+      // 评论加载
+      pageSize: 10,
+      currentPage: 1,
+      loadMoreStatus: 0,
+      commentStatus: false,
     };
   },
   computed: {
     ...mapState(['hasBinding', 'hasLogin', 'statusH']),
   },
   components:{
-    CcButton
+    CcButton,
+    yEmpty
   },
   onShareAppMessage(res) {
     return {
@@ -249,7 +244,7 @@ export default {
     // 获取评论
     if (this.hasLogin) {
       setTimeout(() => {
-        this.getAllComment()
+        this.getAllComment(this.currentPage)
       }, 1000);
     }
   },
@@ -352,16 +347,25 @@ export default {
     },
 
     // 获取评论列表,下拉刷新（时间排序）
-    // TODO 热评、点赞、滚动加载 功能
-    getAllComment() {
+    // TODO 热评、点赞 功能
+    getAllComment(page) {
+      if (this.loadMoreStatus === 2) {
+        return false
+      }
+      this.loadMoreStatus = 1
+
       let that = this
-      let page = 1
       getAllComment(this.detailId, this.actionType, 'new', page).then(res => {
-        that.commentList = res.data.data
-        if (!that.commentList || that.commentList.length === 0) {
-          that.noCommentsTxt = '暂无评论'
-        }
+        that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
+        that.commentList = that.commentList.concat(res.data.data)
+        that.commentStatus = true
       })
+    },
+    onReachBottom() {
+      this.currentPage = this.currentPage + 1
+      setTimeout(() => {
+        this.getAllComment(this.currentPage);
+      }, 1000);
     },
 
     // 点击回复的效果 再评论框展示@xx

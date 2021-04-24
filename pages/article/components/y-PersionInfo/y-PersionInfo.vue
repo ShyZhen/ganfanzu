@@ -1,14 +1,14 @@
 <template>
   <view class="info-wrap">
     <view class="top-box flex-center">
-      <image :src="info.avatar" mode="widthFix" class="filter"></image>
+      <image :src="info.avatar ? info.avatar : defaultAvatar" mode="widthFix" class="filter"></image>
     </view>
     <view class="mine-top">
       <view class="avatar-wrap">
         <view class="avatar flex-center">
-          <image :src="info.avatar" mode="widthFix" class="img"></image>
+          <image :src="info.avatar ? info.avatar : defaultAvatar" mode="widthFix" class="img"></image>
         </view>
-        <view class="cu-tag badge ycShake" :class="info.gender == 0 ? 'cuIcon-female bg-pink' : 'cuIcon-male bg-blue'"></view>
+        <view class="cu-tag badge ycShake" :class="info.gender === 'male' ? 'cuIcon-male bg-blue' : 'cuIcon-female bg-pink'"></view>
         <view class="name">
           <p>{{ info.name }}</p>
           <p class="motto">{{ info.bio }}</p>
@@ -43,6 +43,8 @@ export default {
   },
   data() {
     return {
+      defaultAvatar: '/static/default_avatar.jpg',
+
       menuList: [{
         name: '喜欢',
         num: 20

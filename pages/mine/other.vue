@@ -36,7 +36,7 @@ export default {
       cardList: [],
       loadMoreStatus: 0,
       pageSize: 10,
-      curragePage: 1,
+      currentPage: 1,
       userUuid: 0,
     };
   },
@@ -53,7 +53,7 @@ export default {
     } else {
       this.userUuid = e.id
       this.initUserInfo(this.userUuid)
-      this.getUserTimelines(this.userUuid, this.curragePage)
+      this.getUserTimelines(this.userUuid, this.currentPage)
     }
   },
   computed: {
@@ -92,9 +92,9 @@ export default {
     },
     //上滑加载
     onReachBottom() {
-      this.curragePage = this.curragePage + 1
+      this.currentPage = this.currentPage + 1
       setTimeout(() => {
-        this.getUserTimelines(this.userUuid, this.curragePage);
+        this.getUserTimelines(this.userUuid, this.currentPage);
       }, 1000);
     },
 
