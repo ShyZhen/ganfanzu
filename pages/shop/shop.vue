@@ -57,7 +57,7 @@
 <script>
 	import {
 		getShareObj
-	} from "@/common/share.js"
+	} from "@/utils/share.js"
 	import CONTANTS, {
 		ERR_OK
 	} from '@/common/config'
@@ -202,10 +202,10 @@
 					page
 				}).then(res => {
 					this.isLoading = false
-					if (res.code !== ERR_OK) {
-						this.$toast(res.msg || '您的网络状态不太好哦~')
-						return
-					}
+					// if (res.code !== ERR_OK) {
+					// 	this.$toast(res.msg || '您的网络状态不太好哦~')
+					// 	return
+					// }
 					const
 						couponListInfo = this.couponListInfo[platform],
 						handleList = this.handleData(res.data, platform);
@@ -245,10 +245,10 @@
 						this.isLoading = true;
 						getCustomProduct().then(res => {
 							this.isLoading = false;
-							if (res.code !== ERR_OK) {
-								this.$toast(res.msg || '您的网络状态不太好哦~')
-								return
-							}
+							// if (res.code !== ERR_OK) {
+							// 	this.$toast(res.msg || '您的网络状态不太好哦~')
+							// 	return
+							// }
 							this.setChoosedTab(type);
 							this.couponListInfo[DEFAULR_CHECKED_TYPE].list = this.handleData(res.data, type)
 							this.$loading(false)
@@ -271,7 +271,7 @@
 
 			  // 点击跳转到详情页
         uni.navigateTo({
-          url: '../../pages/shop/detail?item='+encodeURIComponent(JSON.stringify(item))
+          url: '/pages/shop/detail?item='+encodeURIComponent(JSON.stringify(item))
         })
         return false;
 

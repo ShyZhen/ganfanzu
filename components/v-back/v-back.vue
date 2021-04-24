@@ -11,9 +11,9 @@
 			};
 		},
 		methods: {
-		  back() {
-		    this.$toBack()
-      }
+			back() {
+				this.$toBack()
+			},
 		}
 	}
 </script>

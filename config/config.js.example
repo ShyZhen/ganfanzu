@@ -8,12 +8,19 @@ const env = {
 
     noticeKey: 'ganfanzu_collect_key_2021',
 
-    ganFanApi : 'https://www.litblc.com',
-
     subkey: '',
 
-    // 优惠券领取通知 1891
-    subscribe: '',
+    // API 地址
+    apiBaseUrl: 'https://api.fmock-test.com:81',
+
+    // token存储键名
+    tokenKey: 'GANFANZU-TOKEN-KEY',
+
+    // 绑定状态
+    bindingKey: 'GANFANZU-BINDING-KEY',
+
+    // 前端存储过期时间 （单位天）
+    tokenExpire: 7,
 }
 
 export default env
