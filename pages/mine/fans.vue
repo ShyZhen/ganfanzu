@@ -9,7 +9,7 @@
 					</view>
 					<text>{{item.name}}</text>
 				</view>
-				<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item.uuid, item.inMyFollows)">{{item.inMyFollows ? '已关注' : '关注'}}</view>
+				<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item)">{{item.inMyFollows ? '已关注' : '关注'}}</view>
 			</view>
 		</template>
 		<template v-else>
@@ -92,15 +92,13 @@
 					url: '/pages/mine/other?id='+uuid
 				});
 			},
-			handleFans(id, status) {
+			handleFans(info) {
+				const { id, status } = info;
 				let that = this
 				if (id !== 'user-anonymous') {
 					followUser(id).then(res => {
-						if (status) {
-							status = false
-						} else {
-							status = true
-						}
+						item.status = !status;
+						
 						that.$toast(res.message)
 
 					})
