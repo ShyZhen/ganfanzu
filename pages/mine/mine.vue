@@ -162,14 +162,14 @@
 			},
 			goAbout() {
 				uni.navigateTo({
-					url: '../about/about'
+					url: '/pages/about/about'
 				});
 			},
 			goShop() {
 				this.$toast('为规范化小程序环境，该功能暂时下线')
 				return false
 				uni.navigateTo({
-					url: '../shop/shop'
+					url: '/pages/shop/shop'
 				});
 			},
 

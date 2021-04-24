@@ -11,7 +11,7 @@
         <view class="cu-tag badge ycShake" :class="info.gender === 'male' ? 'cuIcon-male bg-blue' : 'cuIcon-female bg-pink'"></view>
         <view class="name">
           <p>{{ info.name }}</p>
-          <p class="motto">{{ info.bio }}</p>
+          <p class="motto" @tap="showBio">{{ info.bio }}</p>
         </view>
       </view>
     </view>
@@ -60,6 +60,9 @@ export default {
   methods:{
     handleMenu(index){
       this.$emit('change',index)
+    },
+    showBio() {
+      this.$toast(this.info.bio)
     }
   }
 };

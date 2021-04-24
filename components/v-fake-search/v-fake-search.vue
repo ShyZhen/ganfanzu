@@ -27,7 +27,7 @@
 		methods:{
 			toSearchPage() {
 				uni.navigateTo({
-					url: '../../pages/search/search'
+					url: '/pages/search/search'
 				});
 			}
 		}

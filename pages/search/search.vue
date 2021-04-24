@@ -129,7 +129,7 @@
 			toCoupon(item) {
 				// 点击跳转到详情页
 				uni.navigateTo({
-					url: '../../pages/shop/detail?platform=jd&item='+encodeURIComponent(JSON.stringify(item))
+					url: '/pages/shop/detail?platform=jd&item='+encodeURIComponent(JSON.stringify(item))
 				})
 				return false;
 			},

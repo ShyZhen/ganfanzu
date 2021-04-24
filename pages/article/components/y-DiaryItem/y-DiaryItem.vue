@@ -79,7 +79,7 @@
 
 			toDetails(id) {
 				uni.navigateTo({
-					url: './details?id=' + id
+					url: '/pages/article/details?id=' + id
 				});
 			},
 			toOthers() {

@@ -146,7 +146,7 @@ export default {
 
       // 点击跳转到详情页
       uni.navigateTo({
-        url: '../../pages/index/detail?item='+encodeURIComponent(JSON.stringify(this.couponList[i]))
+        url: '/pages/index/detail?item='+encodeURIComponent(JSON.stringify(this.couponList[i]))
       })
       return false;
 

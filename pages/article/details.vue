@@ -446,7 +446,7 @@ export default {
     toOthers(uuid) {
       if (this.hasLogin) {
         uni.navigateTo({
-          url: '../mine/other?id='+uuid
+          url: '/pages/mine/other?id='+uuid
         });
       } else {
         this.$toast('需要先登录呢')
