@@ -132,7 +132,7 @@ export default {
 
       getTimelineList(tabItem.id, tabItem.currentPage).then(res => {
         let list = res.data.data
-        if(type === 'refresh'){
+        if (type === 'refresh') {
           // 刷新前清空数组
           tabItem.postsList = []
         }
@@ -143,9 +143,6 @@ export default {
         // 下拉刷新 关闭刷新动画
         if (type === 'refresh') {
           that.$refs.mixPulldownRefresh && that.$refs.mixPulldownRefresh.endPulldownRefresh();
-          // #ifdef APP-PLUS
-          tabItem.refreshing = false
-          // #endif
           tabItem.loadMoreStatus = 0
         }
 
