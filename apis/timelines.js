@@ -85,6 +85,17 @@ function getUserTimelines(userUuid, page) {
     })
 }
 
+// 收藏文章、回答、视频
+function getMyCollected(type, page) {
+    return new Promise((resolve, reject) => {
+        request.request('GET', 'V1/collection/' + type +'?page='+page).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 // 举报
 function report(uuid) {
     return new Promise((resolve, reject) => {
@@ -97,5 +108,5 @@ function report(uuid) {
 }
 
 export {
-    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report
+    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report, getMyCollected
 }

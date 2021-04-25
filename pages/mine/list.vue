@@ -15,8 +15,7 @@
 </template>
 
 <script>
-	import { getUserTimelines } from '@/apis/timelines.js'
-	import { getMyFollowPostsList } from '@/apis/action.js'
+	import { getUserTimelines, getMyCollected } from '@/apis/timelines.js'
 	import { mapState, mapActions } from 'vuex'
 	import yEmpty from "../article/components/y-Empty/y-Empty";
 	import yLoadMore from "../article/components/y-LoadMore/y-LoadMore";
@@ -26,6 +25,7 @@
 	export default {
 		data() {
 			return {
+        actionType: 'timeline',
 				pageOpacity: 0,
 				cardList: [],
 				startNum: 1,
@@ -86,10 +86,10 @@
 				this.loadMoreStatus = 1
 
 				let that = this
-				// getMyFollowPostsList(this.uuid, page).then(res => {
-				// 	that.loadMoreStatus = res.data.length < this.pageSize ? 2: 0
-				// 	that.cardList = that.cardList.concat(res.data)
-				// })
+        getMyCollected(this.actionType, page).then(res => {
+					that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
+					that.cardList = that.cardList.concat(res.data.data)
+				})
 			},
 			getMyTimeline(page) {
 				if (this.loadMoreStatus === 2) {
