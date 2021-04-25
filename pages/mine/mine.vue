@@ -2,9 +2,9 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="head comm-center">
 			<view v-if="hasLogin">
-				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix"></image>
-				<view class="name">{{user.name}}</view>
-				<view class="remarks">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
+				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix" @tap="updateAvatar"></image>
+				<view class="name" @tap="updateMyName">{{user.name}}</view>
+				<view class="remarks" @tap="updateMyInfo">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
 			</view>
 			<view v-else>
 				<CcButton @cctap="showLoading('loginLoading')"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
@@ -86,6 +86,7 @@
 	import CcButton from '@/components/cc-button/cc-button.vue'
 	import { mapState, mapActions } from 'vuex'
 	import { getMyInfo } from '@/apis/users.js'
+	import { updateAvatar, updateMyName, updateMyInfo } from '@/apis/auth.js'
 	import { logout } from '@/utils/loginPlugin.js'
 
 	export default {

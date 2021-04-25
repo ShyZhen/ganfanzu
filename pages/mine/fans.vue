@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="fans-wrap">
 				<view v-if="usersList && usersList.length > 0">
-					<view class="fans-item" v-for="(item,index) in usersList" :key="index">
+					<view class="fans-item" v-for="(item, index) in usersList" :key="item.id">
 						<view class="left-wrap">
 							<view class="img-wrap flex-center margin-right" @tap="toOthers(item.uuid)">
 								<image :src="item.avatar ? item.avatar : defaultAvatar" mode="widthFix" class="avatar"></image>

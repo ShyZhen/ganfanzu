@@ -2,7 +2,7 @@
 	<view class="container" :style="{opacity:pageOpacity}">
 		<view class="like-wrap">
 			<template v-if="cardList && cardList.length > 0">
-				<view class="margin-bottom" v-for="(item, index) in cardList" :key="index">
+				<view class="margin-bottom" v-for="(item, index) in cardList" :key="item.id">
 					<y-DiaryItem :obj="item" />
 				</view>
 				<y-LoadMore :status="loadMoreStatus" />

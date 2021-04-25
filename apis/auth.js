@@ -153,10 +153,6 @@ function getUserDetail(uuid) {
 }
 
 
-
-
-
-
 // 发送注册验证码
 function registerCode(data) {
     let params = {
