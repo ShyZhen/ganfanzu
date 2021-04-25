@@ -135,7 +135,6 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 24rpx;
-          padding: 20rpx 0;
         }
       }
     }

@@ -21,6 +21,16 @@ function dislike(uuid, type) {
         })
     })
 }
+// 仅仅支持点赞，不支持取消
+function onlyLike(uuid, type) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', 'V1/only-like/' + type + '/' + uuid).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
 
 //获取 点赞 踩 收藏相关信息
 function getInitStatus(uuid, type) {
@@ -167,6 +177,6 @@ function getMyFollowPostsList(type, page) {
 }
 
 export {
-    like, dislike, getInitStatus,
+    like, dislike, getInitStatus, onlyLike,
     collect, unCollect, getMyFollowPostsList
 }

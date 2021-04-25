@@ -568,19 +568,16 @@ export default {
 
           color: #666666;
           font-size: 32rpx;
-          margin-bottom: 8px;
         }
         .head-bio {
-          max-width: 150px;
           overflow: hidden;
           display: -webkit-box;
-          /*!autoprefixer:ignorenext*/
           -webkit-box-orient:vertical;
           -webkit-line-clamp:1;
           word-break:break-all;
           text-overflow:ellipsis;
           overflow:hidden;
-          
+          margin-top: 2px;
         }
       }
     }

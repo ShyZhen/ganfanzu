@@ -9,7 +9,7 @@
         <view class="img-wrap margin-none">
           <view class="grid col-4 grid-square flex-sub padding-top-lg">
             <view class="bg-img" v-for="(item,index) in imgList" :key="index">
-              <image :src="imgList[index]" mode="aspectFill" @tap="ViewImage(index)" class="img-item"></image>
+              <image :src="imgList[index]" mode="aspectFill" @tap="viewImage(index)" class="img-item"></image>
               <image src="@/static/icon/close.png" @tap.stop="DelImg" :data-index="index" mode="widthFix" class="close-img"></image>
             </view>
             <view class="add-img" @tap="ChooseImage" v-if="imgList.length<9">
@@ -79,7 +79,7 @@ export default {
         sourceType: ['album', 'camera'],
         success: (res) => {
           if (res.tempFilePaths.length) {
-            that.$loading()
+            that.$loading('压缩上传中...')
             uniUploadImage(res.tempFilePaths[0]).then(res => {
 
               // 此处无法依赖request中的错误处理
@@ -113,7 +113,7 @@ export default {
       this.saveTemp()
     },
     // 预览图片
-    ViewImage(index) {
+    viewImage(index) {
       let that = this
       uni.previewImage({
         current: index,

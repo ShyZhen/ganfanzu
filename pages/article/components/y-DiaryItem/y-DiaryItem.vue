@@ -17,12 +17,12 @@
 			<view class="text-content">{{ item.title }}</view>
 			<view class="img-wrap padding-bottom-lg" v-if="item.poster_list.length == 1">
 				<view class="img-box">
-					<image v-for="(url, idx) in item.poster_list" :key="idx" :src="url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.poster_list)"></image>
+					<image v-for="(url, idx) in item.poster_list" :key="idx" :src="url" mode="widthFix" class="img" @tap.stop @tap="viewImage(idx, item.poster_list)"></image>
 				</view>
 			</view>
 			<view class="img-list padding-bottom-lg" v-if="item.poster_list.length > 1">
 				<view class="img-box" v-for="(url, idx) in item.poster_list" :key="idx">
-					<image :src="url" mode="widthFix" class="img" @tap.stop @tap="ViewImage(idx, item.poster_list)"></image>
+					<image :src="url" mode="widthFix" class="img" @tap.stop @tap="viewImage(idx, item.poster_list)"></image>
 				</view>
 			</view>
 			<view class="bottom-btn padding-bottom-sm">
@@ -30,7 +30,7 @@
 					<image class="img" src="/static/icon/comment.png" mode="widthFix"></image>
 					<text>{{ item.comment_num }}</text>
 				</view>
-				<view class="btn-item flex-center">
+				<view class="btn-item flex-center" @tap.stop @tap="handleLike(item)">
 					<image class="img" src="/static/icon/zan.png" mode="widthFix"></image>
 					<text>{{ item.like_num }}</text>
 				</view>
@@ -41,6 +41,7 @@
 
 <script>
 	import { mapState, mapActions } from 'vuex'
+  import { onlyLike } from '@/apis/action';
 
 	export default {
 		props: {
@@ -102,7 +103,7 @@
 					}, 1000);
 				}
 			},
-			ViewImage(index, arr) {
+			viewImage(index, arr) {
 				let list = [];
 				for (let i = 0; i < arr.length; i++) {
 					list.push(arr[i]);
@@ -111,7 +112,22 @@
 					current: index,
 					urls: list
 				});
-			}
+			},
+      handleLike(item) {
+        const { uuid } = item;
+        let that = this
+        if (uuid !== 'user-anonymous') {
+          onlyLike(uuid, 'timeline').then(res => {
+            if (res.data) {
+              item.like_num += 1
+            } else {
+              that.$toast('您已经赞过该内容啦')
+            }
+          })
+        } else {
+          this.$toast('匿名用户无法被点赞')
+        }
+      },
 		}
 	};
 </script>
@@ -156,10 +172,9 @@
 
 						color: #666666;
 						font-size: 32rpx;
-						margin-bottom: 8px;
 					}
 					.head-bio {
-						max-width: 150px;
+						max-width: 170px;
 						overflow: hidden;
 						display: -webkit-box;
 						-webkit-box-orient:vertical;
@@ -169,6 +184,7 @@
 						overflow:hidden;
 						white-space: nowrap;
 						text-overflow: ellipsis;
+            margin-top: 2px;
 					}
 				}
 			}
