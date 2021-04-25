@@ -41,7 +41,7 @@
 
 <script>
 	import { mapState, mapActions } from 'vuex'
-  import { onlyLike } from '@/apis/action';
+	import { onlyLike } from '@/apis/action';
 
 	export default {
 		props: {
@@ -113,21 +113,30 @@
 					urls: list
 				});
 			},
-      handleLike(item) {
-        const { uuid } = item;
-        let that = this
-        if (uuid !== 'user-anonymous') {
-          onlyLike(uuid, 'timeline').then(res => {
-            if (res.data) {
-              item.like_num += 1
-            } else {
-              that.$toast('您已经赞过该内容啦')
-            }
-          })
-        } else {
-          this.$toast('匿名用户无法被点赞')
-        }
-      },
+			handleLike(item) {
+				if (!this.hasLogin) {
+					this.$toast('需要先登录呢')
+					setTimeout(() => {
+						this.$toLogin()
+						this.followLoading = false
+					}, 1000);
+					return false
+				}
+
+				const { uuid } = item;
+				let that = this
+				if (uuid !== 'user-anonymous') {
+					onlyLike(uuid, 'timeline').then(res => {
+						if (res.data) {
+							item.like_num += 1
+						} else {
+							that.$toast('您已经赞过该内容啦')
+						}
+					})
+				} else {
+					this.$toast('匿名用户无法被点赞')
+				}
+			},
 		}
 	};
 </script>
@@ -184,7 +193,7 @@
 						overflow:hidden;
 						white-space: nowrap;
 						text-overflow: ellipsis;
-            margin-top: 2px;
+						margin-top: 2px;
 					}
 				}
 			}

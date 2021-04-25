@@ -90,7 +90,7 @@
           </view>
           <y-LoadMore :status="loadMoreStatus" />
         </view>
-        <view class="comment-wrap" v-else v-show="commentStatus">
+        <view class="comment-wrap" v-else v-show="requestStatus">
           <y-Empty emptyText="暂无评论哦"/>
         </view>
       </view>
@@ -179,7 +179,7 @@ export default {
       pageSize: 10,
       currentPage: 1,
       loadMoreStatus: 0,
-      commentStatus: false,
+      requestStatus: false,
     };
   },
   computed: {
@@ -361,7 +361,7 @@ export default {
       getAllComment(this.detailId, this.actionType, 'new', page).then(res => {
         that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
         that.commentList = that.commentList.concat(res.data.data)
-        that.commentStatus = true
+        that.requestStatus = true
       })
     },
     onReachBottom() {

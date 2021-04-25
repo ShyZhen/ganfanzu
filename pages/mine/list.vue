@@ -7,7 +7,7 @@
 				</view>
 				<y-LoadMore :status="loadMoreStatus" />
 			</template>
-			<template v-else>
+			<template v-else v-show="requestStatus">
 				<y-Empty />
 			</template>
 		</view>
@@ -25,7 +25,7 @@
 	export default {
 		data() {
 			return {
-        actionType: 'timeline',
+				actionType: 'timeline',
 				pageOpacity: 0,
 				cardList: [],
 				startNum: 1,
@@ -35,6 +35,7 @@
 				pageSize: 10,
 				currentPage: 1,
 				loadMoreStatus: 0,
+				requestStatus: false,
 			}
 		},
 		computed: {
@@ -86,9 +87,10 @@
 				this.loadMoreStatus = 1
 
 				let that = this
-        getMyCollected(this.actionType, page).then(res => {
+				getMyCollected(this.actionType, page).then(res => {
 					that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
 					that.cardList = that.cardList.concat(res.data.data)
+					that.requestStatus = true
 				})
 			},
 			getMyTimeline(page) {
@@ -101,6 +103,7 @@
 				getUserTimelines(this.uuid, page).then(res => {
 					that.loadMoreStatus = res.data.data.length < this.pageSize ? 2: 0
 					that.cardList = that.cardList.concat(res.data.data)
+					that.requestStatus = true
 				})
 			},
 			onReachBottom() {

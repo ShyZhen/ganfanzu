@@ -14,7 +14,7 @@
 					</view>
 					<y-LoadMore :status="loadMoreStatus" />
 				</view>
-			<view v-else>
+			<view v-else v-show="requestStatus">
 				<y-Empty emptyText="他很高傲"/>
 			</view>
 		</view>
@@ -39,6 +39,7 @@
 				pageSize: 10,
 				currentPage: 1,
 				loadMoreStatus: 0,
+				requestStatus: false,
 			}
 		},
 		computed: {
@@ -92,6 +93,7 @@
 				fanList(this.uuid, page).then(res => {
 					that.loadMoreStatus = res.data.length < this.pageSize ? 2: 0
 					that.usersList = that.usersList.concat(res.data)
+					that.requestStatus = true
 				})
 			},
 			getFollowList(page) {
@@ -104,6 +106,7 @@
 				followList(this.uuid, page).then(res => {
 					that.loadMoreStatus = res.data.length < this.pageSize ? 2: 0
 					that.usersList = that.usersList.concat(res.data)
+					that.requestStatus = true
 				})
 			},
 			onReachBottom() {
