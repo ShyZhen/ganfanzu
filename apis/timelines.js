@@ -63,6 +63,23 @@ function uniUploadImage(filePath) {
     })
 }
 
+function uniUploadImageAvatar(filePath) {
+    return new Promise((resolve, reject) => {
+        uni.uploadFile({
+            url: request.buildFullUrl('/V1/file/avatar'),
+            filePath: filePath,
+            name: 'avatar',
+            header: request.buildHeader({}),
+            success: (uploadRes) => {
+                resolve(uploadRes)
+            },
+            fail: (failRes) => {
+                reject(failRes)
+            }
+        });
+    })
+}
+
 // 删除自己的文章
 function deleteTimeline(uuid) {
     return new Promise((resolve, reject) => {
@@ -108,5 +125,6 @@ function report(uuid) {
 }
 
 export {
-    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report, getMyCollected
+    getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report, getMyCollected,
+    uniUploadImageAvatar
 }

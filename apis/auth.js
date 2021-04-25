@@ -130,17 +130,6 @@ function updateMyName(data) {
     })
 }
 
-// 上传头像
-function updateAvatar(data) {
-    return new Promise((resolve, reject) => {
-        request.request('POST', 'V1/file/avatar', data).then(res => {
-            resolve(res.data)
-        }).catch(e => {
-            reject(e)
-        })
-    })
-}
-
 // 获取某个用户信息
 function getUserDetail(uuid) {
     return new Promise((resolve, reject) => {
@@ -182,5 +171,5 @@ function loginQuick(account, code) {
 
 export {
     wxmpLogin, accountLogin, logout, registerCode, accountRegister, getAccountStatus, githubLogin, getasswordCode, updatePassword,
-    getMyInfo, updateMyInfo, updateMyName, updateAvatar, getUserDetail, loginQuick
+    getMyInfo, updateMyInfo, updateMyName, getUserDetail, loginQuick
 }

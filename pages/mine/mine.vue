@@ -79,6 +79,14 @@
 			<CcButton @cctap="showLoading('logoutLoading')" width="500rpx" color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
 					  :loading="logoutLoading" @tap="logout">退出登录</CcButton>
 		</view>
+		<view style="height: 0" v-show="updateAvatarDisable">
+			<avatar
+					:bgImage="imgBg"
+					selWidth="200px" selHeight="200px"  ref='avatar' fileType='png'
+					:avatarSrc="url" @upload="myUpload" @end="closeMyUpload" quality="1" inner=true
+					avatarStyle="width: 200px; height: 200px; margin: 40px;">
+			</avatar>
+		</view>
 	</view>
 </template>
 
@@ -86,8 +94,10 @@
 	import CcButton from '@/components/cc-button/cc-button.vue'
 	import { mapState, mapActions } from 'vuex'
 	import { getMyInfo } from '@/apis/users.js'
-	import { updateAvatar, updateMyName, updateMyInfo } from '@/apis/auth.js'
+	import { updateMyName, updateMyInfo } from '@/apis/auth.js'
+	import { uniUploadImageAvatar } from '@/apis/timelines.js'
 	import { logout } from '@/utils/loginPlugin.js'
+	import avatar from "../../components/yq-avatar/yq-avatar.vue";
 
 	export default {
 		data() {
@@ -101,10 +111,16 @@
 				},
 				logoutLoading: false,
 				loginLoading: false,
+
+				// 头像剪裁
+				updateAvatarDisable: false,
+				imgBg: '',
+				url: '',
 			}
 		},
 		components:{
-			CcButton
+			CcButton,
+			avatar
 		},
 		onLoad: function () {
 
@@ -176,10 +192,38 @@
 
 			updateMyName() {
 				// 安全校验
+				console.log('name')
 			},
 
 			updateAvatar() {
 				// 安全校验
+				let avatar = this.$refs.avatar;
+				avatar.fChooseImg(1, {selWidth: "200px", selHeight: "200px", expWidth: "200px", expHeight: "200px", inner:false}, {data: 'avatar'});
+				this.updateAvatarDisable = true
+			},
+			myUpload(rsp) {
+				let that = this
+				this.$loading('压缩上传中...')
+				uniUploadImageAvatar(rsp.path).then(res => {
+					// 此处无法依赖request中的错误处理
+					if (res.statusCode !== 201) {
+						that.$toast(JSON.parse(res.data).message)
+						return false
+					}
+
+					// 回显
+					let url = JSON.parse(res.data).data
+					if (url) {
+						this.user.avatar = url
+					}
+					that.$toast('上传成功')
+
+				}).catch(err => {
+					that.$toast('上传失败，请重试')
+				})
+			},
+			closeMyUpload() {
+				this.updateAvatarDisable = false
 			},
 
 			updateMyInfo() {
