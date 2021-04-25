@@ -250,7 +250,7 @@
 							}
 						});
 					},
-					complete() {
+					fail() {
 						that.fClose()
 					}
 				})
