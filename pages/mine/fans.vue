@@ -10,7 +10,7 @@
 							<text>{{item.name}}</text>
 							<!--					<text class="remark">{{item.bio}}</text>-->
 						</view>
-						<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item)">{{item.inMyFollows ? '已关注' : '关注'}}</view>
+						<view :class="['right-btn main-btn',item.inMyFollows ? 'active-btn' : '']" @tap="handleFans(item)">{{item.inMyFollows ? '已关注' : '+ 关注'}}</view>
 					</view>
 					<y-LoadMore :status="loadMoreStatus" />
 				</view>

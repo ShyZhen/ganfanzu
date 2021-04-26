@@ -33,11 +33,6 @@
       <view class="t-f">登录即同意<text>用户协议</text></view>
       <view class="t-e cl">
         <view class="t-g">
-
-          <!--        <button open-type="getUserInfo" @getuserinfo="getUserInfo">-->
-          <!--          <image src="/static/icon/weixin.png"></image>-->
-          <!--        </button>-->
-
           <button @tap="getUserProfile">
             <image src="/static/icon/weixin.png"></image>
           </button>
@@ -164,26 +159,13 @@
         })
       },
 
-      // 4.13开始不再弹窗，获取匿名用户信息
-      getUserInfo({detail}) {
-        if (detail.userInfo) {
-          wxmpLogin(detail.userInfo).then(res => {
-            this.$loading(false)
-            this.$reLunchBack()
-          }).catch(err => {
-            setTimeout(() => {this.$toast('微信登录失败'), 500})
-          })
-        } else {
-          this.$toast('获取用户信息失败')
-        }
-      },
-
       getUserProfile(e) {
         // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
         // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
         uni.getUserProfile({
           desc: '用于完善个人资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
           success: (res) => {
+            this.$loading()
             if (res.userInfo) {
               wxmpLogin(res.userInfo).then(res => {
                 this.$loading(false)
@@ -194,7 +176,7 @@
             } else {
               this.$toast('获取用户信息失败')
             }
-          }
+          },
         })
       },
 
@@ -293,8 +275,8 @@
   }
 
   .t-login .t-e image {
-    width: 75rpx;
-    height: 75rpx
+    width: 90rpx;
+    height: 90rpx
   }
 
   .t-login .t-f {
