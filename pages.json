@@ -63,7 +63,7 @@
 	},{
 		"path" : "pages/article/article",
 		"style" : {
-			"navigationBarTitleText": "干饭日记",
+			"navigationBarTitleText": "干饭天空",
 			"enablePullDownRefresh": false
 		}
 	},{

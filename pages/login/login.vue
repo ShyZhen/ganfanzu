@@ -165,7 +165,7 @@
         uni.getUserProfile({
           desc: '用于完善个人资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
           success: (res) => {
-            this.$loading()
+            this.$loading('拼命加载中...')
             if (res.userInfo) {
               wxmpLogin(res.userInfo).then(res => {
                 this.$loading(false)

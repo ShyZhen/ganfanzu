@@ -3,8 +3,11 @@
 		<view class="head comm-center">
 			<view v-if="hasLogin">
 				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix" @tap="updateAvatar"></image>
-				<view class="name" @tap="updateMyName">{{user.name}}</view>
-				<view class="remarks" @tap="updateMyInfo">{{user.bio ? user.bio : '说点啥好呢~'}}</view>
+          <input class="name" :disabled="nameDisabled" v-model="user.name" confirm-type="send"
+                 @tap="setDisabled('name')" @blur="cancelEdit('name')" @confirm="updateMyName"/>
+          <input class="remarks" placeholder-class="remarks-placeholder" confirm-type="send"
+                 @tap="setDisabled('bio')" @blur="cancelEdit('bio')" @confirm="updateMyInfo"
+                 :disabled="bioDisabled" v-model="user.bio" placeholder="说点啥呢~"/>
 			</view>
 			<view v-else>
 				<CcButton @cctap="showLoading('loginLoading')"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
@@ -102,7 +105,11 @@
 	export default {
 		data() {
 			return {
+        nameDisabled: true,
+        bioDisabled: true,
 				pageOpacity: 0,
+        oldName: '',
+        oldBio: '',
 				user: {
 					id: '',
 					avatar: '',
@@ -147,6 +154,8 @@
 				this.$loading('拼命拉取中...')
 				getMyInfo().then(res => {
 					this.user = res.data
+          this.oldName = res.data.name
+          this.oldBio = res.data.bio
 					this.$loading(false)
 				}).catch(err => {
 					this.$loading(false)
@@ -189,11 +198,39 @@
 					url: '/pages/shop/shop'
 				});
 			},
-
+      setDisabled(type) {
+        if (type === 'name') {
+          this.nameDisabled = false
+        } else if (type === 'bio') {
+          this.bioDisabled = false
+        }
+      },
+      cancelEdit(type) {
+        if (type === 'name') {
+          this.user.name = this.oldName
+        } else if (type === 'bio') {
+          this.user.bio = this.oldBio
+        }
+      },
 			updateMyName() {
-				// 安全校验
-				console.log('name')
+        if (this.user.name === this.oldName) {
+          return false
+        }
+        this.$toast('被你发现了哦~')
+        updateMyName({'name':this.user.name}).then(res => {
+          this.user.name = this.oldName = res.data
+        })
 			},
+
+      updateMyInfo() {
+			  if (this.user.bio === this.oldBio) {
+			    return false
+        }
+        this.$toast('双击即可修改哦~')
+        updateMyInfo({'bio':this.user.bio}).then(res => {
+          this.user.bio = this.oldBio = res.data.bio
+        })
+      },
 
 			updateAvatar() {
 				// 安全校验
@@ -224,11 +261,6 @@
 			},
 			closeMyUpload() {
 				this.updateAvatarDisable = false
-			},
-
-			updateMyInfo() {
-				// 安全校验
-				console.log('bio')
 			},
 
 			myFans() {
@@ -343,6 +375,9 @@
 			text-overflow: ellipsis;
 			overflow: hidden;
 		}
+    .remarks-placeholder {
+      color: #fbf1ef;
+    }
 	}
 
 	.home-menu {
