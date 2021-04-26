@@ -124,7 +124,18 @@ function report(uuid) {
     })
 }
 
+// 问题与反馈
+function reportApp(data) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', 'V1/report', data).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 export {
     getTimelineList, uploadImage, getTimelineDetail, createTimeline, deleteTimeline, uniUploadImage, getUserTimelines, report, getMyCollected,
-    uniUploadImageAvatar
+    uniUploadImageAvatar, reportApp
 }

@@ -96,6 +96,12 @@
 			"navigationBarTitleText": "",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/mine/report",
+		"style" : {
+			"navigationBarTitleText": "问题与反馈",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {

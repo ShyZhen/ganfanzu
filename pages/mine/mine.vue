@@ -3,10 +3,10 @@
 		<view class="head comm-center">
 			<view v-if="hasLogin">
 				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix" @tap="updateAvatar"></image>
-          <input class="name" :disabled="nameDisabled" v-model="user.name" confirm-type="send"
+          <input class="name" :disabled="nameDisabled" v-model="user.name" confirm-type="send" maxlength="10"
                  @tap="setDisabled('name')" @blur="cancelEdit('name')" @confirm="updateMyName"/>
           <input class="remarks" placeholder-class="remarks-placeholder" confirm-type="send"
-                 @tap="setDisabled('bio')" @blur="cancelEdit('bio')" @confirm="updateMyInfo"
+                 @tap="setDisabled('bio')" @blur="cancelEdit('bio')" @confirm="updateMyInfo" maxlength="25"
                  :disabled="bioDisabled" v-model="user.bio" placeholder="说点啥呢~"/>
 			</view>
 			<view v-else>
@@ -312,9 +312,12 @@
 						this.$toLogin()
 					}, 1000);
 					return false
-				}
-
-				// 安全校验
+				} else {
+				  // 安全验证
+          uni.navigateTo({
+            url: '/pages/mine/report'
+          });
+        }
 			}
 		}
 	}
