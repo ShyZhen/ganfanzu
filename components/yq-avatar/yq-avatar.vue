@@ -20,7 +20,7 @@
             <i class="avatar-icon iconfont iconxuanzhuan"></i>
           </view>
 					<view @click="fPreview" hover-class="hover" :style="{width: bW}">
-            <i class="avatar-icon iconfont iconyulan"></i>
+            <i class="avatar-icon iconfont iconyulan1"></i>
           </view>
 					<view @click="fUpload" hover-class="hover" :style="{width: bW}">
             <i class="avatar-icon iconfont iconqueding" style="color: #FF5722;"></i>
