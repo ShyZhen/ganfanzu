@@ -67,7 +67,8 @@ export default {
           bgColor: '#fa7e62',
           text: '分享',
           fontSize: 28,
-          color: '#fff'
+          color: '#fff',
+          share: true
         }
       ],
       pageOpacity: 0,

@@ -4,11 +4,25 @@
 			<view class="yc-fab-btn" :class="{'yc-visible':isOpen,'yc-fab-hidden':hidden}">
 				<view class="yc-fab-item-box" :class="{'yc-fab-item-left':left && !right && item.imgUrl}" v-for="(item,index) in btnList"
 				 :key="index" @tap.stop="handleClick(index)">
-					<view :class="[left && !right?'yc-text-left':'yc-text-right']" v-if="item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
-					<view class="yc-fab-item" :style="{width:width+'rpx',height:height+'rpx',background:item.bgColor || bgColor,borderRadius:radius}">
-						<view class="yc-fab-title" v-if="!item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
-						<image :src="item.imgUrl" class="yc-fab-img" v-else :style="{width:item.imgWidth+'rpx',height:item.imgHeight+'rpx'}"></image>
-					</view>
+
+          <view v-if="item.share">
+            <button open-type="share" class="button">
+              <view :class="[left && !right?'yc-text-left':'yc-text-right']" v-if="item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
+              <view class="yc-fab-item" :style="{width:width+'rpx',height:height+'rpx',background:item.bgColor || bgColor,borderRadius:radius}">
+                <view class="yc-fab-title" v-if="!item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
+                <image :src="item.imgUrl" class="yc-fab-img" v-else :style="{width:item.imgWidth+'rpx',height:item.imgHeight+'rpx'}"></image>
+              </view>
+            </button>
+          </view>
+
+          <view v-else>
+            <view :class="[left && !right?'yc-text-left':'yc-text-right']" v-if="item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
+            <view class="yc-fab-item" :style="{width:width+'rpx',height:height+'rpx',background:item.bgColor || bgColor,borderRadius:radius}">
+              <view class="yc-fab-title" v-if="!item.imgUrl" :style="{fontSize:item.fontSize+'rpx',color:item.color}">{{item.text || ""}}</view>
+              <image :src="item.imgUrl" class="yc-fab-img" v-else :style="{width:item.imgWidth+'rpx',height:item.imgHeight+'rpx'}"></image>
+            </view>
+          </view>
+
 				</view>
 			</view>
 			<view class="yc-fab-item" :class="{'yc-active':isOpen}" :style="{width:width+'rpx',height:height+'rpx',borderRadius:radius,background:bgColor,color:color}"
@@ -66,20 +80,6 @@
 				type: String,
 				default: "#fff"
 			},
-			//拓展按钮
-			// bgColor: "#5677fc",
-			// //图标/图片地址
-			// imgUrl: "/static/images/fab/fab_reward.png",
-			// //图片高度 rpx
-			// imgHeight: 60,
-			// //图片宽度 rpx
-			// imgWidth: 60,
-			// //名称
-			// text: "名称",
-			// //字体大小
-			// fontSize: 30,
-			// //字体颜色
-			// color: "#fff"
 			btnList: {
 				type: Array,
 				default () {
@@ -143,26 +143,7 @@
 	}
 </script>
 
-<style>
-	/*@font-face {*/
-	/*	font-family: 'tuifab';*/
-	/*	src: url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAAREAA0AAAAABnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAEKAAAABoAAAAciPExJUdERUYAAAQIAAAAHgAAAB4AKQAKT1MvMgAAAaAAAABCAAAAVjyBSAVjbWFwAAAB9AAAAD4AAAFCAA/pvmdhc3AAAAQAAAAACAAAAAj//wADZ2x5ZgAAAkAAAABRAAAAYFkYQQNoZWFkAAABMAAAADAAAAA2Fm5OF2hoZWEAAAFgAAAAHQAAACQH3QOFaG10eAAAAeQAAAAPAAAAEAwAAANsb2NhAAACNAAAAAoAAAAKADAAAG1heHAAAAGAAAAAHwAAACABDwAobmFtZQAAApQAAAFJAAACiCnmEVVwb3N0AAAD4AAAAB8AAAAx2XRuznjaY2BkYGAAYtGolt54fpuvDNwsDCBwc1krH5xm/t/I/J+5FsjlYGACiQIAGAEKZHjaY2BkYGBu+N/AEMPCAALM/xkYGVABCwBZ4wNrAAAAeNpjYGRgYGBhkGEA0QwMTEDMBYQMDP/BfAYAC4kBOAB42mNgZGFgnMDAysDA1Ml0hoGBoR9CM75mMGLkAIoysDIzYAUBaa4pDA7PhJ8JMzf8b2CIYW5gaAAKM4LkAN21DAEAAHjaY2GAABYIZgYAAIMAEAB42mNgYGBmgGAZBkYGELAB8hjBfBYGBSDNAoRA/jPh//8hpOQHqEoGRjYGGJOBkQlIMDGgAkaGYQ8AUSIHswAAAAAAAAAAAAAAMAAAeNpjYGRg/t/I/J+5lkGagYFRUVCPUYmNXVCRj1FETFxRUI7RyMxcUNGO0USN+fS/HEY5XTnGfznicnLijFPAHMYpYnJyjFvBlBgWBQBNJxKpAAAAeNp9kD1OAzEQhZ/zByQSQiCoXVEA2vyUKRMp9Ailo0g23pBo1155nUg5AS0VB6DlGByAGyDRcgpelkmTImvt6PObmeexAZzjGwr/3yXuhBWO8ShcwREy4Sr1F+Ea+V24jhY+hRvUf4SbuFUD4RYu1BsdVO2Eu5vSbcsKZxgIV3CKJ+Eq9ZVwjfwqXMcVPoQb1L+EmxjjV7iFa2WpDOFhMEFgnEFjig3jAjEcLJIyBtahOfRmEsxMTzd6ETubOBso71dilwMeaDnngCntPbdmvkon/mDLgdSYbh4FS7YpjS4idCgbXyyc1d2oc7D9nu22tNi/a4E1x+xRDWzU/D3bM9JIbAyvkJI18jK3pBJTj2hrrPG7ZynW814IiU68y/SIx5o0dTr3bmniwOLn8owcfbS5kj33qBw+Y1kIeb/dTsQgil2GP5PYcRkAAAB42mNgYoAALjDJyIAOWMCiTIxMbFmZiRmJ+QALXAKKAAAAAAH//wACAAEAAAAMAAAAFgAAAAIAAQADAAMAAQAEAAAAAgAAAAB42mNgYGBkAIKrS9Q5QPTNZa18MBoAPbcFzgAA) format('woff');*/
-	/*	font-weight: normal;*/
-	/*	font-style: normal;*/
-	/*}*/
-
-  /*.yc-icon-plus:before {*/
-  /*  content: "\e613";*/
-  /*}*/
-
-	/*.yc-fab-icon {*/
-	/*	font-family: "tuifab" !important;*/
-	/*	font-style: normal;*/
-	/*	-webkit-font-smoothing: antialiased;*/
-	/*	-moz-osx-font-smoothing: grayscale;*/
-	/*	padding: 10rpx;*/
-	/*}*/
-
+<style lang="scss" scoped>
 	.yc-fab-box {
 		display: flex;
 		justify-content: center;
@@ -253,4 +234,19 @@
 		opacity: 1;
 		transform: scale(1);
 	}
+  .button {
+    padding: 0px;
+    transition: 0.35s ease all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
 </style>

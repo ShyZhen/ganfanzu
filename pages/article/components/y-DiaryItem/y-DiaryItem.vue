@@ -180,7 +180,7 @@
 					.head-name {
 
 						color: #666666;
-						font-size: 32rpx;
+						font-size: 30rpx;
 					}
 					.head-bio {
 						max-width: 170px;
