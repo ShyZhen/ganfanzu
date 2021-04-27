@@ -103,7 +103,6 @@
 		},
 		methods: {
 			handleClick (e) {
-        console.log(this.viewList.length)
 				// 函数节流
         let interval = e.timeStamp - this.oldTime
 				if(interval < this.throttle) return null;
@@ -135,7 +134,6 @@
           timingFunction: 'ease-out',
         })
         setTimeout(() => {
-          console.log('animation finished.')
           // 完成后事件回调
           this.$emit('finished')
           // 逐渐消失
@@ -168,7 +166,6 @@
             timingFunction: 'ease-out',
             delay: 0 // ms
           }, () => {
-            console.log('animation finished.')
             // 完成后事件回调
             this.$emit('finished')
             // 逐渐消失
