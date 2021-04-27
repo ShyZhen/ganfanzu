@@ -30,7 +30,7 @@
         </view>
 
       </form>
-      <view class="t-f">登录即同意<text>用户协议</text></view>
+      <view class="t-f">登录即同意<text @tap="toAgreement">用户协议</text></view>
       <view class="t-e cl">
         <view class="t-g">
           <button @tap="getUserProfile">
@@ -185,6 +185,11 @@
         setTimeout(() => {
           this[type] = false
         }, ttl);
+      },
+      toAgreement() {
+        uni.navigateTo({
+          url: '/pages/about/agreement'
+        });
       },
     }
   }

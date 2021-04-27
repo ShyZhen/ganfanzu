@@ -102,6 +102,13 @@
 			"navigationBarTitleText": "问题与反馈",
 			"enablePullDownRefresh": false
 		}
+	},{
+		"path" : "pages/about/agreement",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "用户协议",
+			"enablePullDownRefresh": false
+		}
 	}
     ],
 	"tabBar": {
