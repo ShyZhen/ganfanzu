@@ -11,7 +11,7 @@ const env = {
     subkey: '',
 
     // API 地址
-    apiBaseUrl: 'https://api.fmock-test.com:81',
+    apiBaseUrl: 'https://api.ganfanzu.com',
 
     // token存储键名
     tokenKey: 'GANFANZU-TOKEN-KEY',
