@@ -277,6 +277,7 @@ export default {
         case 'like':
           await like(this.detailId, this.actionType).then(res => {
             this.actionFinish = true;
+            this.$toast(res.message)
           }).catch(err => {
             console.log('err', err)
           })
@@ -284,6 +285,7 @@ export default {
         case 'dislike':
           await dislike(this.detailId, this.actionType).then(res => {
             this.actionFinish = true;
+            this.$toast(res.message)
           }).catch(err => {
             console.log('err', err)
           })
@@ -297,6 +299,7 @@ export default {
             // 取消收藏
             await unCollect(data.resource_uuid, data.type).then(res => {
               this.actionFinish = true;
+              this.$toast(res.message)
             }).catch(err => {
               console.log('err', err)
             })
@@ -304,6 +307,7 @@ export default {
             // 收藏
             await collect(data).then(res => {
               this.actionFinish = true;
+              this.$toast(res.message)
             }).catch(err => {
               console.log('err', err)
             })

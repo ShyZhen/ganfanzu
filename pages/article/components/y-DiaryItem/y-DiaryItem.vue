@@ -30,8 +30,9 @@
 					<image class="img" src="/static/icon/comment.png" mode="widthFix"></image>
 					<text>{{ item.comment_num }}</text>
 				</view>
-				<view class="btn-item flex-center" @tap.stop @tap="handleLike(item)">
-					<image class="img" src="/static/icon/zan.png" mode="widthFix"></image>
+				<view class="btn-item flex-center">
+<!--					<image class="img" src="/static/icon/zan.png" mode="widthFix"></image>-->
+          <like-button style="margin-right: 20rpx" @tap.stop @handleClick="handleLike(item)"></like-button>
 					<text>{{ item.like_num }}</text>
 				</view>
 			</view>

@@ -6,10 +6,7 @@
         v-for="(item,index) in viewList" 
         :key="item.elId" 
         :ref="item.elId"
-        :style="{
-          'right': site.x || site[0] + 'rpx',
-          'bottom': site.y || site[1] + 'rpx'
-        }">
+>
         <image :style="{
           'width': imgWidth + 'rpx',
           'height': imgHeight + 'rpx'
@@ -34,15 +31,18 @@
     props: {
       src: {
         type: String,
-        default: '/static/icon/zan_b.png'
+        default: '/static/icon/zan.png'
       },
       showImgs: { // 显示图标路径
         type: Array,
         default: () => {
           return [
-            '/static/icon/zan_b.png',
-            'https://6e69-niew6-1302638010.tcb.qcloud.la/%E6%B0%94%E6%B3%A1/%E7%82%B9%E8%B5%9E-%E5%A4%A7%E6%8B%87%E6%8C%87.png?sign=76c8dd3a9a24c7094ab18bc10e121e8c&t=1604037350',
-            'https://6e69-niew6-1302638010.tcb.qcloud.la/%E6%B0%94%E6%B3%A1/%E7%82%B9%E8%B5%9E-%E5%B0%8F%E7%BA%A2%E5%BF%83.png?sign=340cd58768270d0c96562c35ca01e943&t=1604037369',
+            '/static/icon/zan/1.png',
+            '/static/icon/zan/2.png',
+            '/static/icon/zan/3.png',
+            '/static/icon/zan/4.png',
+            '/static/icon/zan/5.png',
+            '/static/icon/zan/6.png',
           ]
         }
       },
@@ -60,11 +60,11 @@
       },
       width: { // 图标宽度
         type: Number || String,
-        default: 200
+        default: 50
       },
       height: { // 图标高度
         type: Number || String,
-        default: 200
+        default: 50
       },
       imgWidth: { // 图标宽度
         type: Number || String,
@@ -76,7 +76,7 @@
       },
       throttle: { // 点击节流 ms
         type: Number,
-        default: 100
+        default: 1000
       },
       site: { // x y 坐标 [x<Number>, y<Number>]
         type: Array || Object, 
@@ -194,7 +194,6 @@
 	}
 	
 	.on-button{
-		padding-top: 400rpx;
 		display: flex;
 		justify-content: center;
 	}
