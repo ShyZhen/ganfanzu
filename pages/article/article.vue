@@ -191,6 +191,20 @@ export default {
           break;
       }
     },
+
+    findArticle() {
+      // let pages = getCurrentPages();
+      // let currPage = pages[pages.length - 1];
+      // let currData = currPage.data.tabList[this.activeTab].postsList
+      // if (currData) {
+      //   this.$set(currData.find(currData => currData.id === 56), 'like_num', 199)
+      // }
+
+      // let tabList = this.tabList[this.activeTab].postsList
+      // console.log(tabList)
+      // console.log(tabList.find(tabList => tabList.id = 56))
+      // this.$set(tabList.find(tabList => tabList.id = 56), 'like_num', 199)
+    },
   }
 };
 </script>
