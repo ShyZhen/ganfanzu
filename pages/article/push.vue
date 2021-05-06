@@ -77,30 +77,37 @@ export default {
         count: 9, //默认9
         sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
-        success: (res) => {
-          if (res.tempFilePaths.length) {
+        success: (fileRes) => {
+          if (fileRes.tempFilePaths.length) {
             that.$loading('压缩上传中...')
-            uniUploadImage(res.tempFilePaths[0]).then(res => {
 
-              // 此处无法依赖request中的错误处理
-              if (res.statusCode !== 201) {
-                that.$toast(JSON.parse(res.data).message)
-                return false
-              }
+            let counter = 0
+            fileRes.tempFilePaths.forEach(function(item) {
 
-              // 回显
-              let url = JSON.parse(res.data).data
-              if (url) {
-                that.imgList = that.imgList.concat(url)
-              }
+              uniUploadImage(item).then(res => {
+                // 此处无法依赖request中的错误处理
+                if (res.statusCode !== 201) {
+                  that.$toast(JSON.parse(res.data).message)
+                  return false
+                }
 
-              // 保存到本地，未提交下次进来回显
-              that.saveTemp()
+                // 回显
+                let url = JSON.parse(res.data).data
+                if (url) {
+                  that.imgList = that.imgList.concat(url)
+                }
 
-              that.$loading(false)
+                // 保存到本地，未提交下次进来回显
+                that.saveTemp()
 
-            }).catch(err => {
-              that.$toast('上传失败，请重试')
+                counter++;
+                if (counter === fileRes.tempFilePaths.length) {
+                  that.$loading(false)
+                }
+              }).catch(err => {
+                console.log(err)
+                that.$toast('上传失败，请重试')
+              })
             })
           }
         }
