@@ -1,5 +1,15 @@
 import request from '../utils/request';
 
+function getCoupons() {
+    return new Promise((resolve, reject) => {
+        request.request('GET', '/V1/coupons/').then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
 /**
  * 默认固定产品列表
  * @param data {platform,page}
@@ -86,5 +96,5 @@ function getProductHtml(data) {
 }
 
 export {
-    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail, getProductHtml
+    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail, getProductHtml, getCoupons
 }

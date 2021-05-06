@@ -44,6 +44,7 @@
 <script>
 import aTip from "@/components/a_tip/aTip";
 import { getShareObj } from "@/utils/share.js";
+import { getCoupons } from "@/apis/ganfan.js";
 import Config from "../../config/config";
 
 export default {
@@ -59,63 +60,68 @@ export default {
       pageOpacity: 0,
       current: 0,
       couponList: [],
-      coupons: [
-        {
-          id: 1,
-          name: '饿了么每日专享红包',
-          icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmZX.png',
-          url: 'https://s.click.ele.me/quDa1ru',
-          minapp: {
-            appid: couponsConfig.elmMpAppId,
-            path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
-          },
-          originImage: '/static/detail/mp-zx.jpg',
-        },
-        {
-          id: 2,
-          name: '饿了么吃货联盟红包',
-          icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmCHLM.png',
-          url: 'https://s.click.ele.me/GyR1jqu',
-          minapp: {
-            appid: couponsConfig.elmMpAppId,
-            path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
-          },
-          originImage: '/static/detail/mp-ch.jpg',
-        },
-        {
-          id: 3,
-          name: '饿了么果蔬商超红包',
-          icon: couponsConfig.elmIcon,
-          bannerPic: '/static/coupon/elmCS2.png',
-          url: 'https://s.click.ele.me/wUZhiqu',
-          minapp: {
-            appid: couponsConfig.elmMpAppId,
-            path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
-          },
-          originImage: '/static/detail/mp-cs.jpg',
-        },
-        {
-          id: 4,
-          name: '美团外卖每日红包',
-          icon: couponsConfig.mtIcon,
-          bannerPic: '/static/coupon/mtHB.png',
-          url:'https://c.mktdatatech.com/track.php?site_id=448253&aid=4882&euid=&t=http%3A%2F%2Ffxno-act.meituan.com&dm_fid=16052',
-          minapp: {
-            appid: couponsConfig.mtMpAppId,
-            path: '/index/pages/h5/h5?noshare=1&f_userId=0&f_openId=0&f_token=0&weburl=https%3A%2F%2Fact1.meituan.com%2Fclover%2Fpage%2Fadunioncps%2Fshare_coupon_new%3FutmSource%3D2055%26timestamp%3D1615167531%26utmMedium%3D98670413856f97f334a8066e04c00927%26version%3D1.0%26showKa%3D1%26requestId%3D9ad229c06587083df07a7f26ad026744%26activity%3DOwMkGzn6oK'
-          },
-          originImage: '/static/detail/mp-mt.jpg',
-        },
-      ]
+      // coupons: [
+      //   {
+      //     id: 1,
+      //     name: '饿了么每日专享红包',
+      //     icon: couponsConfig.elmIcon,
+      //     bannerPic: '/static/coupon/elmZX.png',
+      //     url: 'https://s.click.ele.me/quDa1ru',
+      //     minapp: {
+      //       appid: couponsConfig.elmMpAppId,
+      //       path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
+      //     },
+      //     originImage: '/static/detail/mp-zx.jpg',
+      //   },
+      //   {
+      //     id: 2,
+      //     name: '饿了么吃货联盟红包',
+      //     icon: couponsConfig.elmIcon,
+      //     bannerPic: '/static/coupon/elmCHLM.png',
+      //     url: 'https://s.click.ele.me/GyR1jqu',
+      //     minapp: {
+      //       appid: couponsConfig.elmMpAppId,
+      //       path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
+      //     },
+      //     originImage: '/static/detail/mp-ch.jpg',
+      //   },
+      //   {
+      //     id: 3,
+      //     name: '饿了么果蔬商超红包',
+      //     icon: couponsConfig.elmIcon,
+      //     bannerPic: '/static/coupon/elmCS2.png',
+      //     url: 'https://s.click.ele.me/wUZhiqu',
+      //     minapp: {
+      //       appid: couponsConfig.elmMpAppId,
+      //       path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
+      //     },
+      //     originImage: '/static/detail/mp-cs.jpg',
+      //   },
+      //   {
+      //     id: 4,
+      //     name: '美团外卖每日红包',
+      //     icon: couponsConfig.mtIcon,
+      //     bannerPic: '/static/coupon/mtHB.png',
+      //     url:'https://c.mktdatatech.com/track.php?site_id=450533&aid=10124&euid=&t=https%3A%2F%2Fi.meituan.com&dm_fid=16079',
+      //     minapp: {
+      //       appid: couponsConfig.mtMpAppId,
+      //       path: '/waimai/pages/h5/h5?f_token=1&weburl=https%3A%2F%2Fdpurl.cn%2FvoNQNGKz'
+      //     },
+      //     originImage: '/static/detail/mp-mt.jpg',
+      //   },
+      // ],
+      coupons: []
     };
   },
   components: {
     aTip,
   },
   onLoad(e) {
-    this.changeTab()
+    let that = this
+    getCoupons().then(res => {
+      that.coupons = res.data
+      that.changeTab()
+    })
   },
   onReady(e) {
     this.pageOpacity = 1
