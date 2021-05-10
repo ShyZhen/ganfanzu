@@ -30,8 +30,6 @@
               <image :src="v.icon" class="icon" mode="widthFix" lazy-load @load="onoff='1'" />
               <view class="name">{{ v.name }}</view>
             </view>
-            <!--						<view class="text" v-if="v.type == 1">每日可领</view>-->
-            <!--						<view class="text" v-else-if="v.type == 2">限时秒杀</view>-->
           </view>
           <view class="right">立即领取</view>
         </view>
@@ -49,67 +47,11 @@ import Config from "../../config/config";
 
 export default {
   data() {
-    const couponsConfig = {
-      elmIcon:  '/static/coupon/elm_icon.png',
-      mtIcon:  '/static/coupon/mt_icon.png',
-      elmMpAppId: 'wxece3a9a4c82f58c9',
-      mtMpAppId: 'wxde8ac0a21135c07d',
-    }
     return {
       noticeKey: Config.noticeKey + Config.version,
       pageOpacity: 0,
       current: 0,
       couponList: [],
-      // coupons: [
-      //   {
-      //     id: 1,
-      //     name: '饿了么每日专享红包',
-      //     icon: couponsConfig.elmIcon,
-      //     bannerPic: '/static/coupon/elmZX.png',
-      //     url: 'https://s.click.ele.me/quDa1ru',
-      //     minapp: {
-      //       appid: couponsConfig.elmMpAppId,
-      //       path: 'taoke/pages/shopping-guide/index?scene=kvnz0ru',
-      //     },
-      //     originImage: '/static/detail/mp-zx.jpg',
-      //   },
-      //   {
-      //     id: 2,
-      //     name: '饿了么吃货联盟红包',
-      //     icon: couponsConfig.elmIcon,
-      //     bannerPic: '/static/coupon/elmCHLM.png',
-      //     url: 'https://s.click.ele.me/GyR1jqu',
-      //     minapp: {
-      //       appid: couponsConfig.elmMpAppId,
-      //       path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu',
-      //     },
-      //     originImage: '/static/detail/mp-ch.jpg',
-      //   },
-      //   {
-      //     id: 3,
-      //     name: '饿了么果蔬商超红包',
-      //     icon: couponsConfig.elmIcon,
-      //     bannerPic: '/static/coupon/elmCS2.png',
-      //     url: 'https://s.click.ele.me/wUZhiqu',
-      //     minapp: {
-      //       appid: couponsConfig.elmMpAppId,
-      //       path: 'pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu',
-      //     },
-      //     originImage: '/static/detail/mp-cs.jpg',
-      //   },
-      //   {
-      //     id: 4,
-      //     name: '美团外卖每日红包',
-      //     icon: couponsConfig.mtIcon,
-      //     bannerPic: '/static/coupon/mtHB.png',
-      //     url:'https://c.mktdatatech.com/track.php?site_id=450533&aid=10124&euid=&t=https%3A%2F%2Fi.meituan.com&dm_fid=16079',
-      //     minapp: {
-      //       appid: couponsConfig.mtMpAppId,
-      //       path: '/waimai/pages/h5/h5?f_token=1&weburl=https%3A%2F%2Fdpurl.cn%2FvoNQNGKz'
-      //     },
-      //     originImage: '/static/detail/mp-mt.jpg',
-      //   },
-      // ],
       coupons: []
     };
   },
@@ -118,6 +60,7 @@ export default {
   },
   onLoad(e) {
     let that = this
+    this.$loading('获取优惠中')
     getCoupons().then(res => {
       that.coupons = res.data
       that.changeTab()
