@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 function getCoupons() {
     return new Promise((resolve, reject) => {
-        request.request('GET', '/V1/coupons/').then(res => {
+        request.request('GET', '/V1/coupons').then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
@@ -57,7 +57,7 @@ function getDetailLink(itemUrl) {
 
 function getCustomProduct() {
     return new Promise((resolve, reject) => {
-        request.request('POST', '/V1/duomai/custom/').then(res => {
+        request.request('POST', '/V1/duomai/custom').then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
