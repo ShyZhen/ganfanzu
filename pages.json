@@ -3,7 +3,6 @@
 		"path": "pages/index/index",
 		"style" : {
 			"navigationStyle": "custom",
-			"navigationBarTextStyle": "white",
 			"navigationBarTitleText": "我要干饭"
 		}
 	},{
@@ -107,6 +106,12 @@
 		"style" : {
 			"navigationStyle": "custom",
 			"navigationBarTitleText": "用户协议",
+			"enablePullDownRefresh": false
+		}
+	},{
+		"path" : "pages/index/link",
+		"style" : {
+			"navigationStyle": "custom",
 			"enablePullDownRefresh": false
 		}
 	}

@@ -27,7 +27,7 @@ export default {
 
     body {
       font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-      background-color: #f5f8f9;
+      background-color: #ffffff;
     }
 
     view {

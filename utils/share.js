@@ -2,7 +2,6 @@ function getShareObj(res) {
     return {
         title: getShareMessage(),
         path: '/pages/index/index',
-        imageUrl: '/static/share.jpg',
         desc: '每日外卖红包领取',
         success(res) {
         },
