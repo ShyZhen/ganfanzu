@@ -1,5 +1,5 @@
 <template>
-  <view class="outFood-wrapper">
+  <view class="outFood-wrapper container" :style="{opacity:pageOpacity}">
     <view class="pageHeader-container rowCen">
       <view class="userModel-content rowCenBet">
         <view class="rowCen" style="margin-left: 60rpx;">
@@ -132,6 +132,7 @@ import { getShareObj } from "@/utils/share.js";
 export default {
   data() {
     return {
+      pageOpacity: 0,
       userInfo: '',
       wordTxt: '一直很尊重奶茶,没去冰,没去糖,没少喝',
       list:[
@@ -170,6 +171,9 @@ export default {
       ],
     }
   },
+  onReady(e) {
+    this.pageOpacity = 1
+  },
   onShareAppMessage(res) {
     return getShareObj()
   },
@@ -200,6 +204,12 @@ export default {
 
 <style lang="scss">
 @import url('/common/main.css');
+.container {
+  transition: all 0.5s linear;
+  font-size: 14px;
+  line-height: 24px;
+  position: relative;
+}
 
 .outFood-wrapper {
   width: 100%;

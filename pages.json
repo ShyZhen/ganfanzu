@@ -137,24 +137,24 @@
 //			"selectedIconPath": "static/icon/shop_b.png",
 //			"text": "推荐"
 //		}
+		,{
+			"pagePath": "pages/about/about",
+			"iconPath": "static/icon/about.png",
+			"selectedIconPath": "static/icon/about_b.png",
+			"text": "关于"
+		}
 //		,{
-//			"pagePath": "pages/about/about",
-//			"iconPath": "static/icon/about.png",
-//			"selectedIconPath": "static/icon/about_b.png",
-//			"text": "关于"
+//		    "pagePath": "pages/article/article",
+//			"iconPath": "static/icon/jiaoyin.png",
+//		    "selectedIconPath": "static/icon/jiaoyin_b.png",
+//		    "text": "日记"
 //		}
-		,{
-		    "pagePath": "pages/article/article",
-			"iconPath": "static/icon/jiaoyin.png",
-		    "selectedIconPath": "static/icon/jiaoyin_b.png",
-		    "text": "日记"
-		}
-		,{
-			"pagePath": "pages/mine/mine",
-			"iconPath": "static/icon/me.png",
-			"selectedIconPath": "static/icon/me_b.png",
-			"text": "我"
-		}
+//		,{
+//			"pagePath": "pages/mine/mine",
+//			"iconPath": "static/icon/me.png",
+//			"selectedIconPath": "static/icon/me_b.png",
+//			"text": "我"
+//		}
 		]
 	},
 	"globalStyle": {
