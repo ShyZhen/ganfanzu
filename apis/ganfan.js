@@ -9,6 +9,15 @@ function getCoupons() {
         })
     })
 }
+function getCouponsNew() {
+    return new Promise((resolve, reject) => {
+        request.request('GET', '/V1/coupons-new').then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
 
 /**
  * 默认固定产品列表
@@ -96,5 +105,5 @@ function getProductHtml(data) {
 }
 
 export {
-    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail, getProductHtml, getCoupons
+    getProductList, getDetailLink, getCustomProduct, getQueryList, getProductDetail, getProductHtml, getCoupons, getCouponsNew
 }

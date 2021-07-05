@@ -49,7 +49,7 @@
           <view class="items-title">
             {{items.name}}
           </view>
-          <image class="itemspic" :class="index<2?'tada':''" :src="items.pic" mode=""></image>
+          <image class="itemspic" :class="index<2?'tada':''" :src="items.bannerPic" mode=""></image>
         </view>
       </block>
     </view>
@@ -127,7 +127,8 @@
 </template>
 
 <script>
-import { getShareObj } from "@/utils/share.js";
+import { getShareObj } from "@/utils/share.js"
+import { getCouponsNew } from "@/apis/ganfan.js"
 
 export default {
   data() {
@@ -139,38 +140,55 @@ export default {
         {
           "id": 1,
           "name": "美团红包",
-          "pic": "https://image.fmock.com/mp/gfz/mt.png",
-          "appid": "wxde8ac0a21135c07d",
-          "path": "/waimai/pages/h5/h5?f_token=1&weburl=https%3A%2F%2Fdpurl.cn%2FvoNQNGKz",
+          "bannerPic": "https://image.fmock.com/mp/gfz/mt.png",
+          "minapp": {
+            "appid": "wxde8ac0a21135c07d",
+            "path": "/waimai/pages/h5/h5?f_token=1&weburl=https%3A%2F%2Fdpurl.cn%2FvoNQNGKz",
+          },
           "originImage": "/static/detail/mp-mt.jpg"
         },
         {
           "id": 1,
           "name": "饿了么红包",
-          "pic": "https://image.fmock.com/mp/gfz/elm.png",
-          "appid": "wxece3a9a4c82f58c9",
-          "path": "taoke/pages/shopping-guide/index?scene=kvnz0ru",
+          "bannerPic": "https://image.fmock.com/mp/gfz/elm.png",
+          "minapp": {
+            "appid": "wxece3a9a4c82f58c9",
+            "path": "taoke/pages/shopping-guide/index?scene=kvnz0ru",
+          },
           "originImage": "/static/detail/mp-zx.jpg"
         },
         {
           "id": 1,
           "name": "吃货红包",
-          "pic": "https://image.fmock.com/mp/gfz/ch.png",
-          "appid": "wxece3a9a4c82f58c9",
-          "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu",
+          "bannerPic": "https://image.fmock.com/mp/gfz/ch.png",
+          "minapp": {
+            "appid": "wxece3a9a4c82f58c9",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu",
+          },
           "originImage": "/static/detail/mp-ch.jpg"
         },
         {
           "id": 1,
           "name": "果蔬超市",
-          "pic": "https://image.fmock.com/mp/gfz/cs.png",
-          "appid": "wxece3a9a4c82f58c9",
-          "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu",
+          "bannerPic": "https://image.fmock.com/mp/gfz/cs.png",
+          "minapp": {
+            "appid": "wxece3a9a4c82f58c9",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu",
+          },
           "originImage": "/static/detail/mp-cs.jpg"
         }
       ],
     }
   },
+  // onLoad(e) {
+  //   let that = this
+  //   this.$loading('获取优惠中')
+  //   getCouponsNew().then(res => {
+  //     that.list = res.data
+  //     that.$loading(false)
+  //     console.log(that.list)
+  //   })
+  // },
   onReady(e) {
     this.pageOpacity = 1
   },
@@ -188,8 +206,8 @@ export default {
     },
     goNextPage(info) {
       wx.navigateToMiniProgram({
-        appId: info.appid,
-        path: info.path,
+        appId: info.minapp.appid,
+        path: info.minapp.path,
         success: (res) => {
           console.log(res);
         }
