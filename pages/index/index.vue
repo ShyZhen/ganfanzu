@@ -54,6 +54,26 @@
       </block>
     </view>
 
+
+    <view>
+      <view class="mainTitle rowCenCen">
+        <view class="bdlr"></view>
+        <view class="titletxt">
+          国潮来袭：给你的头像加点料
+        </view>
+        <view class="bdlr"></view>
+      </view>
+
+      <view class="adv-container rowCenCen borderBox">
+        <view class="pic-wrapper rowCenCen" @tap="jumpMp()">
+          <image class="adv-pic" src="http://image.fmock.com/MPWangzhe/banner/5_m.jpg" mode="">
+          </image>
+        </view>
+      </view>
+    </view>
+
+
+
     <view class="movie">
 
       <view class="mainTitle rowCenCen">
@@ -216,6 +236,15 @@ export default {
     goAction() {
 
     },
+    jumpMp() {
+      wx.navigateToMiniProgram({
+        appId: 'wx0559a4b18b51c197',
+        path: 'pages/index/index',
+        success: (res) => {
+          console.log(res);
+        }
+      })
+    },
   }
 }
 </script>
@@ -278,7 +307,7 @@ export default {
       border-radius: 16rpx;
 
       .adv-pic {
-        width: 528rpx;
+        //width: 528rpx;
         height: 240rpx;
       }
     }
