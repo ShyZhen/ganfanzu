@@ -24,7 +24,7 @@ function accountLogin(account, password) {
 }
 
 // 小程序登录插件
-function wxmpLogin(user) {
+function wxmpLogin(user, platform) {
     return new Promise((resolve, reject) => {
         let token = getToken()
         if (token) {
@@ -33,9 +33,9 @@ function wxmpLogin(user) {
             resolve(true)
         } else {
             uni.login({
-                provider: 'weixin',
+                provider: platform,
                 success: (res) => {
-                    AuthApi.wxmpLogin(res.code, user).then(res => {
+                    AuthApi.wxmpLogin(res.code, user, platform).then(res => {
                         if (res.access_token) {
                             // 保存token 绑定状态到storage；保存vuex状态
                             setToken(res.access_token)

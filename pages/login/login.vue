@@ -167,7 +167,8 @@
           success: (res) => {
             this.$loading('拼命加载中...')
             if (res.userInfo) {
-              wxmpLogin(res.userInfo).then(res => {
+              let platform = 'weixin'
+              wxmpLogin(res.userInfo, platform).then(res => {
                 this.$loading(false)
                 this.$reLunchBack()
               }).catch(err => {

@@ -1,10 +1,17 @@
-import request from '../utils/request';
+import request from '../utils/request'
+import Config from '../config/config.js'
 
 // 小程序登录API
-function wxmpLogin(code, userInfo) {
-    let params = {'code':code, 'user':userInfo}
+function wxmpLogin(code, userInfo, platform) {
+    let platformId = Config.platformId
+    let params = {'code':code, 'user':userInfo, 'platform_uuid':platformId}
+    // 做了个兼容，名字不一致
+    if (platform === 'weixin') {
+        platform = 'wechat'
+    }
+
     return new Promise((resolve, reject) => {
-        request.request('POST', 'V1/oauth/wechat/login', params).then(res => {
+        request.request('POST', 'V1/oauth/'+platform+'/login', params).then(res => {
             resolve(res.data)
         }).catch(e => {
             reject(e)
