@@ -149,6 +149,7 @@
 <script>
 import { getShareObj } from "@/utils/share.js"
 import { getCouponsNew } from "@/apis/ganfan.js"
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -200,6 +201,9 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapState(['hasBinding', 'hasLogin', 'statusH']),
+  },
   // onLoad(e) {
   //   let that = this
   //   this.$loading('获取优惠中')
@@ -212,6 +216,10 @@ export default {
   onReady(e) {
     this.pageOpacity = 1
   },
+  onLoad() {
+    // 在需要登录的地方执行初始化方法
+    this.initLoginState()
+  },
   onShareAppMessage(res) {
     return getShareObj()
   },
@@ -219,19 +227,30 @@ export default {
     return getShareObj()
   },
   methods: {
+    ...mapActions(['initLoginState']),
+
     goWebview() {
       uni.navigateTo({
         url: '/pages/index/link'
       })
     },
     goNextPage(info) {
-      wx.navigateToMiniProgram({
-        appId: info.minapp.appid,
-        path: info.minapp.path,
-        success: (res) => {
-          console.log(res);
-        }
-      })
+      if (this.hasLogin) {
+        wx.navigateToMiniProgram({
+          appId: info.minapp.appid,
+          path: info.minapp.path,
+          success: (res) => {
+            console.log(res);
+          }
+        })
+      } else {
+        this.$toast('领取需要登录')
+        setTimeout(() => {
+          this.saveLoading = false
+          this.$toLogin()
+        }, 1000);
+        return false
+      }
     },
     goAction() {
 

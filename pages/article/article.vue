@@ -57,12 +57,12 @@ export default {
       rightList: [],
       //fab的设置
       fabList: [
-        {
-          bgColor: '#F46845',
-          text: '发布',
-          fontSize: 28,
-          color: '#fff'
-        },
+        // {
+        //   bgColor: '#F46845',
+        //   text: '发布',
+        //   fontSize: 28,
+        //   color: '#fff'
+        // },
         {
           bgColor: '#fa7e62',
           text: '分享',
