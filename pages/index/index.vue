@@ -174,7 +174,7 @@ export default {
           "bannerPic": "https://image.fmock.com/mp/gfz/elm.png",
           "minapp": {
             "appid": "wxece3a9a4c82f58c9",
-            "path": "taoke/pages/shopping-guide/index?scene=kvnz0ru",
+            "path": "taoke/pages/shopping-guide/index?scene=rLqVsbu",
           },
           "originImage": "/static/detail/mp-zx.jpg"
         },
@@ -184,7 +184,7 @@ export default {
           "bannerPic": "https://image.fmock.com/mp/gfz/ch.png",
           "minapp": {
             "appid": "wxece3a9a4c82f58c9",
-            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FGyR1jqu",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2Fw4cQhbu",
           },
           "originImage": "/static/detail/mp-ch.jpg"
         },
@@ -194,7 +194,7 @@ export default {
           "bannerPic": "https://image.fmock.com/mp/gfz/cs.png",
           "minapp": {
             "appid": "wxece3a9a4c82f58c9",
-            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FwUZhiqu",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FsnFQhbu",
           },
           "originImage": "/static/detail/mp-cs.jpg"
         }
