@@ -3,11 +3,12 @@
 		<view class="head comm-center">
 			<view v-if="hasLogin">
 				<image :src="user.avatar ? user.avatar : '/static/default_avatar.jpg'" mode="widthFix" @tap="updateAvatar"></image>
-          <input class="name" :disabled="nameDisabled" v-model="user.name" confirm-type="send" maxlength="10"
-                 @tap="setDisabled('name')" @blur="cancelEdit('name')" @confirm="updateMyName"/>
-          <input class="remarks" placeholder-class="remarks-placeholder" confirm-type="send"
-                 @tap="setDisabled('bio')" @blur="cancelEdit('bio')" @confirm="updateMyInfo" maxlength="25"
-                 :disabled="bioDisabled" v-model="user.bio" placeholder="说点啥呢~"/>
+
+        <input class="name" :disabled="nameDisabled" v-model="user.name" confirm-type="send" maxlength="10"
+               @tap="setDisabled('name')"  @blur="updateMyName"/>
+        <input class="remarks" placeholder-class="remarks-placeholder" confirm-type="send"
+               @tap="setDisabled('bio')"  @blur="updateMyInfo" maxlength="25"
+               :disabled="bioDisabled" v-model="user.bio" placeholder="说点啥呢~"/>
 			</view>
 			<view v-else>
 				<CcButton @cctap="showLoading('loginLoading')"  color="#fff" bgcolor="linear-gradient(-45deg, rgba(246, 112, 79, 1) 0%, rgba(243, 49, 35, 1) 100%);"
@@ -192,9 +193,9 @@
 				});
 			},
 			goShop() {
-				this.$toast('为规范化小程序环境，该功能暂时下线')
-				return false
-				uni.navigateTo({
+				// this.$toast('为规范小程序环境，该功能暂时下线')
+				// return false
+				uni.switchTab({
 					url: '/pages/shop/shop'
 				});
 			},

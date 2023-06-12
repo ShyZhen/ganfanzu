@@ -179,26 +179,26 @@ export default {
           },
           "originImage": "/static/detail/mp-zx.jpg"
         },
-        // {
-        //   "id": 1,
-        //   "name": "吃货红包",
-        //   "bannerPic": "https://image.fmock.com/mp/gfz/ch.png",
-        //   "minapp": {
-        //     "appid": "wxece3a9a4c82f58c9",
-        //     "path": "pages/sharePid/web/index?scene=s.click.ele.me%2Fw4cQhbu",
-        //   },
-        //   "originImage": "/static/detail/mp-ch.jpg"
-        // },
-        // {
-        //   "id": 1,
-        //   "name": "果蔬超市",
-        //   "bannerPic": "https://image.fmock.com/mp/gfz/cs.png",
-        //   "minapp": {
-        //     "appid": "wxece3a9a4c82f58c9",
-        //     "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FsnFQhbu",
-        //   },
-        //   "originImage": "/static/detail/mp-cs.jpg"
-        // }
+        {
+          "id": 1,
+          "name": "吃货红包",
+          "bannerPic": "https://image.fmock.com/mp/gfz/ch.png",
+          "minapp": {
+            "appid": "wxece3a9a4c82f58c9",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2Fw4cQhbu",
+          },
+          "originImage": "/static/detail/mp-ch.jpg"
+        },
+        {
+          "id": 1,
+          "name": "果蔬超市",
+          "bannerPic": "https://image.fmock.com/mp/gfz/cs.png",
+          "minapp": {
+            "appid": "wxece3a9a4c82f58c9",
+            "path": "pages/sharePid/web/index?scene=s.click.ele.me%2FsnFQhbu",
+          },
+          "originImage": "/static/detail/mp-cs.jpg"
+        }
       ],
     }
   },
@@ -245,6 +245,9 @@ export default {
       })
     },
     goNextPage(info) {
+      this.$toast('为规范小程序环境，该功能已下线')
+      return false
+
       if (this.hasLogin) {
         this.jumpAction(info)
       } else {

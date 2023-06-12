@@ -1,15 +1,15 @@
 {
 	"pages": [{
-		"path": "pages/find/find",
-		"style" : {
-			"navigationStyle": "custom",
-			"navigationBarTitleText": "改善生活"
-		}
-	},{
 		"path": "pages/index/index",
 		"style" : {
 			"navigationStyle": "custom",
 			"navigationBarTitleText": "我要干饭"
+		}
+	},{
+		"path": "pages/find/find",
+		"style" : {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "改善生活"
 		}
 	},{
 		"path": "pages/shop/shop",
@@ -122,16 +122,17 @@
 		"color": "#333333",
 		"selectedColor": "#F46845",
 		"backgroundColor": "#FCFCFD",
-		"list": [{
-			"pagePath": "pages/find/find",
-			"iconPath": "static/icon/find.png",
-			"selectedIconPath": "static/icon/find_b.png",
-			"text": "发现"
-		},{
+		"list": [
+			{
 			"pagePath": "pages/index/index",
 			"text": "干饭",
 			"iconPath": "static/icon/eat.png",
 			"selectedIconPath": "static/icon/eat_b.png"
+		},{
+			"pagePath": "pages/find/find",
+			"iconPath": "static/icon/find.png",
+			"selectedIconPath": "static/icon/find_b.png",
+			"text": "发现"
 		}
 		,{
 			"pagePath": "pages/shop/shop",

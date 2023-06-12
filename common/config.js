@@ -13,10 +13,10 @@ const
 			  text: '京东',
 			  type: 'jd'
 			},
-			{
-			  text: '拼多多',
-			  type: 'pdd'
-			}
+			// {
+			//   text: '拼多多',
+			//   type: 'pdd'
+			// }
 		],
 	},
 	CONTANTS  = {

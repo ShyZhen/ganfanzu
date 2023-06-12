@@ -62,7 +62,15 @@ function uniUploadImage(filePath) {
         });
     })
 }
-
+function updateAvatar(data) {
+    return new Promise((resolve, reject) => {
+        request.request('POST', 'V1/file/avatar', data).then(res => {
+            resolve(res.data)
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
 function uniUploadImageAvatar(filePath) {
     return new Promise((resolve, reject) => {
         uni.uploadFile({

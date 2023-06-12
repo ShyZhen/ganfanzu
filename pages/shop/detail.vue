@@ -157,8 +157,8 @@
       getDetailLinkAndGoMp() {
 
         // 仅支持比价
-        // this.$toast('仅支持优惠查询，购买还请到官方app下进行')
-        // return false;
+        this.$toast('为规范小程序环境，该功能暂时下线')
+        return false;
 
         this.$loading('拼命加载中...')
         let param = {
