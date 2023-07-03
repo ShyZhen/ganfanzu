@@ -305,7 +305,7 @@
     color: #666;
     display: flex; align-items: center;
     margin:80rpx auto 0 auto;
-    width: 40%;
+    justify-content: center;
   }
 
   .t-login .t-f text {
