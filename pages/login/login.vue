@@ -30,7 +30,9 @@
         </view>
 
       </form>
-      <view class="t-f">登录即同意<text @tap="toAgreement">用户协议</text></view>
+      <view class="t-f">
+        <checkbox value="cb" :checked="isChecked" @click="isChecked=!isChecked" color="#FFCC33" style="transform:scale(0.7)" />
+        同意<text @tap="toAgreement">用户协议</text></view>
       <view class="t-e cl">
         <view class="t-g">
           <button @tap="getUserProfile">
@@ -61,6 +63,8 @@
         codeDuration: 0,
         // 验证码
         verify_code: '',
+
+        isChecked: false,
 
         pageOpacity: 0,
         searchInput: {
@@ -138,6 +142,11 @@
 
       login() {
         let that = this
+        if(!this.isChecked) {
+          this.$toast('请先阅读并同意用户协议')
+          this.loginLoading = false
+          return
+        }
 
         if (!this.account.trim().length || !this.isCorrectAccount) {
           this.$toast('登录账户格式错误!')
@@ -160,6 +169,12 @@
       },
 
       getUserProfile(e) {
+        if(!this.isChecked) {
+          this.$toast('请先阅读并同意用户协议')
+          this.loginLoading = false
+          return
+        }
+
         // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
         // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
         uni.getUserProfile({
@@ -287,8 +302,10 @@
 
   .t-login .t-f {
     text-align: center;
-    margin: 80rpx 0 0 0;
-    color: #666
+    color: #666;
+    display: flex; align-items: center;
+    margin:80rpx auto 0 auto;
+    width: 40%;
   }
 
   .t-login .t-f text {
