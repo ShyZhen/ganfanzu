@@ -35,25 +35,23 @@
       <view class="bread"></view>
     </view>
 
-    <view class="mainTitle rowCenCen">
-      <view class="bdlr"></view>
-      <view class="titletxt">
-        领干饭红包
-      </view>
-      <view class="bdlr"></view>
-    </view>
 
-    <view class="list-container rowCenBet borderBox">
-      <block v-for="(items, index) in list" :key="index">
-        <view class="items-content colCenCen"  @tap="goNextPage(items)">
-          <view class="items-title">
-            {{items.name}}
-          </view>
-          <image class="itemspic" :class="index<2?'tada':''" :src="items.bannerPic" mode=""></image>
+    <view>
+      <view class="mainTitle rowCenCen">
+        <view class="bdlr"></view>
+        <view class="titletxt">
+          王者皮肤免费抽
         </view>
-      </block>
-    </view>
+        <view class="bdlr"></view>
+      </view>
 
+      <view class="adv-container rowCenCen borderBox">
+        <view class="pic-wrapper rowCenCen" @tap="jumpMpWZ()">
+          <image class="adv-pic" src="https://image.fmock.com/MPWangzhe/draw/common/1788-qcj-nkll.jpg" mode="">
+          </image>
+        </view>
+      </view>
+    </view>
 
     <view>
       <view class="mainTitle rowCenCen">
@@ -73,6 +71,24 @@
     </view>
 
 
+    <view class="mainTitle rowCenCen">
+      <view class="bdlr"></view>
+      <view class="titletxt">
+        领干饭红包
+      </view>
+      <view class="bdlr"></view>
+    </view>
+
+    <view class="list-container rowCenBet borderBox">
+      <block v-for="(items, index) in list" :key="index">
+        <view class="items-content colCenCen"  @tap="goNextPage(items)">
+          <view class="items-title">
+            {{items.name}}
+          </view>
+          <image class="itemspic" :class="index<2?'tada':''" :src="items.bannerPic" mode=""></image>
+        </view>
+      </block>
+    </view>
 
     <view class="movie">
 
@@ -284,6 +300,15 @@ export default {
       wx.navigateToMiniProgram({
         appId: 'wx0559a4b18b51c197',
         path: 'pages/index/index',
+        success: (res) => {
+          console.log(res);
+        }
+      })
+    },
+    jumpMpWZ() {
+      wx.navigateToMiniProgram({
+        appId: 'wx720ac6d7229813a6',
+        path: 'pages/draw/draw',
         success: (res) => {
           console.log(res);
         }

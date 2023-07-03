@@ -134,12 +134,12 @@
 			"selectedIconPath": "static/icon/find_b.png",
 			"text": "发现"
 		}
-		,{
-			"pagePath": "pages/shop/shop",
-			"iconPath": "static/icon/shop.png",
-			"selectedIconPath": "static/icon/shop_b.png",
-			"text": "推荐"
-		}
+//		,{
+//			"pagePath": "pages/shop/shop",
+//			"iconPath": "static/icon/shop.png",
+//			"selectedIconPath": "static/icon/shop_b.png",
+//			"text": "推荐"
+//		}
 		,{
 		    "pagePath": "pages/article/article",
 			"iconPath": "static/icon/jiaoyin.png",

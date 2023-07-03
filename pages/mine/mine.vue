@@ -195,7 +195,9 @@
 			goShop() {
 				// this.$toast('为规范小程序环境，该功能暂时下线')
 				// return false
-				uni.switchTab({
+
+				// uni.switchTab({
+				uni.navigateTo({
 					url: '/pages/shop/shop'
 				});
 			},
