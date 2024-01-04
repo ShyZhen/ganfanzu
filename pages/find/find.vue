@@ -153,7 +153,7 @@
 				this.markers = [];
 				for (let i = 0; i < data.data.length; i++) {
 					this.markers.push({
-						id: data.data[i].id.toString(),
+						id: parseInt(data.data[i].id),
 						title: data.data[i].title,
 						latitude: data.data[i].location.lat,
 						longitude: data.data[i].location.lng,

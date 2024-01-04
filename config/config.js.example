@@ -1,17 +1,24 @@
 const env = {
+    platformId: '	app-xxx-752ef85b20f3',
+
     appName: '干饭组',
 
     // 是否开启debug
     debug: true,
 
-    version: 'Version 1.0.0',
+    version: 'Version 4.0.1',
 
-    noticeKey: 'ganfanzu_collect_key_2021',
+    noticeKey: 'ganfanzu_collect_key_2024',
 
-    subkey: '',
+    // 腾讯位置服务
+    subkey: '4ZLBZ-xxx-FEBR4',
+
+    // 优惠券领取通知 1891
+    subscribe: '',
+
 
     // API 地址
-    apiBaseUrl: 'https://api.ganfanzu.com',
+    apiBaseUrl: 'https://api.xxx.com',
 
     // token存储键名
     tokenKey: 'GANFANZU-TOKEN-KEY',
@@ -20,7 +27,7 @@ const env = {
     bindingKey: 'GANFANZU-BINDING-KEY',
 
     // 前端存储过期时间 （单位天）
-    tokenExpire: 7,
+    tokenExpire: 30,
 }
 
 export default env
